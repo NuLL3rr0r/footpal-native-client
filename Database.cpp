@@ -1,4 +1,5 @@
 #include <unordered_map>
+#include <cassert>
 #include <cstdarg>
 #include <sqlite3.h>
 #include <cppdb/backend.h>
@@ -15,9 +16,9 @@ struct Database::Impl
     typedef std::unordered_map<std::string, std::string> TableNames_t;
     typedef std::unordered_map<std::string, std::string> TableFields_t;
 
-#if defined(STATIC_LINK_DEPENDENCIES)
+#if defined ( STATIC_LINK_DEPENDENCIES )
     static bool IsSQLite3DriverLoaded;
-#endif  /* defined(STATIC_LINK_DEPENDENCIES) */
+#endif  // defined ( STATIC_LINK_DEPENDENCIES )
 
     cppdb::session Sql;
 
@@ -25,17 +26,22 @@ struct Database::Impl
     TableFields_t TableFields;
 };
 
-#if defined(STATIC_LINK_DEPENDENCIES)
+#if defined ( STATIC_LINK_DEPENDENCIES )
 bool Database::Impl::IsSQLite3DriverLoaded = false;
-#endif  /* defined(STATIC_LINK_DEPENDENCIES) */
+#endif  // defined ( STATIC_LINK_DEPENDENCIES )
 
-#if defined(STATIC_LINK_DEPENDENCIES)
+#if defined ( STATIC_LINK_DEPENDENCIES )
 extern "C" {
 cppdb::backend::connection *cppdb_sqlite3_get_connection(cppdb::connection_info const &);
 }
-#endif  /* defined(STATIC_LINK_DEPENDENCIES) */
+#endif  // defined ( STATIC_LINK_DEPENDENCIES )
 
-#if defined(STATIC_LINK_DEPENDENCIES)
+#if defined ( STATIC_LINK_DEPENDENCIES )
+bool Database::IsSQLite3DriverLoaded()
+{
+    return Impl::IsSQLite3DriverLoaded;
+}
+
 void Database::LoadSQLite3Driver()
 {
     if (!Impl::IsSQLite3DriverLoaded) {
@@ -45,7 +51,7 @@ void Database::LoadSQLite3Driver()
                                 new cppdb::backend::static_driver(cppdb_sqlite3_get_connection));
     }
 }
-#endif  /* defined(STATIC_LINK_DEPENDENCIES) */
+#endif  // defined ( STATIC_LINK_DEPENDENCIES )
 
 bool Database::Vacuum(const std::string &databaseFile)
 {
@@ -63,8 +69,15 @@ bool Database::Vacuum(const std::string &databaseFile)
 Database::Database(const string &databaseFile) :
     m_pimpl(std::make_unique<Database::Impl>())
 {
-    if (!m_pimpl->Sql.is_open())
-        m_pimpl->Sql.open("sqlite3:db=" + databaseFile);
+    if (!m_pimpl->Sql.is_open()) {
+        bool isDatabaseOpenedSuccessfully = true;
+        try {
+            m_pimpl->Sql.open("sqlite3:db=" + databaseFile);
+        } catch (...) {
+            isDatabaseOpenedSuccessfully = false;
+        }
+        assert(isDatabaseOpenedSuccessfully);
+    }
 }
 
 Database::~Database()

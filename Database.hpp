@@ -1,5 +1,5 @@
-#ifndef Footpal_DATABASE_HPP
-#define Footpal_DATABASE_HPP
+#ifndef FOOTPAL_DATABASE_HPP
+#define FOOTPAL_DATABASE_HPP
 
 
 #include <memory>
@@ -10,7 +10,7 @@ namespace Footpal {
 class Database;
 }
 
-class Footpal::Database
+class MiniPos::Database
 {
 public:
     enum class Table : unsigned char {
@@ -21,9 +21,10 @@ private:
     std::unique_ptr<Impl> m_pimpl;
 
 public:
-#if defined(STATIC_LINK_DEPENDENCIES)
+#if defined ( STATIC_LINK_DEPENDENCIES )
+    static bool IsSQLite3DriverLoaded();
     static void LoadSQLite3Driver();
-#endif  /* defined(STATIC_LINK_DEPENDENCIES) */
+#endif  // defined ( STATIC_LINK_DEPENDENCIES )
 
     static bool Vacuum(const std::string &databaseFile);
 
@@ -59,5 +60,5 @@ public:
 };
 
 
-#endif /* Footpal_DATABASE_HPP */
+#endif /* FOOTPAL_DATABASE_HPP */
 
