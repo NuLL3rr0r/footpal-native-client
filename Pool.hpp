@@ -2,8 +2,10 @@
 #define FOOTPAL_POOL_HPP
 
 
-#include <QObject>
+#include <QtCore/QObject>
 #include <memory>
+
+class QTranslator;
 
 namespace Footpal {
 #if defined(Q_OS_ANDROID)
@@ -19,7 +21,6 @@ private:
     struct Impl;
     struct StorageStruct
     {
-        const std::string DATABASE_FILE = "database.db";
     };
 
 public:
@@ -28,6 +29,7 @@ public:
     static Footpal::Android *Android();
 #endif /* defined(Q_OS_ANDROID) */
     static Footpal::Database *Database();
+    static QTranslator *Translator();
 };
 
 

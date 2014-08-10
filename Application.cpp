@@ -36,11 +36,11 @@ void Application::SetupUi()
     QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
     QApplication::setFont(fontFamily);
 
-    MiniPos::Pool::Translator()->load(QLocale::system().name(), ":/translations/");
-    this->installTranslator(MiniPos::Pool::Translator());
+    Footpal::Pool::Translator()->load(QLocale::system().name(), ":/translations/");
+    this->installTranslator(Footpal::Pool::Translator());
 
     m_pimpl->UiEngine =
-            std::make_unique<MiniPos::UiEngine>();
+            std::make_unique<Footpal::UiEngine>();
     m_pimpl->UiEngine->load(QUrl(QStringLiteral("qrc:///ui/main.qml")));
 
     //QObject *uiRootObject = m_pimpl->UiEngine->rootObjects().first();

@@ -10,7 +10,7 @@
 #include "make_unique.hpp"
 #include "log.hpp"
 
-using namespace MiniPos;
+using namespace Footpal;
 
 struct Log::Impl
 {

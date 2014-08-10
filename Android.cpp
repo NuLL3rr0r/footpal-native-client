@@ -12,8 +12,8 @@
 
 using namespace Footpal;
 
-static JNINativeMethod s_nativeMethods[] = {
-};
+//static JNINativeMethod s_nativeMethods[] = {
+//};
 
 JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *)
 {
@@ -29,14 +29,14 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *)
         return -1;
     }
 
-    if (env->RegisterNatives(
-                clazz,
-                s_nativeMethods,
-                sizeof(s_nativeMethods) / sizeof(s_nativeMethods[0])
-                ) < 0) {
-        qCritical() << "   * Failed to Register native methods !!";
-        return -1;
-    }
+//    if (env->RegisterNatives(
+//                clazz,
+//                s_nativeMethods,
+//                sizeof(s_nativeMethods) / sizeof(s_nativeMethods[0])
+//                ) < 0) {
+//        qCritical() << "   * Failed to Register native methods !!";
+//        return -1;
+//    }
 
     return JNI_VERSION_1_6;
 }

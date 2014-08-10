@@ -7,11 +7,11 @@
 #include <sstream>
 #include <string>
 
-namespace MiniPos {
+namespace Footpal {
     class Log;
 }
 
-class MiniPos::Log
+class Footpal::Log
 {
 public:
     enum class EType : unsigned char {
@@ -57,22 +57,22 @@ public:
 
 
 #define LOG_TRACE(...)  \
-    (MiniPos::Log(MiniPos::Log::EType::Trace, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
+    (Footpal::Log(Footpal::Log::EType::Trace, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 #define LOG_DEBUG(...)  \
-    (MiniPos::Log(MiniPos::Log::EType::Debug, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
+    (Footpal::Log(Footpal::Log::EType::Debug, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 #define LOG_INFO(...)  \
-    (MiniPos::Log(MiniPos::Log::EType::Info, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
+    (Footpal::Log(Footpal::Log::EType::Info, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 #define LOG_WARNING(...)  \
-    (MiniPos::Log(MiniPos::Log::EType::Warning, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
+    (Footpal::Log(Footpal::Log::EType::Warning, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 #define LOG_ERROR(...)  \
-    (MiniPos::Log(MiniPos::Log::EType::Error, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
+    (Footpal::Log(Footpal::Log::EType::Error, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 #define LOG_FATAL(...)  \
-    (MiniPos::Log(MiniPos::Log::EType::Fatal, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
+    (Footpal::Log(Footpal::Log::EType::Fatal, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 
 #endif /* FOOTPAL_LOG_HPP */

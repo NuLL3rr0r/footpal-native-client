@@ -3,7 +3,7 @@
 
 
 #include <memory>
-#include <QQmlApplicationEngine>
+#include <QtQml/QQmlApplicationEngine>
 
 namespace Footpal {
 class UiEngine;
@@ -12,6 +12,8 @@ class UiEngine;
 class Footpal::UiEngine : public QQmlApplicationEngine
 {
     Q_OBJECT
+
+    Q_PROPERTY ( QString EmptyLangString READ GetEmptyLangString NOTIFY signal_LanguageChanged )
 
 private:
     struct Impl;
@@ -24,12 +26,18 @@ public:
     virtual ~UiEngine();
 
 signals:
+    void signal_LanguageChanged();
 
-public slots:
+public:
+    QString GetEmptyLangString() const;
 
 public:
     Q_INVOKABLE bool notify(const QString &title, const QString &text, const int id = 0) const;
+#if defined ( Q_OS_ANDROID )
     Q_INVOKABLE bool showToast(const QString &text, const int duration = 8000) const;
+#else
+    Q_INVOKABLE bool showToast(const QString &text, const int duration = 8000);
+#endif // defined ( Q_OS_ANDROID )
 };
 
 
