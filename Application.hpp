@@ -26,6 +26,7 @@ signals:
 public slots:
 
 public:
+    void InitializeDatabase();
     void SetupUi();
 };
 

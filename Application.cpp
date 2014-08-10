@@ -1,5 +1,11 @@
+#include <QtCore/QDebug>
+#include <QtGui/QFont>
+#include <QtGui/QFontDatabase>
+#include <QtCore/QTranslator>
 #include "make_unique.hpp"
 #include "Application.hpp"
+#include "Database.hpp"
+#include "Pool.hpp"
 #include "UiEngine.hpp"
 
 using namespace Footpal;
@@ -19,10 +25,24 @@ Application::Application(int &argc, char **argv) :
 
 Application::~Application() = default;
 
+void Application::InitializeDatabase()
+{
+    Pool::Database()->Initialize();
+}
+
 void Application::SetupUi()
 {
+    int fontId = QFontDatabase::addApplicationFont(":/fnt/main.ttf");
+    QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
+    QApplication::setFont(fontFamily);
+
+    MiniPos::Pool::Translator()->load(QLocale::system().name(), ":/translations/");
+    this->installTranslator(MiniPos::Pool::Translator());
+
     m_pimpl->UiEngine =
-            std::make_unique<Footpal::UiEngine>();
+            std::make_unique<MiniPos::UiEngine>();
     m_pimpl->UiEngine->load(QUrl(QStringLiteral("qrc:///ui/main.qml")));
+
+    //QObject *uiRootObject = m_pimpl->UiEngine->rootObjects().first();
 }
 
