@@ -12,6 +12,9 @@
 
 using namespace Footpal;
 
+static JNINativeMethod s_nativeMethods[] = {
+};
+
 JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *)
 {
     JNIEnv *env;
@@ -22,7 +25,16 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *)
 
     jclass clazz = env->FindClass(JAVA_CLASS);
     if (!clazz) {
-        qCritical()<<"  * Could not find the Android interface class !!";
+        qCritical() << "  * Could not find the Android interface class !!";
+        return -1;
+    }
+
+    if (env->RegisterNatives(
+                clazz,
+                s_nativeMethods,
+                sizeof(s_nativeMethods) / sizeof(s_nativeMethods[0])
+                ) < 0) {
+        qCritical() << "   * Failed to Register native methods !!";
         return -1;
     }
 
