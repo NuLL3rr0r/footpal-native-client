@@ -1,5 +1,5 @@
-#ifndef Footpal_POOL_HPP
-#define Footpal_POOL_HPP
+#ifndef FOOTPAL_POOL_HPP
+#define FOOTPAL_POOL_HPP
 
 
 #include <QObject>
@@ -31,5 +31,5 @@ public:
 };
 
 
-#endif /* Footpal_POOL_HPP */
+#endif /* FOOTPAL_POOL_HPP */
 

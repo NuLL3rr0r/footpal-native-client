@@ -1,5 +1,5 @@
-#ifndef Footpal_UIENGINE_HPP
-#define Footpal_UIENGINE_HPP
+#ifndef FOOTPAL_UIENGINE_HPP
+#define FOOTPAL_UIENGINE_HPP
 
 
 #include <memory>
@@ -33,5 +33,5 @@ public:
 };
 
 
-#endif // Footpal_UIENGINE_HPP
+#endif /* FOOTPAL_UIENGINE_HPP */
 

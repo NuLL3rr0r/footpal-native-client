@@ -1,5 +1,5 @@
-#ifndef Footpal_APPLICATION_HPP
-#define Footpal_APPLICATION_HPP
+#ifndef FOOTPAL_APPLICATION_HPP
+#define FOOTPAL_APPLICATION_HPP
 
 
 #include <memory>
@@ -29,4 +29,4 @@ public:
     void SetupUi();
 };
 
-#endif // APPLICATION_HPP
+#endif /* APPLICATION_HPP */

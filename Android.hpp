@@ -1,5 +1,5 @@
-#ifndef Footpal_ANDROIDOBJECT_HPP
-#define Footpal_ANDROIDOBJECT_HPP
+#ifndef FOOTPAL_ANDROID_HPP
+#define FOOTPAL_ANDROID_HPP
 
 
 #include <string>
@@ -35,4 +35,4 @@ public:
 };
 
 
-#endif // Footpal_ANDROIDOBJECT_HPP
+#endif /* FOOTPAL_ANDROID_HPP */
