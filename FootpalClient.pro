@@ -17,6 +17,7 @@ win32 {
 
 
 QMAKE_CXXFLAGS += -std=c++1y
+QMAKE_CXXFLAGS += -Wall -Wextra -pedantic
 #INCLUDEPATH += $$PWD/dependencies/include
 QMAKE_CFLAGS += -isystem $$PWD/dependencies/include
 QMAKE_CXXFLAGS += -isystem $$PWD/dependencies/include
@@ -24,14 +25,26 @@ QMAKE_CXXFLAGS += -isystem $$PWD/dependencies/include
 
 android {
     debug {
-#        LIBS += -L$$PWD/dependencies/lib/android_armv5/debug
-        LIBS += -L$$PWD/dependencies/lib/android_armv7/debug
-#        LIBS += -L$$PWD/dependencies/lib/android_x86/debug
+        equals ( ANDROID_TARGET_ARCH, armeabi ) {
+            LIBS += -L$$PWD/dependencies/lib/android_armv5/debug
+        }
+        equals ( ANDROID_TARGET_ARCH, armeabi-v7a ) {
+            LIBS += -L$$PWD/dependencies/lib/android_armv7/debug
+        }
+        equals ( ANDROID_TARGET_ARCH, x86 ) {
+            LIBS += -L$$PWD/dependencies/lib/android_x86/debug
+        }
     }
     release {
-#        LIBS += -L$$PWD/dependencies/lib/android_armv5/release
-        LIBS += -L$$PWD/dependencies/lib/android_armv7/release
-#        LIBS += -L$$PWD/dependencies/lib/android_x86/release
+        equals ( ANDROID_TARGET_ARCH, armeabi ) {
+            LIBS += -L$$PWD/dependencies/lib/android_armv5/release
+        }
+        equals ( ANDROID_TARGET_ARCH, armeabi-v7a ) {
+            LIBS += -L$$PWD/dependencies/lib/android_armv7/release
+        }
+        equals ( ANDROID_TARGET_ARCH, x86 ) {
+            LIBS += -L$$PWD/dependencies/lib/android_x86/release
+        }
     }
 }
 win32 {
@@ -42,19 +55,21 @@ win32 {
         LIBS += -L$$PWD/dependencies/lib/mingw482_32/release
     }
 }
-LIBS += -lboost_filesystem -lboost_system -lcppdb -lcppdb_sqlite3 -lsqlite3
+LIBS += -lboost_date_time -lboost_filesystem -lboost_system -lcppdb -lcppdb_sqlite3 -lsqlite3
 
 
 HEADERS += \
     make_unique.hpp \
     Application.hpp \
     Database.hpp \
+    Log.hpp \
     Pool.hpp \
     UiEngine.hpp
 SOURCES += \
     main.cpp \
     Application.cpp \
     Database.cpp \
+    Log.cpp \
     Pool.cpp \
     UiEngine.cpp
 android {
@@ -62,6 +77,10 @@ android {
         Android.hpp
     SOURCES += \
         Android.cpp
+}
+lupdate_only {
+    SOURCES += \
+        $$PWD/deployment/resources/ui/main.qml
 }
 
 
@@ -83,6 +102,69 @@ android {
         deployment/android/res/values/strings.xml \
         deployment/android/src/com/footpal/client/Android.java
 }
+
+
+#################
+# Automatically generating .qm language files and adding them to resources
+#################
+
+# var, prepend, append
+defineReplace(prependAll) {
+    for(a,$$1):result += $$2$${a}$$3
+    return($$result)
+}
+
+# Supported languages
+LANGUAGES = en fa
+
+# Available translations
+TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/translations/, .ts)
+
+# run LUPDATE to generate or update the ts files
+qtPrepareTool(LUPDATE, lupdate)
+command = $$LUPDATE FootpalClient.pro
+system($$command)|error("Failed to run: $$command")
+
+# Used to embed the qm files in resources
+TRANSLATIONS_FILES =
+
+# run LRELEASE to generate the qm files
+qtPrepareTool(LRELEASE, lrelease)
+for(tsfile, TRANSLATIONS) {
+    qmfile = $$shadowed($$tsfile)
+    qmfile ~= s,\\.ts$,.qm,
+    qmdir = $$dirname(qmfile)
+    !exists($$qmdir) {
+        mkpath($$qmdir)|error("Aborting.")
+    }
+    command = $$LRELEASE -removeidentical $$tsfile -qm  $$qmfile
+    system($$command)|error("Failed to run: $$command")
+    TRANSLATIONS_FILES += $$qmfile
+}
+
+# Create the resource file
+GENERATED_RESOURCE_FILE = $$OUT_PWD/translations.qrc
+
+RESOURCE_CONTENT = \
+    "<RCC>" \
+    "<qresource>"
+
+for(translationfile, TRANSLATIONS_FILES) {
+    relativepath_out = $$relative_path($$translationfile, $$OUT_PWD)
+    RESOURCE_CONTENT += "<file alias=\"$$relativepath_out\">$$relativepath_out</file>"
+}
+
+RESOURCE_CONTENT += \
+    "</qresource>" \
+    "</RCC>"
+
+write_file($$GENERATED_RESOURCE_FILE, RESOURCE_CONTENT)|error("Aborting.")
+
+RESOURCES += $$GENERATED_RESOURCE_FILE
+
+#################
+### End of  # Automatically generating .qm language files and adding them to resources
+#################
 
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
