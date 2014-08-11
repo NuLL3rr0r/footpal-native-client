@@ -8,7 +8,7 @@
 #include <string>
 
 namespace Footpal {
-    class Log;
+class Log;
 }
 
 class Footpal::Log

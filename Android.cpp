@@ -29,14 +29,14 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *)
         return -1;
     }
 
-//    if (env->RegisterNatives(
-//                clazz,
-//                s_nativeMethods,
-//                sizeof(s_nativeMethods) / sizeof(s_nativeMethods[0])
-//                ) < 0) {
-//        qCritical() << "   * Failed to Register native methods !!";
-//        return -1;
-//    }
+    //    if (env->RegisterNatives(
+    //                clazz,
+    //                s_nativeMethods,
+    //                sizeof(s_nativeMethods) / sizeof(s_nativeMethods[0])
+    //                ) < 0) {
+    //        qCritical() << "   * Failed to Register native methods !!";
+    //        return -1;
+    //    }
 
     return JNI_VERSION_1_6;
 }
@@ -92,6 +92,17 @@ bool Android::IsInitialized()
                 JAVA_CLASS, "isInitialized", "()Z");
 }
 
+QString Android::GetScreenType()
+{
+    ExceptionClear();
+
+    QAndroidJniObject ret = QAndroidJniObject::callStaticObjectMethod(
+                JAVA_CLASS,
+                "getScreenType",
+                "()Ljava/lang/CharSequence");
+
+    return QAndroidJniObject::toString();
+}
 
 bool Android::Notify(const QString &title, const QString &text, const int id)
 {

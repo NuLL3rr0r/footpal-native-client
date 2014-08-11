@@ -99,7 +99,10 @@ android {
         deployment/android/res/drawable-hdpi/icon.png \
         deployment/android/res/drawable-ldpi/icon.png \
         deployment/android/res/drawable-mdpi/icon.png \
+        deployment/android/res/values/screen.xml \
         deployment/android/res/values/strings.xml \
+        deployment/android/res/values-sw600dp/screen.xml \
+        deployment/android/res/values-sw720dp/screen.xml \
         deployment/android/src/com/footpal/client/Android.java
 }
 
