@@ -1,8 +1,8 @@
 TEMPLATE = app
 
 
-QT += core gui qml quick widgets
-QT -= multimedia multimediawidgets network sql testlib webkit
+QT += core gui network qml quick websockets widgets
+QT -= multimedia multimediawidgets sql testlib webkit
 android {
     QT += androidextras
 }
