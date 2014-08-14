@@ -10,7 +10,7 @@ namespace Footpal {
 class Database;
 }
 
-class Footpalw::Database
+class Footpal::Database
 {
 public:
     enum class Table : unsigned char {
