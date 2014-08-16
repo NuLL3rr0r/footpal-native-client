@@ -62,15 +62,22 @@ HEADERS += \
     make_unique.hpp \
     Application.hpp \
     Database.hpp \
+    Http.hpp \
+    HttpStatus.hpp \
     Log.hpp \
     Pool.hpp \
+    RestApi.hpp \
+    RestApiDefs.hpp \
     UiEngine.hpp
 SOURCES += \
     main.cpp \
     Application.cpp \
     Database.cpp \
+    Http.cpp \
+    HttpStatus.cpp \
     Log.cpp \
     Pool.cpp \
+    RestApi.cpp \
     UiEngine.cpp
 android {
     HEADERS += \

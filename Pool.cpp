@@ -10,6 +10,7 @@
 #include "Android.hpp"
 #endif // defined ( Q_OS_ANDROID )
 #include "Database.hpp"
+#include "RestApi.hpp"
 
 #if defined ( _WIN32 )
 #define     DATABASE_RELATIVE_PATH          "resources\\db"
@@ -28,6 +29,7 @@ struct Pool::Impl
     typedef std::unique_ptr<Footpal::Android> Android_t;
 #endif // defined ( Q_OS_ANDROID )
     typedef std::unique_ptr<Footpal::Database> Database_t;
+    typedef std::unique_ptr<Footpal::RestApi> RestApi_t;
     typedef std::unique_ptr<QTranslator> QTranslator_t;
 
     static std::mutex StorageMutex;
@@ -40,6 +42,9 @@ struct Pool::Impl
 
     static std::mutex DatabaseMutex;
     static Database_t DatabaseInstance;
+
+    static std::mutex RestApiMutex;
+    static RestApi_t RestApiInstance;
 
     static std::mutex TranslatorMutex;
     static QTranslator_t TranslatorInstance;
@@ -55,6 +60,9 @@ Pool::Impl::Android_t Pool::Impl::AndroidInstance = nullptr;
 
 std::mutex Pool::Impl::DatabaseMutex;
 Pool::Impl::Database_t Pool::Impl::DatabaseInstance = nullptr;
+
+std::mutex Pool::Impl::RestApiMutex;
+Pool::Impl::RestApi_t Pool::Impl::RestApiInstance = nullptr;
 
 std::mutex Pool::Impl::TranslatorMutex;
 Pool::Impl::QTranslator_t Pool::Impl::TranslatorInstance = nullptr;
@@ -119,6 +127,19 @@ Footpal::Database *Pool::Database()
     }
 
     return Impl::DatabaseInstance.get();
+}
+
+Footpal::RestApi *Pool::RestApi()
+{
+    lock_guard<mutex> lock(Impl::RestApiMutex);
+    (void)lock;
+
+    if (Impl::RestApiInstance == nullptr) {
+        Impl::RestApiInstance =
+                std::make_unique<Footpal::RestApi>();
+    }
+
+    return Impl::RestApiInstance.get();
 }
 
 QTranslator *Pool::Translator()

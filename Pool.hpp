@@ -13,6 +13,7 @@ class Android;
 #endif /* defined(Q_OS_ANDROID) */
 class Database;
 class Pool;
+class RestApi;
 }
 
 class Footpal::Pool
@@ -29,6 +30,7 @@ public:
     static Footpal::Android *Android();
 #endif /* defined(Q_OS_ANDROID) */
     static Footpal::Database *Database();
+    static Footpal::RestApi *RestApi();
     static QTranslator *Translator();
 };
 

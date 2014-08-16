@@ -12,10 +12,6 @@ class Database;
 
 class Footpal::Database
 {
-public:
-    enum class Table : unsigned char {
-    };
-
 private:
     struct Impl;
     std::unique_ptr<Impl> m_pimpl;

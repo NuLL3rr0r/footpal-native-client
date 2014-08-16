@@ -11,6 +11,7 @@
 #include "Android.hpp"
 #endif // defined ( Q_OS_ANDROID )
 #include "Pool.hpp"
+#include "RestApi.hpp"
 
 using namespace Footpal;
 
@@ -42,8 +43,6 @@ UiEngine::UiEngine(QObject *parent) :
     QQmlApplicationEngine(parent),
     m_pimpl(std::make_unique<UiEngine::Impl>(this))
 {
-    this->rootContext()->setContextProperty("uiEngine", this);
-
     m_pimpl->Initialize();
 }
 
@@ -51,8 +50,6 @@ UiEngine::UiEngine(const QUrl &url, QObject *parent) :
     QQmlApplicationEngine(url, parent),
     m_pimpl(std::make_unique<UiEngine::Impl>(this))
 {
-    this->rootContext()->setContextProperty("uiEngine", this);
-
     m_pimpl->Initialize();
 }
 
@@ -60,8 +57,6 @@ UiEngine::UiEngine(const QString &filePath, QObject *parent) :
     QQmlApplicationEngine(filePath, parent),
     m_pimpl(std::make_unique<UiEngine::Impl>(this))
 {
-    this->rootContext()->setContextProperty("uiEngine", this);
-
     m_pimpl->Initialize();
 }
 
@@ -133,7 +128,8 @@ UiEngine::Impl::~Impl()
 void UiEngine::Impl::Initialize()
 {
     QQmlContext *context = m_parent->rootContext();
-    context->setContextProperty("uiEngine", m_parent);
+    context->setContextProperty("UiEngine", m_parent);
+    context->setContextProperty("RestApi", Pool::RestApi());
     context->setContextProperty("FontPath", "qrc:///fnt/main.ttf");
 
     InitializeEvents();

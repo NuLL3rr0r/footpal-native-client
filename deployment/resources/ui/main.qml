@@ -28,8 +28,8 @@ ApplicationWindow {
         text: qsTr("Say Hello World!");
         anchors.centerIn: parent;
         onClicked: {
-            uiEngine.notify("Footpal", "Hello World!");
-            uiEngine.showToast("Hello World!");
+            UiEngine.notify("Footpal", "Hello World!");
+            UiEngine.showToast("Hello World!");
         }
     }
 
