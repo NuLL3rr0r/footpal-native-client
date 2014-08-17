@@ -231,7 +231,7 @@ wget https://raw.githubusercontent.com/noloader/cryptopp-5.6.2-android-18/master
 
 nano -w setenv-android.sh
 ########
-_ANDROID_API="android-16"
+_ANDROID_API="android-9"
 .
 .
 .
@@ -517,7 +517,7 @@ APP_CPPFLAGS += -fexceptions -frtti
 APP_OPTIM := debug
 APP_STL := gnustl_shared
 APP_ABI := x86
-APP_PLATFORM := android-16
+APP_PLATFORM := android-9
 
 NDK_TOOLCHAIN_VERSION := 4.8
 ########
