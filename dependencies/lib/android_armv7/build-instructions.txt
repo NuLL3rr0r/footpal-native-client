@@ -16,7 +16,7 @@ tar xvJf zlib-1.2.8.tar.xz
 #-sICU_PATH="/home/babaei/Desktop/icu" \
 
 git clone https://github.com/MysticTreeGames/Boost-for-Android.git
-cp boost_1_55_0.tar.bz2 ~/Desktop/Boost-for-Android-master/
+cp -vr boost_1_55_0.tar.bz2 ~/Desktop/Boost-for-Android-master/
 cd ~/Desktop/Boost-for-Android-master
 ./build-android.sh --help
 ls /opt/android/ndk/toolchains/
@@ -121,58 +121,68 @@ cd .. && rm -rf boost_1_55_0
 sudo mv ./build/lib/* /opt/android/lib/android_armv7/release/
 ls /opt/android/lib/android_armv7/release/
 
+rm -rf build
+rm -rf boost_1_55_0
 
 
-################# CPPDB
 
-# Download https://github.com/lookout/sqlite-android
-unzip sqlite-android-master.zip
-cd unzip sqlite-android-master
+################# CPPDB & SQLITE
+
+git clone https://github.com/lookout/sqlite-android.git
+cd sqlite-android
 
 nano -w Makefile
 ########
-SQLITE_VERSION  ?= 3080403
+SQLITE_VERSION  ?= 3080600
 
 SQLITE_URL      := http://www.sqlite.org/2014/$(SQLITE_BASENAME).zip
 ########
 
-unzip sqlite-amalgamation-3080403.zip
-cd sqlite-amalgamation-3080403
-sudo cp ./sqlite3.h ./sqlite3ext.h /opt/android/include/
+wget http://sqlite.org/2014/sqlite-amalgamation-3080600.zip
+unzip sqlite-amalgamation-3080600.zip
+cd sqlite-amalgamation-3080600
+sudo cp -vr ./sqlite3.h ./sqlite3ext.h /opt/android/include/
 cd ..
-rm -rf sqlite-amalgamation-3080403
+rm -rf sqlite-amalgamation-3080600
+ls /opt/android/include/
 
 # NOTE: "APP_ABI := all" or a subset is also valid
 
 nano -w jni/Application.mk
 ########
-APP_ABI := armeabi-v7a
 APP_OPTIM := debug
+APP_ABI := armeabi-v7a
 APP_PLATFORM := android-16
 ########
 
 /opt/android/ndk/ndk-build
-sudo cp ./obj/local/armeabi-v7a/libsqlite.a /opt/android/lib/android_armv7/debug/libsqlite3.a
+sudo cp -vr ./obj/local/armeabi-v7a/libsqlite.a /opt/android/lib/android_armv7/debug/libsqlite3.a
+ls /opt/android/lib/android_armv7/debug/
+
 rm -rf obj
 
 nano -w jni/Application.mk
 ########
-APP_ABI := armeabi-v7a
 APP_OPTIM := release
+APP_ABI := armeabi-v7a
 APP_PLATFORM := android-16
 ########
 
 /opt/android/ndk/ndk-build
-sudo cp ./obj/local/armeabi-v7a/libsqlite.a /opt/android/lib/android_armv7/release/libsqlite3.a
+sudo cp -vr ./obj/local/armeabi-v7a/libsqlite.a /opt/android/lib/android_armv7/release/libsqlite3.a
+ls /opt/android/lib/android_armv7/release/
+
+rm -rf obj
 
 tar xvjf cppdb-0.3.1.tar.bz2
 cd cppdb-0.3.1
-sudo cp -ivr ./cppdb /opt/android/include/
+sudo cp -vr ./cppdb /opt/android/include/
+ls /opt/android/include/
 
 wget https://raw.githubusercontent.com/taka-no-me/android-cmake/master/android.toolchain.cmake
 rm -rf /tmp/android-toolchain
 /opt/android/ndk/build/tools/make-standalone-toolchain.sh --platform=android-16 --install-dir=/tmp/android-toolchain --toolchain=arm-linux-androideabi-4.8
-cp /opt/android/include/sqlite3.h /opt/android/include/sqlite3ext.h /tmp/android-toolchain/sysroot/usr/include/
+cp -vr /opt/android/include/sqlite3.h /opt/android/include/sqlite3ext.h /tmp/android-toolchain/sysroot/usr/include/
 
 nano -w CMakeLists.txt
 ########
@@ -186,18 +196,29 @@ nano -w CMakeLists.txt
 ########
 
 mkdir _debug && cd _debug
-cp /opt/android/lib/android_armv7/debug/libsqlite3.a /tmp/android-toolchain/sysroot/usr/lib/
+cp -vr /opt/android/lib/android_armv7/debug/libsqlite3.a /tmp/android-toolchain/sysroot/usr/lib/
 cmake -DCMAKE_TOOLCHAIN_FILE=../android.toolchain.cmake -DANDROID_STANDALONE_TOOLCHAIN=/tmp/android-toolchain -DANDROID_ABI=armeabi-v7a -DCMAKE_BUILD_TYPE=Debug -DCMAKE_LIBRARY_PATH=/opt/android/lib/android_armv7/debug/ -DCMAKE_INCLUDE_PATH=/opt/android/include/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ../
 make -j5
-sudo cp ../libs/armeabi-v7a/libcppdb.a ../libs/armeabi-v7a/libcppdb_sqlite3.a /opt/android/lib/android_armv7/debug/
+sudo cp -vr ../libs/armeabi-v7a/libcppdb.a ../libs/armeabi-v7a/libcppdb_sqlite3.a /opt/android/lib/android_armv7/debug/
+ls /opt/android/lib/android_armv7/debug/
 cd ..
 
 rm -rf /tmp/android-toolchain/sysroot/usr/lib/libsqlite3.a
 rm -rf ./libs
+rm -rf _debug
 
 mkdir _release && cd _release
-cp /opt/android/lib/android_armv7/release/libsqlite3.a /tmp/android-toolchain/sysroot/usr/lib/
+cp -vr /opt/android/lib/android_armv7/release/libsqlite3.a /tmp/android-toolchain/sysroot/usr/lib/
 cmake -DCMAKE_TOOLCHAIN_FILE=../android.toolchain.cmake -DANDROID_STANDALONE_TOOLCHAIN=/tmp/android-toolchain -DANDROID_ABI=armeabi-v7a -DCMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=/opt/android/lib/android_armv7/debug/ -DCMAKE_INCLUDE_PATH=/opt/android/include/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ../
 make -j5
-sudo cp ../libs/armeabi-v7a/libcppdb.a ../libs/armeabi-v7a/libcppdb_sqlite3.a /opt/android/lib/android_armv7/release/
+sudo cp -vr ../libs/armeabi-v7a/libcppdb.a ../libs/armeabi-v7a/libcppdb_sqlite3.a /opt/android/lib/android_armv7/release/
+ls /opt/android/lib/android_armv7/release/
+cd ..
+
+rm -rf /tmp/android-toolchain/sysroot/usr/lib/libsqlite3.a
+rm -rf ./libs
+rm -rf _release
 #######################################
+
+
+
