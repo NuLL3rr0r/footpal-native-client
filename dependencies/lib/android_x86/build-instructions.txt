@@ -10,15 +10,13 @@ cd ~/Desktop
 wget http://zlib.net/zlib-1.2.8.tar.xz
 tar xvJf zlib-1.2.8.tar.xz
 
-# ignore for now, it requires icu binaries for Android/x86
+# ignore for now, it requires icu binaries for Android/Arm
 #wget http://download.icu-project.org/files/icu4c/53.1/icu4c-53_1-src.tgz
 #tar xvzf icu4c-53_1-src.tgz
 #-sICU_PATH="/home/babaei/Desktop/icu" \
 
-unzip Boost-for-Android-master.zip -d ~/Desktop
-cp boost_1_53_0.tar.bz2 ~/Desktop/Boost-for-Android-master/
-# or
-#cp boost_1_55_0.tar.bz2 ~/Desktop/Boost-for-Android-master/
+git clone https://github.com/MysticTreeGames/Boost-for-Android.git
+cp boost_1_55_0.tar.bz2 ~/Desktop/Boost-for-Android-master/
 cd ~/Desktop/Boost-for-Android-master
 ./build-android.sh --help
 ls /opt/android/ndk/toolchains/
@@ -31,15 +29,26 @@ case "$NDK_RN" in
 .
 .
 .
-    "9d (64-bit)")
-		TOOLCHAIN=${TOOLCHAIN:-x86-4.8}
-		CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/i686-linux-android-g++
-		TOOLSET=gcc-androidR8e
+    "8e (64-bit)")
+        TOOLCHAIN=${TOOLCHAIN:-x86-4.8}
+        CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/i686-linux-android-g++
+        TOOLSET=gcc-androidR8e
         ;;
-	*)
-		echo "Undefined or not supported Android NDK version!"
-		exit 1
+    "9 (64-bit)"|"9b (64-bit)"|"9c (64-bit)"|"9d (64-bit)")
+        TOOLCHAIN=${TOOLCHAIN:-x86-4.8}
+        CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/i686-linux-android-g++
+        TOOLSET=gcc-androidR8e
+        ;;
+    "10 (64-bit)")
+        TOOLCHAIN=${TOOLCHAIN:-x86-4.8}
+        CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/i686-linux-android-g++
+        TOOLSET=gcc-androidR8e
+        ;;
+    *)
+        echo "Undefined or not supported Android NDK version!"
+        exit 1
 esac
+########
 
 export MAKEFLAGS="-j5"
 
@@ -50,52 +59,67 @@ mkdir -p /opt/android/lib/android_x86/release
 nano -w ./build-android.sh
 ########
   { ./bjam -q                         \
+         target-os=linux              \
          toolset=$TOOLSET             \
          $cxxflags                    \
          variant=debug                \
-         --layout=system              \
-         threading=multi              \
          link=static                  \
          runtime-link=static          \
+         threading=multi              \
+         --layout=system              \
+         --prefix="./../$BUILD_DIR/"  \
          -sZLIB_SOURCE="/home/babaei/Desktop/zlib-1.2.8" \
+         $LIBRARIES                   \
          install 2>&1                 \
          || { dump "ERROR: Failed to build boost for android!" ; exit 1 ; }
   } | tee -a $PROGDIR/build.log
 ########
 
-# 1.53.0
-./build-android.sh --boost=1.53.0 --toolchain=x86-4.8 --with-libraries=atomic,chrono,context,date_time,exception,filesystem,graph,graph_parallel,iostreams,locale,math,mpi,program_options,python,random,regex,serialization,signals,system,test,thread,timer,wave /opt/android/ndk
+# To get list of available boost binary libraries
+tar xjf boost_1_55_0.tar.bz2 && cd boost_1_55_0
+./bootstrap.sh --show-libraries
+cd .. && rm -rf boost_1_55_0
 
-# 1.55.0
+# 1.55.0 - without python library
 ./build-android.sh --boost=1.55.0 --toolchain=x86-4.8 --with-libraries=atomic,chrono,context,coroutine,date_time,exception,filesystem,graph,graph_parallel,iostreams,locale,log,math,mpi,program_options,random,regex,serialization,signals,system,test,thread,timer,wave /opt/android/ndk
 
-mv /home/babaei/Desktop/Boost-for-Android-master/build/include/boost /opt/android/include/
-mv /home/babaei/Desktop/Boost-for-Android-master/build/lib/* /opt/android/lib/android_x86/debug/
+sudo mv ./build/include/boost /opt/android/include/
+sudo mv ./build/lib/* /opt/android/lib/android_x86/debug/
+ls /opt/android/include/
+ls /opt/android/lib/android_x86/debug/
 
-./build-android.sh --clean
+rm -rf build
+rm -rf boost_1_55_0
 
 nano -w ./build-android.sh
 ########
   { ./bjam -q                         \
+         target-os=linux              \
          toolset=$TOOLSET             \
          $cxxflags                    \
          variant=release              \
-         --layout=system              \
-         threading=multi              \
          link=static                  \
          runtime-link=static          \
+         threading=multi              \
+         --layout=system              \
+         --prefix="./../$BUILD_DIR/"  \
          -sZLIB_SOURCE="/home/babaei/Desktop/zlib-1.2.8" \
+         $LIBRARIES                   \
          install 2>&1                 \
          || { dump "ERROR: Failed to build boost for android!" ; exit 1 ; }
   } | tee -a $PROGDIR/build.log
 ########
 
-# 1.53.0
-./build-android.sh --boost=1.53.0 --toolchain=x86-4.8 --with-libraries=atomic,chrono,context,date_time,exception,filesystem,graph,graph_parallel,iostreams,locale,math,mpi,program_options,random,regex,serialization,signals,system,test,thread,timer,wave /opt/android/ndk
+# To get list of available boost binary libraries
+tar xjf boost_1_55_0.tar.bz2 && cd boost_1_55_0
+./bootstrap.sh --show-libraries
+cd .. && rm -rf boost_1_55_0
 
-# 1.55.0
+# 1.55.0 - without python library
 ./build-android.sh --boost=1.55.0 --toolchain=x86-4.8 --with-libraries=atomic,chrono,context,coroutine,date_time,exception,filesystem,graph,graph_parallel,iostreams,locale,log,math,mpi,program_options,random,regex,serialization,signals,system,test,thread,timer,wave /opt/android/ndk
-mv /home/babaei/Desktop/Boost-for-Android-master/build/lib/* /opt/android/lib/android_x86/release/
+
+sudo mv ./build/lib/* /opt/android/lib/android_x86/release/
+ls /opt/android/lib/android_x86/release/
 
 
 
@@ -114,7 +138,7 @@ SQLITE_URL      := http://www.sqlite.org/2014/$(SQLITE_BASENAME).zip
 
 unzip sqlite-amalgamation-3080403.zip
 cd sqlite-amalgamation-3080403
-cp sqlite3.h sqlite3ext.h /opt/android/include/
+sudo cp ./sqlite3.h ./sqlite3ext.h /opt/android/include/
 cd ..
 rm -rf sqlite-amalgamation-3080403
 
@@ -127,7 +151,7 @@ APP_ABI := x86
 ########
 
 /opt/android/ndk/ndk-build
-cp obj/local/x86/libsqlite.a /opt/android/lib/android_x86/debug/libsqlite3.a
+sudo cp ./obj/local/x86/libsqlite.a /opt/android/lib/android_x86/debug/libsqlite3.a
 rm -rf obj
 
 nano -w jni/Application.mk
@@ -137,11 +161,11 @@ APP_ABI := x86
 ########
 
 /opt/android/ndk/ndk-build
-cp obj/local/x86/libsqlite.a /opt/android/lib/android_x86/release/libsqlite3.a
+sudo cp ./obj/local/x86/libsqlite.a /opt/android/lib/android_x86/release/libsqlite3.a
 
 tar xvjf cppdb-0.3.1.tar.bz2
 cd cppdb-0.3.1
-cp -ivr cppdb /opt/android/include/
+sudo cp -ivr ./cppdb /opt/android/include/
 
 wget https://raw.githubusercontent.com/taka-no-me/android-cmake/master/android.toolchain.cmake
 rm -rf /tmp/android-toolchain
@@ -163,7 +187,7 @@ mkdir _debug && cd _debug
 cp /opt/android/lib/android_x86/debug/libsqlite3.a /tmp/android-toolchain/sysroot/usr/lib/
 cmake -DCMAKE_TOOLCHAIN_FILE=../android.toolchain.cmake -DANDROID_STANDALONE_TOOLCHAIN=/tmp/android-toolchain -DANDROID_ABI=x86 -DCMAKE_BUILD_TYPE=Debug -DCMAKE_LIBRARY_PATH=/opt/android/lib/android_x86/debug/ -DCMAKE_INCLUDE_PATH=/opt/android/include/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ../
 make -j5
-cp ../libs/x86/libcppdb.a ../libs/x86/libcppdb_sqlite3.a /opt/android/lib/android_x86/debug/
+sudo cp ../libs/x86/libcppdb.a ../libs/x86/libcppdb_sqlite3.a /opt/android/lib/android_x86/debug/
 cd ..
 
 rm -rf /tmp/android-toolchain/sysroot/usr/lib/libsqlite3.a
@@ -173,6 +197,8 @@ mkdir _release && cd _release
 cp /opt/android/lib/android_x86/release/libsqlite3.a /tmp/android-toolchain/sysroot/usr/lib/
 cmake -DCMAKE_TOOLCHAIN_FILE=../android.toolchain.cmake -DANDROID_STANDALONE_TOOLCHAIN=/tmp/android-toolchain -DANDROID_ABI=x86 -DCMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=/opt/android/lib/android_x86/debug/ -DCMAKE_INCLUDE_PATH=/opt/android/include/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ../
 make -j5
-cp ../libs/x86/libcppdb.a ../libs/x86/libcppdb_sqlite3.a /opt/android/lib/android_x86/release/
+sudo cp ../libs/x86/libcppdb.a ../libs/x86/libcppdb_sqlite3.a /opt/android/lib/android_x86/release/
 #######################################
+
+
 
