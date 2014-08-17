@@ -216,7 +216,73 @@ sudo cp -vr ../libs/armeabi-v7a/libcppdb.a ../libs/armeabi-v7a/libcppdb_sqlite3.
 ls /opt/android/lib/android_armv7/release/
 cd ..
 
-rm -rf /tmp/android-toolchain/sysroot/usr/lib/libsqlite3.a
 rm -rf ./libs
+rm -rf /tmp/android-toolchain/sysroot/usr/lib/libsqlite3.a
 rm -rf _release
 #######################################
+
+
+
+################# LIBB64
+
+unzip libb64-1.2.src.zip
+cd libb64-1.2/src
+rm -rf Makefile
+
+sudo cp -vr ../include/b64 /opt/android/include/
+ls /opt/android/include/
+
+mkdir ./jni
+
+nano -w ./jni/Android.mk
+########
+LOCAL_PATH := $(call my-dir)
+
+$(LOCAL_PATH)/../cdecode.c:
+	$(MAKE) -C $(@:%/cdecode.c=%) cdecode.c
+$(LOCAL_PATH)/../cencode.c:
+	$(MAKE) -C $(@:%/cencode.c=%) cencode.c
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE    := b64
+LOCAL_SRC_FILES := ../cdecode.c ../cencode.c
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../../include
+
+include $(BUILD_STATIC_LIBRARY)
+########
+
+nano -w ./jni/Application.mk
+########
+LOCAL_PATH := $(call my-dir)
+
+APP_MODULES := b64
+
+APP_CFLAGS += -Werror -pedantic
+APP_CFLAGS += -I../include
+
+APP_OPTIM := debug
+APP_ABI := armeabi-v7a
+APP_PLATFORM := android-16
+########
+
+/opt/android/ndk/ndk-build
+sudo cp -vr ./obj/local/armeabi-v7a/libb64.a /opt/android/lib/android_armv7/debug/
+ls /opt/android/lib/android_armv7/debug/
+
+rm -rf obj
+
+nano -w ./jni/Application.mk
+########
+APP_OPTIM := release
+########
+
+/opt/android/ndk/ndk-build
+sudo cp -vr ./obj/local/armeabi-v7a/libb64.a /opt/android/lib/android_armv7/release/
+ls /opt/android/lib/android_armv7/release/
+
+rm -rf obj
+#######################################
+
+
+
