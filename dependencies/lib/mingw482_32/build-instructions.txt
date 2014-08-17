@@ -66,9 +66,40 @@ cmake -G "MinGW Makefiles"  -D CMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=../
 9. For each build:
 mingw32-make -j5
 
-10. Copy the following files to the appropriate directory:
+10. Copy the following files to your own corresponding directory:
 libcppdb.dll
 libcppdb_sqlite3.dll
 cppdb/*
+
+
+
+################# CRYPTOPP
+
+1. In cryptopp562
+    * del GNUmakefile
+    * qmake -project
+
+2. Rename cryptopp562.pro to cryptopp.pro
+
+3. In cryptopp.pro do the following changes:
+TEMPLATE = lib
+TARGET = cryptopp
+INCLUDEPATH += .
+CONFIG -= qt
+LIBS += -lws2_32
+//QMAKE_CFLAGS += -DCRYPTOPP_DISABLE_ASM
+//QMAKE_CXXFLAGS += -DCRYPTOPP_DISABLE_ASM
+
+4. Open fipstest.cpp and replace every 'OutputDebugString' with 'OutputDebugStringA'.
+
+5. Do the following:
+    * qmake
+    * mingw32-make all -j5
+
+6. Copy the following files to your own corresponding directory:
+debug/cryptopp.dll
+release/cryptopp.dll
+./*.h
+
 
 
