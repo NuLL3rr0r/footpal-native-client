@@ -29,12 +29,12 @@ copy Boost\lib\* to our lib dir
 
 
 
-################# CPPDB
+################# CPPDB & SQLITE
 
-1. In sqlite-amalgamation-3080403
+1. In sqlite-amalgamation-3080600
     * qmake -project
 
-2. Rename sqlite-amalgamation-3080403.pro to sqlite3.pro
+2. Rename sqlite-amalgamation-3080600.pro to sqlite3.pro
 
 3. In sqlite3.pro do the following changes:
 TEMPLATE = lib
