@@ -128,6 +128,8 @@ ls /opt/android/lib/android_x86/release/
 rm -rf build
 rm -rf boost_1_55_0
 
+#######################################
+
 
 
 ################# CPPDB & SQLITE
@@ -225,6 +227,7 @@ cd ..
 rm -rf /tmp/android-toolchain/sysroot/usr/lib/libsqlite3.a
 rm -rf ./libs
 rm -rf _release
+
 #######################################
 
 
@@ -601,4 +604,5 @@ sudo cp -vr ./obj/local/x86/libb64.a /opt/android/lib/android_x86/release/
 ls /opt/android/lib/android_x86/release/
 
 rm -rf obj
+
 #######################################
