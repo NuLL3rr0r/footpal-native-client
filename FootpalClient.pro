@@ -67,7 +67,6 @@ HEADERS += \
     Log.hpp \
     Pool.hpp \
     RestApi.hpp \
-    RestApiDefs.hpp \
     UiEngine.hpp
 SOURCES += \
     main.cpp \

@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <QtCore/QObject>
+class QString;
 #include "RestApiDefs.hpp"
 
 namespace Footpal {
@@ -23,12 +24,12 @@ public:
     virtual ~RestApi();
 
 signals:
-    void signal_SignUp(const Footpal::RestApiDefs::SignUpResult &);
-    void signal_SignIn(const Footpal::RestApiDefs::SignInResult &);
-    void signal_SignOut(const Footpal::RestApiDefs::SignOutResult &);
-    void signal_GetCurrentProfile(const Footpal::RestApiDefs::GetCurrentProfileResult &);
-    void signal_UsersList(const Footpal::RestApiDefs::UsersListResult &);
-    void signal_CreateIndividualRoom(const Footpal::RestApiDefs::CreateIndividualRoomResult &);
+    void signal_SignUp(const QString &);
+    void signal_SignIn(const QString &);
+    void signal_SignOut(const QString &);
+    void signal_GetCurrentProfile(const QString &);
+    void signal_UsersList(const QString &);
+    void signal_CreateIndividualRoom(const QString &);
 
 public:
     Q_INVOKABLE void signUp(const QString &phone, const QString &email, const QString &pwd);
