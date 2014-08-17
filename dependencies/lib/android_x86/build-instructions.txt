@@ -17,7 +17,7 @@ tar xvJf zlib-1.2.8.tar.xz
 
 git clone https://github.com/MysticTreeGames/Boost-for-Android.git
 cp -vr boost_1_55_0.tar.bz2 ~/Desktop/Boost-for-Android-master/
-cd ~/Desktop/Boost-for-Android-master
+cd ~/Desktop/Boost-for-Android
 ./build-android.sh --help
 ls /opt/android/ndk/toolchains/
 
