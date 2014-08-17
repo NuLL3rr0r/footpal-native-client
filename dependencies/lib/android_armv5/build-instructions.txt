@@ -151,12 +151,12 @@ ls /opt/android/include/
 nano -w jni/Application.mk
 ########
 APP_OPTIM := debug
-APP_ABI := armeabi-v5
+APP_ABI := armeabi
 APP_PLATFORM := android-9
 ########
 
 /opt/android/ndk/ndk-build
-sudo cp -vr ./obj/local/armeabi-v5/libsqlite.a /opt/android/lib/android_armv5/debug/libsqlite3.a
+sudo cp -vr ./obj/local/armeabi/libsqlite.a /opt/android/lib/android_armv5/debug/libsqlite3.a
 ls /opt/android/lib/android_armv5/debug/
 
 rm -rf obj
@@ -164,12 +164,12 @@ rm -rf obj
 nano -w jni/Application.mk
 ########
 APP_OPTIM := release
-APP_ABI := armeabi-v5
+APP_ABI := armeabi
 APP_PLATFORM := android-9
 ########
 
 /opt/android/ndk/ndk-build
-sudo cp -vr ./obj/local/armeabi-v5/libsqlite.a /opt/android/lib/android_armv5/release/libsqlite3.a
+sudo cp -vr ./obj/local/armeabi/libsqlite.a /opt/android/lib/android_armv5/release/libsqlite3.a
 ls /opt/android/lib/android_armv5/release/
 
 rm -rf obj
@@ -197,9 +197,9 @@ nano -w CMakeLists.txt
 
 mkdir _debug && cd _debug
 cp -vr /opt/android/lib/android_armv5/debug/libsqlite3.a /tmp/android-toolchain/sysroot/usr/lib/
-cmake -DCMAKE_TOOLCHAIN_FILE=../android.toolchain.cmake -DANDROID_STANDALONE_TOOLCHAIN=/tmp/android-toolchain -DANDROID_ABI=armeabi-v5 -DCMAKE_BUILD_TYPE=Debug -DCMAKE_LIBRARY_PATH=/opt/android/lib/android_armv5/debug/ -DCMAKE_INCLUDE_PATH=/opt/android/include/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ../
+cmake -DCMAKE_TOOLCHAIN_FILE=../android.toolchain.cmake -DANDROID_STANDALONE_TOOLCHAIN=/tmp/android-toolchain -DANDROID_ABI=armeabi -DCMAKE_BUILD_TYPE=Debug -DCMAKE_LIBRARY_PATH=/opt/android/lib/android_armv5/debug/ -DCMAKE_INCLUDE_PATH=/opt/android/include/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ../
 make -j5
-sudo cp -vr ../libs/armeabi-v5/libcppdb.a ../libs/armeabi-v5/libcppdb_sqlite3.a /opt/android/lib/android_armv5/debug/
+sudo cp -vr ../libs/armeabi/libcppdb.a ../libs/armeabi/libcppdb_sqlite3.a /opt/android/lib/android_armv5/debug/
 ls /opt/android/lib/android_armv5/debug/
 cd ..
 
@@ -209,9 +209,9 @@ rm -rf _debug
 
 mkdir _release && cd _release
 cp -vr /opt/android/lib/android_armv5/release/libsqlite3.a /tmp/android-toolchain/sysroot/usr/lib/
-cmake -DCMAKE_TOOLCHAIN_FILE=../android.toolchain.cmake -DANDROID_STANDALONE_TOOLCHAIN=/tmp/android-toolchain -DANDROID_ABI=armeabi-v5 -DCMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=/opt/android/lib/android_armv5/debug/ -DCMAKE_INCLUDE_PATH=/opt/android/include/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ../
+cmake -DCMAKE_TOOLCHAIN_FILE=../android.toolchain.cmake -DANDROID_STANDALONE_TOOLCHAIN=/tmp/android-toolchain -DANDROID_ABI=armeabi -DCMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=/opt/android/lib/android_armv5/debug/ -DCMAKE_INCLUDE_PATH=/opt/android/include/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ../
 make -j5
-sudo cp -vr ../libs/armeabi-v5/libcppdb.a ../libs/armeabi-v5/libcppdb_sqlite3.a /opt/android/lib/android_armv5/release/
+sudo cp -vr ../libs/armeabi/libcppdb.a ../libs/armeabi/libcppdb_sqlite3.a /opt/android/lib/android_armv5/release/
 ls /opt/android/lib/android_armv5/release/
 cd ..
 
