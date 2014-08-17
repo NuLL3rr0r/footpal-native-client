@@ -48,6 +48,10 @@ case "$NDK_RN" in
         echo "Undefined or not supported Android NDK version!"
         exit 1
 esac
+
+if [ -n "${AndroidSourcesDetected}" ]; then # Overwrite CXXPATH if we are building from Android sources
+    CXXPATH="${ANDROID_TOOLCHAIN}/i686-linux-android-g++"
+fi
 ########
 
 export MAKEFLAGS="-j5"
