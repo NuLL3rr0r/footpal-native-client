@@ -146,8 +146,9 @@ rm -rf sqlite-amalgamation-3080403
 
 nano -w jni/Application.mk
 ########
-APP_OPTIM := debug
 APP_ABI := armeabi
+APP_OPTIM := debug
+APP_PLATFORM := android-9
 ########
 
 /opt/android/ndk/ndk-build
@@ -156,8 +157,9 @@ rm -rf obj
 
 nano -w jni/Application.mk
 ########
-APP_OPTIM := release
 APP_ABI := armeabi
+APP_OPTIM := release
+APP_PLATFORM := android-9
 ########
 
 /opt/android/ndk/ndk-build
