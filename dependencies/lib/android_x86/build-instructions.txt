@@ -169,6 +169,8 @@ rm -rf obj
 
 nano -w jni/Application.mk
 ########
+APP_CFLAGS += -Wall -Wno-unused -Wno-multichar -Wstrict-aliasing=2
+
 APP_OPTIM := release
 ########
 
