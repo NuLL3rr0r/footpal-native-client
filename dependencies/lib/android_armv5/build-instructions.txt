@@ -153,6 +153,8 @@ nano -w jni/Application.mk
 APP_OPTIM := debug
 APP_ABI := armeabi
 APP_PLATFORM := android-9
+
+NDK_TOOLCHAIN_VERSION := 4.8
 ########
 
 /opt/android/ndk/ndk-build
@@ -163,7 +165,7 @@ rm -rf obj
 
 nano -w jni/Application.mk
 ########
-APP_ABI := armeabi
+APP_OPTIM := release
 ########
 
 /opt/android/ndk/ndk-build
