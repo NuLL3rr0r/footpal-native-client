@@ -286,3 +286,115 @@ rm -rf obj
 
 
 
+################# CRYPTO++
+
+wget https://raw.githubusercontent.com/noloader/cryptopp-5.6.2-android-18/master/setenv-android.sh
+
+nano -w setenv-android.sh
+########
+_ANDROID_API="android-16"
+.
+.
+.
+# For the Android STL.
+
+# Error checking
+if [ ! -d "$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/4.8/include/" ]; then
+  echo "Error: STLport headers is not valid. Please edit this script."
+  # exit 1
+fi
+
+# If more than one library is using STLport, all libraries ***must*** use the shared version
+# STLPORT_LIB=libgnustl_shared.a
+STLPORT_LIB=libgnustl_shared.so
+
+
+# Error checking
+if [ ! -e "$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/4.8/libs/armeabi-v7a/$STLPORT_LIB" ]; then
+  echo "Error: STLport library is not valid. Please edit this script."
+  # exit 1
+fi
+
+export ANDROID_STL_INC="$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/4.8/include/"
+export ANDROID_STL_LIB="$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/4.8/libs/armeabi-v7a/$STLPORT_LIB"
+########
+
+export ANDROID_NDK_ROOT="/opt/android/ndk"
+export ANDROID_EABI="arm-linux-androideabi-4.8"
+. ./setenv-android.sh
+printenv | grep ANDROID | sort
+echo $PATH
+
+unzip cryptopp562.zip -d ./cryptopp562
+cd cryptopp562
+
+rm GNUmakefile
+rm config.h
+rm wait.cpp
+rm wait.h
+
+wget https://raw.githubusercontent.com/noloader/cryptopp-5.6.2-android-18/master/GNUmakefile
+wget https://raw.githubusercontent.com/noloader/cryptopp-5.6.2-android-18/master/config.h
+wget https://raw.githubusercontent.com/noloader/cryptopp-5.6.2-android-18/master/wait.cpp
+wget https://raw.githubusercontent.com/noloader/cryptopp-5.6.2-android-18/master/wait.h
+
+sudo mkdir /opt/android/include/cryptopp
+sudo cp -vr *.h /opt/android/include/cryptopp/
+ls /opt/android/include/
+
+sudo cp -vr /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/libs/armeabi-v7a/include/bits/* /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/
+
+
+nano -w GNUmakefile
+########
+CXXFLAGS = -g3
+########
+
+make static -j5
+sudo cp -vr ./libcryptopp.a /opt/android/lib/android_armv7/debug/
+ls /opt/android/lib/android_armv7/debug/
+
+
+nano -w GNUmakefile
+########
+CXXFLAGS = -DNDEBUG -O2
+########
+
+make clean
+make static -j5
+readelf -h libcryptopp.a | grep -i 'class\|machine' 
+ls -l libcryptopp.a
+arm-linux-androideabi-strip --strip-debug libcryptopp.a
+arm-linux-androideabi-strip --strip-all libcryptopp.a
+ls -l libcryptopp.a
+
+sudo cp -vr ./libcryptopp.a /opt/android/lib/android_armv7/release/
+ls /opt/android/lib/android_armv7/release/
+
+
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/atomic_word.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/basic_file.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/c++allocator.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/c++config.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/c++io.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/c++locale.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/cpu_defines.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/ctype_base.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/ctype_inline.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/cxxabi_tweaks.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/error_constants.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/extc++.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/gthr-default.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/gthr-posix.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/gthr-single.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/gthr.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/messages_members.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/opt_random.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/os_defines.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/stdc++.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/stdtr1c++.h
+sudo rm /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/include/bits/time_members.h
+#######################################
+
+
+
