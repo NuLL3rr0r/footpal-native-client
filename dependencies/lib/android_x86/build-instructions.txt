@@ -167,9 +167,7 @@ rm -rf obj
 
 nano -w jni/Application.mk
 ########
-APP_OPTIM := release
 APP_ABI := x86
-APP_PLATFORM := android-9
 ########
 
 /opt/android/ndk/ndk-build
@@ -258,8 +256,6 @@ include $(BUILD_STATIC_LIBRARY)
 
 nano -w ./jni/Application.mk
 ########
-LOCAL_PATH := $(call my-dir)
-
 APP_MODULES := b64
 
 APP_CFLAGS += -Werror -pedantic
@@ -268,6 +264,8 @@ APP_CFLAGS += -I../include
 APP_OPTIM := debug
 APP_ABI := x86
 APP_PLATFORM := android-9
+
+NDK_TOOLCHAIN_VERSION := 4.8
 ########
 
 /opt/android/ndk/ndk-build
@@ -287,6 +285,3 @@ ls /opt/android/lib/android_x86/release/
 
 rm -rf obj
 #######################################
-
-
-
