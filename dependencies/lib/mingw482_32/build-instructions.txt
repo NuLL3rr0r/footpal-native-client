@@ -4,7 +4,10 @@
 ################# BOOST
 
 1. In boost source tree:
+    # <= 1.55.0
     cd .\tools\build\v2\engine\
+    # >= 1.56.0
+    cd .\tools\build\src\engine\
     .\build.bat mingw
     move .\bin.ntx86\bjam.exe ..\..\..\..\
     cd ..\..\..\..\
