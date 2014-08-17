@@ -118,9 +118,7 @@ cd .. && rm -rf boost_1_55_0
 # 1.55.0 - without python library
 ./build-android.sh --boost=1.55.0 --toolchain=arm-linux-androideabi-4.8 --with-libraries=atomic,chrono,context,coroutine,date_time,exception,filesystem,graph,graph_parallel,iostreams,locale,log,math,mpi,program_options,random,regex,serialization,signals,system,test,thread,timer,wave /opt/android/ndk
 
-sudo mv ./build/include/boost /opt/android/include/
 sudo mv ./build/lib/* /opt/android/lib/android_armv7/release/
-ls /opt/android/include/
 ls /opt/android/lib/android_armv7/release/
 
 
@@ -201,6 +199,3 @@ cmake -DCMAKE_TOOLCHAIN_FILE=../android.toolchain.cmake -DANDROID_STANDALONE_TOO
 make -j5
 sudo cp ../libs/armeabi-v7a/libcppdb.a ../libs/armeabi-v7a/libcppdb_sqlite3.a /opt/android/lib/android_armv7/release/
 #######################################
-
-
-
