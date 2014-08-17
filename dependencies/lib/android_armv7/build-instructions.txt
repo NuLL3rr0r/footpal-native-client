@@ -506,8 +506,6 @@ include $(BUILD_STATIC_LIBRARY)
 
 nano -w ./jni/Application.mk
 ########
-NDK_TOOLCHAIN_VERSION := 4.8
-
 APP_MODULES := cryptopp
 
 APP_CFLAGS += -fexceptions -frtti
@@ -518,6 +516,8 @@ APP_OPTIM := debug
 APP_STL := gnustl_shared
 APP_ABI := armeabi-v7a
 APP_PLATFORM := android-16
+
+NDK_TOOLCHAIN_VERSION := 4.8
 ########
 
 /opt/android/ndk/ndk-build
@@ -572,8 +572,6 @@ include $(BUILD_STATIC_LIBRARY)
 
 nano -w ./jni/Application.mk
 ########
-NDK_TOOLCHAIN_VERSION := 4.8
-
 APP_MODULES := b64
 
 APP_CFLAGS += -Werror -pedantic
@@ -582,6 +580,8 @@ APP_CFLAGS += -I../include
 APP_OPTIM := debug
 APP_ABI := armeabi-v7a
 APP_PLATFORM := android-16
+
+NDK_TOOLCHAIN_VERSION := 4.8
 ########
 
 /opt/android/ndk/ndk-build
