@@ -3,8 +3,6 @@
 
 ################# B64
 
-
-
 1. In libb64-1.2/src
     * del Makefile
     * qmake -project
