@@ -142,7 +142,7 @@ sudo cp ./sqlite3.h ./sqlite3ext.h /opt/android/include/
 cd ..
 rm -rf sqlite-amalgamation-3080403
 
-# NOTE: "APP_ABI := all" is also valid
+# NOTE: "APP_ABI := all" or a subset is also valid
 
 nano -w jni/Application.mk
 ########
