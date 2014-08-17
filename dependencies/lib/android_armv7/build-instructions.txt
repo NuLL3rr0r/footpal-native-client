@@ -556,11 +556,6 @@ nano -w ./jni/Android.mk
 ########
 LOCAL_PATH := $(call my-dir)
 
-$(LOCAL_PATH)/../cdecode.c:
-	$(MAKE) -C $(@:%/cdecode.c=%) cdecode.c
-$(LOCAL_PATH)/../cencode.c:
-	$(MAKE) -C $(@:%/cencode.c=%) cencode.c
-
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := b64
