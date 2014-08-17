@@ -148,6 +148,7 @@ nano -w jni/Application.mk
 ########
 APP_OPTIM := debug
 APP_ABI := armeabi-v7a
+APP_PLATFORM := android-16
 ########
 
 /opt/android/ndk/ndk-build
@@ -158,6 +159,7 @@ nano -w jni/Application.mk
 ########
 APP_OPTIM := release
 APP_ABI := armeabi-v7a
+APP_PLATFORM := android-16
 ########
 
 /opt/android/ndk/ndk-build
@@ -169,7 +171,7 @@ sudo cp -ivr ./cppdb /opt/android/include/
 
 wget https://raw.githubusercontent.com/taka-no-me/android-cmake/master/android.toolchain.cmake
 rm -rf /tmp/android-toolchain
-/opt/android/ndk/build/tools/make-standalone-toolchain.sh --platform=android-14 --install-dir=/tmp/android-toolchain --toolchain=arm-linux-androideabi-4.8
+/opt/android/ndk/build/tools/make-standalone-toolchain.sh --platform=android-16 --install-dir=/tmp/android-toolchain --toolchain=arm-linux-androideabi-4.8
 cp /opt/android/include/sqlite3.h /opt/android/include/sqlite3ext.h /tmp/android-toolchain/sysroot/usr/include/
 
 nano -w CMakeLists.txt
