@@ -4,6 +4,6 @@
         <file>ui/main.qml</file>
         <file>ui/ForgotPassword.qml</file>
         <file>ui/SignIn.qml</file>
-        <file>ui/SingUp.qml</file>
+        <file>ui/SignUp.qml</file>
     </qresource>
 </RCC>
