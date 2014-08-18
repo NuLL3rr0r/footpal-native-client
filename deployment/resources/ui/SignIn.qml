@@ -73,7 +73,7 @@ Item {
             anchors.fill: parent;
             cursorShape: Qt.PointingHandCursor;
             onClicked: {
-                pageLoader.setSource("SingUp.qml");
+                pageLoader.setSource("SignUp.qml");
             }
         }
     }
