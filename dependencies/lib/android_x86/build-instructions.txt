@@ -293,7 +293,7 @@ sudo cp -vr /opt/android/ndk/sources/cxx-stl/gnu-libstdc++/4.8/libs/x86/include/
 
 nano -w GNUmakefile
 ########
-CXXFLAGS = -g3
+CXXFLAGS = -fexceptions -frtti -g3
 ########
 
 make static -j5
@@ -303,7 +303,7 @@ ls /opt/android/lib/android_x86/debug/
 
 nano -w GNUmakefile
 ########
-CXXFLAGS = -DNDEBUG -O2
+CXXFLAGS = -fexceptions -frtti -DNDEBUG -O2
 ########
 
 make clean
