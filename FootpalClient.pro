@@ -14,7 +14,7 @@ android {
 win32 {
     DEFINES += SHARED_LINK_DEPENDENCIES
 }
-
+DEFINES += "BUFFERSIZE=16777216"
 
 QMAKE_CXXFLAGS += -std=c++1y
 QMAKE_CXXFLAGS += -Wall -Wextra -pedantic
@@ -55,12 +55,13 @@ win32 {
         LIBS += -L$$PWD/dependencies/lib/mingw482_32/release
     }
 }
-LIBS += -lboost_date_time -lboost_filesystem -lboost_system -lcppdb -lcppdb_sqlite3 -lsqlite3
+LIBS += -lb64 -lboost_date_time -lboost_filesystem -lboost_system -lcppdb -lcppdb_sqlite3 -lcryptopp -lsqlite3
 
 
 HEADERS += \
     make_unique.hpp \
     Application.hpp \
+    Crypto.hpp \
     Database.hpp \
     Http.hpp \
     HttpStatus.hpp \
@@ -71,6 +72,7 @@ HEADERS += \
 SOURCES += \
     main.cpp \
     Application.cpp \
+    Crypto.cpp \
     Database.cpp \
     Http.cpp \
     HttpStatus.cpp \
