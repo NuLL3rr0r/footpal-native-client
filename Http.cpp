@@ -129,8 +129,6 @@ Http::Impl::Impl(Http *parent) :
 
 void Http::Impl::AuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator)
 {
-    qDebug() << 1;
-
     (void)authenticator;
     emit m_parent->Signal_Error(tr("AUTHEENTICATION_REQUIRED: %1").arg(QString(reply->readAll())));
     reply->deleteLater();
@@ -138,24 +136,18 @@ void Http::Impl::AuthenticationRequired(QNetworkReply *reply, QAuthenticator *au
 
 void Http::Impl::Encrypted(QNetworkReply *reply)
 {
-    qDebug() << 1;
-
     emit m_parent->Signal_Error(reply->readAll());
     reply->deleteLater();
 }
 
 void Http::Impl::Finished(QNetworkReply *reply)
 {
-    qDebug() << 1;
-
     emit m_parent->Signal_Finished(reply->readAll());
     reply->deleteLater();
 }
 
 void Http::Impl::NetworkAccessibleChanged(QNetworkAccessManager::NetworkAccessibility accessible)
 {
-    qDebug() << 1;
-
     if (accessible != QNetworkAccessManager::Accessible) {
         emit m_parent->Signal_Error(tr("NO_NETOWRK_ACCESS"));
     }
@@ -163,8 +155,6 @@ void Http::Impl::NetworkAccessibleChanged(QNetworkAccessManager::NetworkAccessib
 
 void Http::Impl::ProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator)
 {
-    qDebug() << 1;
-
     (void)proxy;
     (void)authenticator;
     emit m_parent->Signal_Error(tr("PROXY_AUTHEENTICATION_REQUIRED"));
@@ -172,8 +162,6 @@ void Http::Impl::ProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthen
 
 void Http::Impl::SslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
 {
-    qDebug() << 1;
-
     (void)errors;
     emit m_parent->Signal_Error(reply->readAll());
     reply->deleteLater();

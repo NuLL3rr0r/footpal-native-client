@@ -11,6 +11,7 @@ namespace Footpal {
 #if defined(Q_OS_ANDROID)
 class Android;
 #endif /* defined(Q_OS_ANDROID) */
+class Crypto;
 class Database;
 class Pool;
 class RestApi;
@@ -29,6 +30,7 @@ public:
 #if defined(Q_OS_ANDROID)
     static Footpal::Android *Android();
 #endif /* defined(Q_OS_ANDROID) */
+    static Footpal::Crypto *Crypto();
     static Footpal::Database *Database();
     static Footpal::RestApi *RestApi();
     static QTranslator *Translator();

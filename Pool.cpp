@@ -9,6 +9,7 @@
 #if defined ( Q_OS_ANDROID )
 #include "Android.hpp"
 #endif // defined ( Q_OS_ANDROID )
+#include "Crypto.hpp"
 #include "Database.hpp"
 #include "RestApi.hpp"
 
@@ -28,6 +29,7 @@ struct Pool::Impl
 #if defined ( Q_OS_ANDROID )
     typedef std::unique_ptr<Footpal::Android> Android_t;
 #endif // defined ( Q_OS_ANDROID )
+    typedef std::unique_ptr<Footpal::Crypto> Crypto_t;
     typedef std::unique_ptr<Footpal::Database> Database_t;
     typedef std::unique_ptr<Footpal::RestApi> RestApi_t;
     typedef std::unique_ptr<QTranslator> QTranslator_t;
@@ -39,6 +41,9 @@ struct Pool::Impl
     static std::mutex AndroidMutex;
     static Android_t AndroidInstance;
 #endif // defined ( Q_OS_ANDROID )
+
+    static std::mutex CryptoMutex;
+    static Crypto_t CryptoInstance;
 
     static std::mutex DatabaseMutex;
     static Database_t DatabaseInstance;
@@ -57,6 +62,9 @@ Pool::Impl::Storage_t Pool::Impl::StorageInstance = nullptr;
 std::mutex Pool::Impl::AndroidMutex;
 Pool::Impl::Android_t Pool::Impl::AndroidInstance = nullptr;
 #endif // defined ( Q_OS_ANDROID )
+
+std::mutex Pool::Impl::CryptoMutex;
+Pool::Impl::Crypto_t Pool::Impl::CryptoInstance = nullptr;
 
 std::mutex Pool::Impl::DatabaseMutex;
 Pool::Impl::Database_t Pool::Impl::DatabaseInstance = nullptr;
@@ -94,6 +102,34 @@ Footpal::Android *Pool::Android()
     return Impl::AndroidInstance.get();
 }
 #endif
+
+Footpal::Crypto *Pool::Crypto()
+{
+    lock_guard<mutex> lock(Impl::CryptoMutex);
+    (void)lock;
+
+    if (Impl::CryptoInstance == nullptr) {
+        // Use this nice HEX/ASCII converter and your editor's replace dialog,
+        // to create your own Key and IV.
+        // http://www.dolcevie.com/js/converter.html
+        // To generate random password: https://strongpasswordgenerator.com/
+
+        // bQN>S;989684747z
+        static constexpr Crypto::Byte_t KEY[] = {
+            0x62, 0x51, 0x4e, 0x3e, 0x53, 0x3b, 0x39, 0x38, 0x39, 0x36, 0x38, 0x34, 0x37, 0x34, 0x37, 0x7a
+        };
+
+        // p=qHWjj#42h}68^x
+        static constexpr Crypto::Byte_t IV[] = {
+            0x70, 0x3d, 0x71, 0x48, 0x57, 0x6a, 0x6a, 0x23, 0x34, 0x32, 0x68, 0x7d, 0x36, 0x38, 0x5e, 0x78
+        };
+
+        Impl::CryptoInstance =
+                std::make_unique<Footpal::Crypto>(KEY, sizeof(KEY), IV, sizeof(IV));
+    }
+
+    return Impl::CryptoInstance.get();
+}
 
 Footpal::Database *Pool::Database()
 {

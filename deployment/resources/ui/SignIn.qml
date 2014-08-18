@@ -7,7 +7,24 @@ Item {
     anchors.fill: parent;
     anchors.centerIn: parent;
 
+    RegExpValidator {
+        id: mobilePhoneRegExpValidator;
+        regExp: /09\d{9}$/;
+    }
+
     Component.onCompleted: {
+        RestApi.onSignal_SignIn.connect(onSingInSuccess);
+    }
+
+    function onSingInSuccess(response)
+    {
+        UiEngine.notify(qsTr("APP_TITLE"), response);
+        UiEngine.showToast(response);
+    }
+
+    function onSingInError(response)
+    {
+
     }
 
     Column {
@@ -27,6 +44,7 @@ Item {
             style: textFieldStyle;
             width: parent.width;
             placeholderText: qsTr("USERNAME") + UiEngine.EmptyLangString;
+            validator: mobilePhoneRegExpValidator;
             focus: true;
         }
 
@@ -43,6 +61,19 @@ Item {
             style: buttonStyle;
             width: parent.width;
             text: qsTr("SIGN_IN") + UiEngine.EmptyLangString;
+            onClicked: {
+                if (!usernameTextInput.acceptableInput) {
+                    usernameTextInput.focus = true;
+                    usernameTextInput.selectAll();
+                    return;
+                }
+                if (passwordTextInput.text == "") {
+                    passwordTextInput.focus = true;
+                    return;
+                }
+
+                RestApi.signIn(usernameTextInput.text, passwordTextInput.text);
+            }
         }
 
         Text {

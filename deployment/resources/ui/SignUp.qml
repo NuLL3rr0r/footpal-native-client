@@ -18,6 +18,13 @@ Item {
     }
 
     Component.onCompleted: {
+        RestApi.onSignal_SignUp.connect(onSingUpSuccess);
+    }
+
+    function onSingUpSuccess(response)
+    {
+        UiEngine.notify(qsTr("APP_TITLE"), response);
+        UiEngine.showToast(response);
     }
 
     Column {
