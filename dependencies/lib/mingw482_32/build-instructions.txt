@@ -1,31 +1,6 @@
 
 
 
-################# B64
-
-1. In libb64-1.2/src
-    * del Makefile
-    * qmake -project
-
-2. Rename src.pro to b64.pro
-
-3. In b64.pro do the following changes:
-TEMPLATE = lib
-TARGET = b64
-INCLUDEPATH += ../include
-CONFIG -= qt
-
-4. Do the following:
-    * qmake
-    * mingw32-make all -j5
-
-5. Copy the following files to your own corresponding directory:
-debug/b64.dll
-release/b64.dll
-include/b64/*
-
-
-
 ################# BOOST
 
 1. In boost source tree:
@@ -125,6 +100,31 @@ LIBS += -lws2_32
 debug/cryptopp.dll
 release/cryptopp.dll
 ./*.h
+
+
+
+################# LIBB64
+
+1. In libb64-1.2/src
+    * del Makefile
+    * qmake -project
+
+2. Rename src.pro to b64.pro
+
+3. In b64.pro do the following changes:
+TEMPLATE = lib
+TARGET = b64
+INCLUDEPATH += ../include
+CONFIG -= qt
+
+4. Do the following:
+    * qmake
+    * mingw32-make all -j5
+
+5. Copy the following files to your own corresponding directory:
+debug/b64.dll
+release/b64.dll
+include/b64/*
 
 
 
