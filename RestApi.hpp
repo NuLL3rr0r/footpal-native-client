@@ -5,7 +5,6 @@
 #include <memory>
 #include <QtCore/QObject>
 class QString;
-#include "RestApiDefs.hpp"
 
 namespace Footpal {
 class RestApi;
