@@ -20,7 +20,7 @@ struct UiEngine::Impl
 public:
 #if !defined ( Q_OS_ANDROID )
     typedef std::unique_ptr<QSystemTrayIcon> QSystemTrayIcon_t;
-#endif // defined ( Q_OS_ANDROID )
+#endif // !defined ( Q_OS_ANDROID )
 
 private:
     UiEngine *m_parent;
@@ -65,6 +65,22 @@ UiEngine::~UiEngine() = default;
 QString UiEngine::GetEmptyLangString() const
 {
     return "";
+}
+
+UiEngine::ScreenType UiEngine::GetScreenType()
+{
+#if defined ( Q_OS_ANDROID )
+    QString screenType(Pool::Android()->GetScreenType());
+    if (screenType == "phone") {
+        return ScreenType_Phone;
+    } else if (screenType == "7-inch-tablet") {
+        return ScreenType_Tablet7;
+    } else if (screenType == "10-inch-tablet") {
+        return ScreenType_Tablet10;
+    }
+#endif // defined ( Q_OS_ANDROID )
+
+    return ScreenType_PC;
 }
 
 bool UiEngine::notify(const QString &title, const QString &text, const int id) const

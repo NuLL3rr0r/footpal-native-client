@@ -89,6 +89,9 @@ android {
 lupdate_only {
     SOURCES += \
         $$PWD/deployment/resources/ui/main.qml
+        $$PWD/deployment/resources/ui/ForgotPassword.qml
+        $$PWD/deployment/resources/ui/SignIn.qml
+        $$PWD/deployment/resources/ui/SignUp.qml
 }
 
 

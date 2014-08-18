@@ -13,7 +13,18 @@ class Footpal::UiEngine : public QQmlApplicationEngine
 {
     Q_OBJECT
 
+    Q_ENUMS( ScreenType )
+
     Q_PROPERTY ( QString EmptyLangString READ GetEmptyLangString NOTIFY signal_LanguageChanged )
+    Q_PROPERTY ( ScreenType ScreenType READ GetScreenType NOTIFY signal_ScreenTypeChangedChanged )
+
+public:
+    enum ScreenType {
+        ScreenType_PC,
+        ScreenType_Phone,
+        ScreenType_Tablet7,
+        ScreenType_Tablet10
+    };
 
 private:
     struct Impl;
@@ -27,9 +38,11 @@ public:
 
 signals:
     void signal_LanguageChanged();
+    void signal_ScreenTypeChangedChanged(ScreenType);
 
 public:
     QString GetEmptyLangString() const;
+    ScreenType GetScreenType();
 
 public:
     Q_INVOKABLE bool notify(const QString &title, const QString &text, const int id = 0) const;

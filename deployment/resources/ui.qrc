@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>ui/main.qml</file>
         <file>ui/custom/Toast.qml</file>
+        <file>ui/main.qml</file>
+        <file>ui/ForgotPassword.qml</file>
+        <file>ui/SignIn.qml</file>
+        <file>ui/SingUp.qml</file>
     </qresource>
 </RCC>
