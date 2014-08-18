@@ -7,6 +7,16 @@ Item {
     anchors.fill: parent;
     anchors.centerIn: parent;
 
+    RegExpValidator {
+        id: emailRegExpValidator;
+        regExp: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[a-z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b/;
+    }
+
+    RegExpValidator {
+        id: mobilePhoneRegExpValidator;
+        regExp: /09\d{9}$/;
+    }
+
     Component.onCompleted: {
     }
 
@@ -28,6 +38,15 @@ Item {
             width: parent.width;
             placeholderText: qsTr("PHONE_NUMBER") + UiEngine.EmptyLangString;
             focus: true;
+            validator: mobilePhoneRegExpValidator;
+        }
+
+        TextField {
+            id: emailTextInput;
+            style: textFieldStyle;
+            width: parent.width;
+            placeholderText: qsTr("EMAIL") + UiEngine.EmptyLangString;
+            validator: emailRegExpValidator;
         }
 
         TextField {
@@ -38,19 +57,29 @@ Item {
             placeholderText: qsTr("PASSWORD") + UiEngine.EmptyLangString;
         }
 
-        TextField {
-            id: confirmPasswordTextInput;
-            style: textFieldStyle;
-            width: parent.width;
-            echoMode: TextInput.Password;
-            placeholderText: qsTr("CONFIRM_PASSWORD") + UiEngine.EmptyLangString;
-        }
-
         Button {
             id: signUpButton;
             style: buttonStyle;
             width: parent.width;
             text: qsTr("SIGN_UP") + UiEngine.EmptyLangString;
+            onClicked: {
+                if (!phoneNumberTextInput.acceptableInput) {
+                    phoneNumberTextInput.focus = true;
+                    phoneNumberTextInput.selectAll();
+                    return;
+                }
+                if (!emailTextInput.acceptableInput) {
+                    emailTextInput.focus = true;
+                    emailTextInput.selectAll();
+                    return;
+                }
+                if (passwordTextInput.text == "") {
+                    passwordTextInput.focus = true;
+                    return;
+                }
+
+                RestApi.signUp(phoneNumberTextInput.text, emailTextInput.text, passwordTextInput.text);
+            }
         }
     }
 

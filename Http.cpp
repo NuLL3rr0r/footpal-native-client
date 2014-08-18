@@ -1,3 +1,6 @@
+#include <memory>
+#include <QtCore/QDebug>
+#include <QtCore/QString>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkConfigurationManager>
 #include <QtNetwork/QNetworkReply>
@@ -5,12 +8,29 @@
 #include "make_unique.hpp"
 #include "Http.hpp"
 
+#define         CONNECTION_FAILED       QObject::tr("CONNECTION_FAILED")
+
 using namespace std;
 using namespace  Footpal;
 
 class Http::Impl : public QObject
 {
     Q_OBJECT
+
+public:
+    typedef std::unique_ptr<QNetworkAccessManager> QNetworkAccessManager_t;
+
+public:
+    QNetworkAccessManager_t DeleteNetworkAccessManager;
+    QNetworkAccessManager_t GetNetworkAccessManager;
+    QNetworkAccessManager_t PostNetworkAccessManager;
+    QNetworkAccessManager_t PutNetworkAccessManager;
+
+private:
+    Http *m_parent;
+
+public:
+    Impl(Http *parent);
 
 public slots:
     void AuthenticationRequired(QNetworkReply * reply, QAuthenticator * authenticator);
@@ -30,7 +50,7 @@ public:
 
 Http::Http()
     : QObject(),
-      m_pimpl(std::make_unique<Http::Impl>())
+      m_pimpl(std::make_unique<Http::Impl>(this))
 {
 
 }
@@ -40,101 +60,122 @@ Http::~Http() = default;
 void Http::Delete(const QString &url)
 {
     if (!m_pimpl->IsConnected()) {
-        //emit Signal_ConnectionFailed();
+        emit Signal_Error(CONNECTION_FAILED);
         return;
     }
 
-
-    QNetworkAccessManager networkAccessManager;
+    m_pimpl->DeleteNetworkAccessManager.reset(new QNetworkAccessManager());
     QNetworkRequest request { QUrl(url) };
 
     m_pimpl->SetupRequest(request);
-    m_pimpl->SetupEvents(&networkAccessManager);
+    m_pimpl->SetupEvents(m_pimpl->DeleteNetworkAccessManager.get());
 
-    networkAccessManager.deleteResource(request);
+    m_pimpl->DeleteNetworkAccessManager->deleteResource(request);
 }
 
 void Http::Get(const QString &url)
 {
     if (!m_pimpl->IsConnected()) {
-        //emit Signal_ConnectionFailed;
+        emit Signal_Error(CONNECTION_FAILED);
         return;
     }
 
-    QNetworkAccessManager networkAccessManager;
+    m_pimpl->GetNetworkAccessManager.reset(new QNetworkAccessManager());
     QNetworkRequest request { QUrl(url) };
 
     m_pimpl->SetupRequest(request);
-    m_pimpl->SetupEvents(&networkAccessManager);
+    m_pimpl->SetupEvents(m_pimpl->GetNetworkAccessManager.get());
 
-    networkAccessManager.get(request);
+    m_pimpl->GetNetworkAccessManager->get(request);
 }
 
 void Http::Post(const QString &url, const QByteArray &data)
 {
     if (!m_pimpl->IsConnected()) {
-        //emit Signal_ConnectionFailed;
+        emit Signal_Error(CONNECTION_FAILED);
         return;
     }
 
-    QNetworkAccessManager networkAccessManager;
+    m_pimpl->PostNetworkAccessManager.reset(new QNetworkAccessManager());
     QNetworkRequest request { QUrl(url) };
 
     m_pimpl->SetupRequest(request);
-    m_pimpl->SetupEvents(&networkAccessManager);
+    m_pimpl->SetupEvents(m_pimpl->PostNetworkAccessManager.get());
 
-    networkAccessManager.post(request, data);
+    m_pimpl->PostNetworkAccessManager->post(request, data);
 }
 
 void Http::Put(const QString &url, const QByteArray &data)
 {
     if (!m_pimpl->IsConnected()) {
-        //emit Signal_ConnectionFailed;
+        emit Signal_Error(CONNECTION_FAILED);
         return;
     }
 
-
-    QNetworkAccessManager networkAccessManager;
+    m_pimpl->PutNetworkAccessManager.reset(new QNetworkAccessManager());
     QNetworkRequest request { QUrl(url) };
 
     m_pimpl->SetupRequest(request);
-    m_pimpl->SetupEvents(&networkAccessManager);
+    m_pimpl->SetupEvents(m_pimpl->PutNetworkAccessManager.get());
 
-    networkAccessManager.put(request, data);
+    m_pimpl->PutNetworkAccessManager->put(request, data);
+}
+
+Http::Impl::Impl(Http *parent) :
+    m_parent(parent)
+{
+
 }
 
 void Http::Impl::AuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator)
 {
-    (void)authenticator;
+    qDebug() << 1;
 
+    (void)authenticator;
+    emit m_parent->Signal_Error(tr("AUTHEENTICATION_REQUIRED: %1").arg(QString(reply->readAll())));
     reply->deleteLater();
 }
 
 void Http::Impl::Encrypted(QNetworkReply *reply)
 {
+    qDebug() << 1;
+
+    emit m_parent->Signal_Error(reply->readAll());
     reply->deleteLater();
 }
 
 void Http::Impl::Finished(QNetworkReply *reply)
 {
+    qDebug() << 1;
+
+    emit m_parent->Signal_Finished(reply->readAll());
     reply->deleteLater();
 }
 
 void Http::Impl::NetworkAccessibleChanged(QNetworkAccessManager::NetworkAccessibility accessible)
 {
-    (void)accessible;
+    qDebug() << 1;
+
+    if (accessible != QNetworkAccessManager::Accessible) {
+        emit m_parent->Signal_Error(tr("NO_NETOWRK_ACCESS"));
+    }
 }
 
 void Http::Impl::ProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator)
 {
+    qDebug() << 1;
+
     (void)proxy;
     (void)authenticator;
+    emit m_parent->Signal_Error(tr("PROXY_AUTHEENTICATION_REQUIRED"));
 }
 
 void Http::Impl::SslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
 {
-    (void)errors;
+    qDebug() << 1;
 
+    (void)errors;
+    emit m_parent->Signal_Error(reply->readAll());
     reply->deleteLater();
 }
 
