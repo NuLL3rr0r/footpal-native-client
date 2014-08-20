@@ -245,7 +245,7 @@ if [ ! -d "$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/4.8/include/" ]; then
 fi
 
 # If more than one library is using STLport, all libraries ***must*** use the shared version
-# STLPORT_LIB=libgnustl_shared.a
+# STLPORT_LIB=libgnustl_static.a
 STLPORT_LIB=libgnustl_shared.so
 
 
