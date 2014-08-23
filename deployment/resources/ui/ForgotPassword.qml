@@ -47,6 +47,7 @@ Rectangle {
             horizontalCenter: parent.horizontalCenter;
         }
         text: qsTr("RETURN") + UiEngine.EmptyLangString;
+        color: "white";
 
         MouseArea {
             anchors.fill: parent;

@@ -88,10 +88,11 @@ android {
 }
 lupdate_only {
     SOURCES += \
-        deployment/resources/ui/main.qml \
+        deployment/resources/ui/Main.qml \
         deployment/resources/ui/ForgotPassword.qml \
         deployment/resources/ui/SignIn.qml \
-        deployment/resources/ui/SignUp.qml
+        deployment/resources/ui/SignUp.qml \
+        deployment/resources/ui/Splash.qml
 }
 
 

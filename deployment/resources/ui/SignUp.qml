@@ -98,6 +98,7 @@ Rectangle {
             bottomMargin: parent.height * 0.05;
             horizontalCenter: parent.horizontalCenter;
         }
+        color: "white";
         text: qsTr("RETURN") + UiEngine.EmptyLangString;
 
         MouseArea {

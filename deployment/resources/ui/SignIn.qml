@@ -80,6 +80,7 @@ Rectangle {
         Text {
             id: forgotPassword;
             anchors.horizontalCenter: parent.horizontalCenter;
+            color: "white";
             text: qsTr("FORGOT_PASSWORD") + UiEngine.EmptyLangString;
 
             MouseArea {
@@ -99,6 +100,7 @@ Rectangle {
             bottomMargin: parent.height * 0.05;
             horizontalCenter: parent.horizontalCenter;
         }
+        color: "white";
         text: qsTr("SIGN_UP") + UiEngine.EmptyLangString;
 
         MouseArea {

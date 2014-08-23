@@ -8,8 +8,6 @@
 #include "make_unique.hpp"
 #include "Http.hpp"
 
-#define         CONNECTION_FAILED       QObject::tr("CONNECTION_FAILED")
-
 using namespace std;
 using namespace  Ertebat;
 
@@ -60,7 +58,7 @@ Http::~Http() = default;
 void Http::Delete(const QString &url)
 {
     if (!m_pimpl->IsConnected()) {
-        emit Signal_Error(CONNECTION_FAILED);
+        emit Signal_Error(tr("CONNECTION_FAILED"));
         return;
     }
 
@@ -76,7 +74,7 @@ void Http::Delete(const QString &url)
 void Http::Get(const QString &url)
 {
     if (!m_pimpl->IsConnected()) {
-        emit Signal_Error(CONNECTION_FAILED);
+        emit Signal_Error(tr("CONNECTION_FAILED"));
         return;
     }
 
@@ -92,7 +90,7 @@ void Http::Get(const QString &url)
 void Http::Post(const QString &url, const QByteArray &data)
 {
     if (!m_pimpl->IsConnected()) {
-        emit Signal_Error(CONNECTION_FAILED);
+        emit Signal_Error(tr("CONNECTION_FAILED"));
         return;
     }
 
@@ -108,7 +106,7 @@ void Http::Post(const QString &url, const QByteArray &data)
 void Http::Put(const QString &url, const QByteArray &data)
 {
     if (!m_pimpl->IsConnected()) {
-        emit Signal_Error(CONNECTION_FAILED);
+        emit Signal_Error(tr("CONNECTION_FAILED"));
         return;
     }
 
@@ -130,7 +128,7 @@ Http::Impl::Impl(Http *parent) :
 void Http::Impl::AuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator)
 {
     (void)authenticator;
-    emit m_parent->Signal_Error(tr("AUTHEENTICATION_REQUIRED: %1").arg(QString(reply->readAll())));
+    emit m_parent->Signal_Error(tr("AUTHENTICATION_REQUIRED: %1").arg(QString(reply->readAll())));
     reply->deleteLater();
 }
 
@@ -149,7 +147,7 @@ void Http::Impl::Finished(QNetworkReply *reply)
 void Http::Impl::NetworkAccessibleChanged(QNetworkAccessManager::NetworkAccessibility accessible)
 {
     if (accessible != QNetworkAccessManager::Accessible) {
-        emit m_parent->Signal_Error(tr("NO_NETOWRK_ACCESS"));
+        emit m_parent->Signal_Error(tr("NO_NETWORK_ACCESS"));
     }
 }
 
@@ -157,7 +155,7 @@ void Http::Impl::ProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthen
 {
     (void)proxy;
     (void)authenticator;
-    emit m_parent->Signal_Error(tr("PROXY_AUTHEENTICATION_REQUIRED"));
+    emit m_parent->Signal_Error(tr("PROXY_AUTHENTICATION_REQUIRED"));
 }
 
 void Http::Impl::SslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
