@@ -1,14 +1,14 @@
-#ifndef FOOTPAL_HTTP_STATUS_HPP
-#define FOOTPAL_HTTP_STATUS_HPP
+#ifndef ERTEBAT_HTTP_STATUS_HPP
+#define ERTEBAT_HTTP_STATUS_HPP
 
 
 #include <string>
 
-namespace Footpal {
+namespace Ertebat {
 class HttpStatus;
 }
 
-class Footpal::HttpStatus
+class Ertebat::HttpStatus
 {
 public:
     enum class HttpStatusCode : unsigned char {
@@ -63,5 +63,5 @@ public:
 };
 
 
-#endif /* FOOTPAL_HTTP_STATUS_HPP */
+#endif /* ERTEBAT_HTTP_STATUS_HPP */
 

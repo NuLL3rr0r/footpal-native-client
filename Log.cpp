@@ -10,7 +10,7 @@
 #include "make_unique.hpp"
 #include "log.hpp"
 
-using namespace Footpal;
+using namespace Ertebat;
 
 struct Log::Impl
 {

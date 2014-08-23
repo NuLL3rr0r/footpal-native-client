@@ -1,15 +1,15 @@
-#ifndef FOOTPAL_APPLICATION_HPP
-#define FOOTPAL_APPLICATION_HPP
+#ifndef ERTEBAT_APPLICATION_HPP
+#define ERTEBAT_APPLICATION_HPP
 
 
 #include <memory>
 #include <QApplication>
 
-namespace Footpal {
+namespace Ertebat {
 class Application;
 }
 
-class Footpal::Application : public QApplication
+class Ertebat::Application : public QApplication
 {
     Q_OBJECT
 

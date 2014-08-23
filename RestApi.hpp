@@ -1,16 +1,16 @@
-#ifndef FOOTPAL_REST_API_HPP
-#define FOOTPAL_REST_API_HPP
+#ifndef ERTEBAT_REST_API_HPP
+#define ERTEBAT_REST_API_HPP
 
 
 #include <memory>
 #include <QtCore/QObject>
 class QString;
 
-namespace Footpal {
+namespace Ertebat {
 class RestApi;
 }
 
-class Footpal::RestApi : public QObject
+class Ertebat::RestApi : public QObject
 {
     Q_OBJECT
 
@@ -40,5 +40,5 @@ public:
 };
 
 
-#endif /* FOOTPAL_REST_API_HPP */
+#endif /* ERTEBAT_REST_API_HPP */
 

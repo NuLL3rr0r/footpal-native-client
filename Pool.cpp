@@ -21,17 +21,17 @@
 #define     DATABASE_FILE_NAME              "database.db"
 
 using namespace std;
-using namespace Footpal;
+using namespace Ertebat;
 
 struct Pool::Impl
 {
     typedef std::unique_ptr<Pool::StorageStruct> Storage_t;
 #if defined ( Q_OS_ANDROID )
-    typedef std::unique_ptr<Footpal::Android> Android_t;
+    typedef std::unique_ptr<Ertebat::Android> Android_t;
 #endif // defined ( Q_OS_ANDROID )
-    typedef std::unique_ptr<Footpal::Crypto> Crypto_t;
-    typedef std::unique_ptr<Footpal::Database> Database_t;
-    typedef std::unique_ptr<Footpal::RestApi> RestApi_t;
+    typedef std::unique_ptr<Ertebat::Crypto> Crypto_t;
+    typedef std::unique_ptr<Ertebat::Database> Database_t;
+    typedef std::unique_ptr<Ertebat::RestApi> RestApi_t;
     typedef std::unique_ptr<QTranslator> QTranslator_t;
 
     static std::mutex StorageMutex;
@@ -89,21 +89,21 @@ Pool::StorageStruct *Pool::Storage()
 }
 
 #if defined ( Q_OS_ANDROID )
-Footpal::Android *Pool::Android()
+Ertebat::Android *Pool::Android()
 {
     lock_guard<mutex> lock(Impl::AndroidMutex);
     (void)lock;
 
     if (Impl::AndroidInstance == nullptr) {
         Impl::AndroidInstance =
-                std::make_unique<Footpal::Android>();
+                std::make_unique<Ertebat::Android>();
     }
 
     return Impl::AndroidInstance.get();
 }
 #endif
 
-Footpal::Crypto *Pool::Crypto()
+Ertebat::Crypto *Pool::Crypto()
 {
     lock_guard<mutex> lock(Impl::CryptoMutex);
     (void)lock;
@@ -125,13 +125,13 @@ Footpal::Crypto *Pool::Crypto()
         };
 
         Impl::CryptoInstance =
-                std::make_unique<Footpal::Crypto>(KEY, sizeof(KEY), IV, sizeof(IV));
+                std::make_unique<Ertebat::Crypto>(KEY, sizeof(KEY), IV, sizeof(IV));
     }
 
     return Impl::CryptoInstance.get();
 }
 
-Footpal::Database *Pool::Database()
+Ertebat::Database *Pool::Database()
 {
     lock_guard<mutex> lock(Impl::DatabaseMutex);
     (void)lock;
@@ -159,20 +159,20 @@ Footpal::Database *Pool::Database()
 #endif  // defined ( STATIC_LINK_DEPENDENCIES )
 
         Impl::DatabaseInstance =
-                std::make_unique<Footpal::Database>(QDir::toNativeSeparators(dbFile).toStdString());
+                std::make_unique<Ertebat::Database>(QDir::toNativeSeparators(dbFile).toStdString());
     }
 
     return Impl::DatabaseInstance.get();
 }
 
-Footpal::RestApi *Pool::RestApi()
+Ertebat::RestApi *Pool::RestApi()
 {
     lock_guard<mutex> lock(Impl::RestApiMutex);
     (void)lock;
 
     if (Impl::RestApiInstance == nullptr) {
         Impl::RestApiInstance =
-                std::make_unique<Footpal::RestApi>();
+                std::make_unique<Ertebat::RestApi>();
     }
 
     return Impl::RestApiInstance.get();

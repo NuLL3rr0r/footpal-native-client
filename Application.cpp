@@ -8,11 +8,11 @@
 #include "Pool.hpp"
 #include "UiEngine.hpp"
 
-using namespace Footpal;
+using namespace Ertebat;
 
 struct Application::Impl
 {
-    typedef std::unique_ptr<Footpal::UiEngine> UiEngine_t;
+    typedef std::unique_ptr<Ertebat::UiEngine> UiEngine_t;
     UiEngine_t UiEngine;
 };
 
@@ -36,11 +36,11 @@ void Application::SetupUi()
     QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
     QApplication::setFont(fontFamily);
 
-    Footpal::Pool::Translator()->load(QLocale::system().name(), ":/translations/");
-    this->installTranslator(Footpal::Pool::Translator());
+    Ertebat::Pool::Translator()->load(QLocale::system().name(), ":/translations/");
+    this->installTranslator(Ertebat::Pool::Translator());
 
     m_pimpl->UiEngine =
-            std::make_unique<Footpal::UiEngine>();
+            std::make_unique<Ertebat::UiEngine>();
     m_pimpl->UiEngine->load(QUrl(QStringLiteral("qrc:///ui/main.qml")));
 
     //QObject *uiRootObject = m_pimpl->UiEngine->rootObjects().first();

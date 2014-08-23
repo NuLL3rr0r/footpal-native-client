@@ -1,5 +1,5 @@
-#ifndef FOOTPAL_LOG_HPP
-#define FOOTPAL_LOG_HPP
+#ifndef ERTEBAT_LOG_HPP
+#define ERTEBAT_LOG_HPP
 
 
 #include <fstream>
@@ -7,11 +7,11 @@
 #include <sstream>
 #include <string>
 
-namespace Footpal {
+namespace Ertebat {
 class Log;
 }
 
-class Footpal::Log
+class Ertebat::Log
 {
 public:
     enum class EType : unsigned char {
@@ -57,23 +57,23 @@ public:
 
 
 #define LOG_TRACE(...)  \
-    (Footpal::Log(Footpal::Log::EType::Trace, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
+    (Ertebat::Log(Ertebat::Log::EType::Trace, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 #define LOG_DEBUG(...)  \
-    (Footpal::Log(Footpal::Log::EType::Debug, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
+    (Ertebat::Log(Ertebat::Log::EType::Debug, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 #define LOG_INFO(...)  \
-    (Footpal::Log(Footpal::Log::EType::Info, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
+    (Ertebat::Log(Ertebat::Log::EType::Info, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 #define LOG_WARNING(...)  \
-    (Footpal::Log(Footpal::Log::EType::Warning, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
+    (Ertebat::Log(Ertebat::Log::EType::Warning, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 #define LOG_ERROR(...)  \
-    (Footpal::Log(Footpal::Log::EType::Error, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
+    (Ertebat::Log(Ertebat::Log::EType::Error, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 #define LOG_FATAL(...)  \
-    (Footpal::Log(Footpal::Log::EType::Fatal, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
+    (Ertebat::Log(Ertebat::Log::EType::Fatal, __FILE__, __FUNCTION__, __LINE__)), __VA_ARGS__;
 
 
-#endif /* FOOTPAL_LOG_HPP */
+#endif /* ERTEBAT_LOG_HPP */
 

@@ -15,11 +15,11 @@
 #include "make_unique.hpp"
 #include "Crypto.hpp"
 
-#define     UNKNOWN_ERROR           "Footpal::Crypto unknown error!"
+#define     UNKNOWN_ERROR           "Ertebat::Crypto unknown error!"
 
 using namespace std;
 using namespace CryptoPP;
-using namespace Footpal;
+using namespace Ertebat;
 
 struct Crypto::Impl
 {

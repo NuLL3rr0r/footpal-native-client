@@ -1,15 +1,15 @@
-#ifndef FOOTPAL_UIENGINE_HPP
-#define FOOTPAL_UIENGINE_HPP
+#ifndef ERTEBAT_UIENGINE_HPP
+#define ERTEBAT_UIENGINE_HPP
 
 
 #include <memory>
 #include <QtQml/QQmlApplicationEngine>
 
-namespace Footpal {
+namespace Ertebat {
 class UiEngine;
 }
 
-class Footpal::UiEngine : public QQmlApplicationEngine
+class Ertebat::UiEngine : public QQmlApplicationEngine
 {
     Q_OBJECT
 
@@ -54,5 +54,5 @@ public:
 };
 
 
-#endif /* FOOTPAL_UIENGINE_HPP */
+#endif /* ERTEBAT_UIENGINE_HPP */
 

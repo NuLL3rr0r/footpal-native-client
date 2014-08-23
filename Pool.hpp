@@ -1,5 +1,5 @@
-#ifndef FOOTPAL_POOL_HPP
-#define FOOTPAL_POOL_HPP
+#ifndef ERTEBAT_POOL_HPP
+#define ERTEBAT_POOL_HPP
 
 
 #include <QtCore/QObject>
@@ -7,7 +7,7 @@
 
 class QTranslator;
 
-namespace Footpal {
+namespace Ertebat {
 #if defined(Q_OS_ANDROID)
 class Android;
 #endif /* defined(Q_OS_ANDROID) */
@@ -17,7 +17,7 @@ class Pool;
 class RestApi;
 }
 
-class Footpal::Pool
+class Ertebat::Pool
 {
 private:
     struct Impl;
@@ -28,14 +28,14 @@ private:
 public:
     static StorageStruct *Storage();
 #if defined(Q_OS_ANDROID)
-    static Footpal::Android *Android();
+    static Ertebat::Android *Android();
 #endif /* defined(Q_OS_ANDROID) */
-    static Footpal::Crypto *Crypto();
-    static Footpal::Database *Database();
-    static Footpal::RestApi *RestApi();
+    static Ertebat::Crypto *Crypto();
+    static Ertebat::Database *Database();
+    static Ertebat::RestApi *RestApi();
     static QTranslator *Translator();
 };
 
 
-#endif /* FOOTPAL_POOL_HPP */
+#endif /* ERTEBAT_POOL_HPP */
 

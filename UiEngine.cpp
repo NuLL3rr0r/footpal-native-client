@@ -13,7 +13,7 @@
 #include "Pool.hpp"
 #include "RestApi.hpp"
 
-using namespace Footpal;
+using namespace Ertebat;
 
 struct UiEngine::Impl
 {

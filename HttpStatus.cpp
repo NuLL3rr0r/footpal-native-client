@@ -47,7 +47,7 @@
 
 using namespace  std;
 using namespace  boost;
-using namespace  Footpal;
+using namespace  Ertebat;
 
 struct HttpStatus::Impl
 {

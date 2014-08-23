@@ -11,7 +11,7 @@
 #include "Pool.hpp"
 
 using namespace std;
-using namespace  Footpal;
+using namespace  Ertebat;
 
 class RestApi::Impl : public QObject
 {

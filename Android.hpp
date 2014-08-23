@@ -1,16 +1,16 @@
-#ifndef FOOTPAL_ANDROID_HPP
-#define FOOTPAL_ANDROID_HPP
+#ifndef ERTEBAT_ANDROID_HPP
+#define ERTEBAT_ANDROID_HPP
 
 
 #include <string>
 #include <jni.h>
 #include <QtAndroidExtras/QAndroidJniObject>
 
-namespace Footpal {
+namespace Ertebat {
 class Android;
 }
 
-class Footpal::Android : public QAndroidJniObject
+class Ertebat::Android : public QAndroidJniObject
 {
 private:
     struct Impl;
@@ -36,4 +36,4 @@ public:
 };
 
 
-#endif /* FOOTPAL_ANDROID_HPP */
+#endif /* ERTEBAT_ANDROID_HPP */

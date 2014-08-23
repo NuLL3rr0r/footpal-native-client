@@ -1,15 +1,15 @@
-#ifndef FOOTPAL_HTTP_HPP
-#define FOOTPAL_HTTP_HPP
+#ifndef ERTEBAT_HTTP_HPP
+#define ERTEBAT_HTTP_HPP
 
 
 #include <memory>
 #include <QtCore/QObject>
 
-namespace Footpal {
+namespace Ertebat {
 class Http;
 }
 
-class Footpal::Http : public QObject
+class Ertebat::Http : public QObject
 {
     Q_OBJECT
 
@@ -33,5 +33,5 @@ public:
 };
 
 
-#endif /* FOOTPAL_HTTP_HPP */
+#endif /* ERTEBAT_HTTP_HPP */
 

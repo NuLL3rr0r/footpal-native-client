@@ -9,7 +9,7 @@
 
 using namespace std;
 using namespace cppdb;
-using namespace Footpal;
+using namespace Ertebat;
 
 struct Database::Impl
 {

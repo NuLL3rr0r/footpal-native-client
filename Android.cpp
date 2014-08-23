@@ -8,9 +8,9 @@
 #include "make_unique.hpp"
 #include "Android.hpp"
 
-#define     JAVA_CLASS      "com/footpal/client/Android"
+#define     JAVA_CLASS      "com/ertebat/client/Android"
 
-using namespace Footpal;
+using namespace Ertebat;
 
 //static JNINativeMethod s_nativeMethods[] = {
 //};

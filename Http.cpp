@@ -11,7 +11,7 @@
 #define         CONNECTION_FAILED       QObject::tr("CONNECTION_FAILED")
 
 using namespace std;
-using namespace  Footpal;
+using namespace  Ertebat;
 
 class Http::Impl : public QObject
 {

@@ -88,10 +88,10 @@ android {
 }
 lupdate_only {
     SOURCES += \
-        $$PWD/deployment/resources/ui/main.qml \
-        $$PWD/deployment/resources/ui/ForgotPassword.qml \
-        $$PWD/deployment/resources/ui/SignIn.qml \
-        $$PWD/deployment/resources/ui/SignUp.qml
+        deployment/resources/ui/main.qml \
+        deployment/resources/ui/ForgotPassword.qml \
+        deployment/resources/ui/SignIn.qml \
+        deployment/resources/ui/SignUp.qml
 }
 
 
@@ -114,7 +114,7 @@ android {
         deployment/android/res/values/strings.xml \
         deployment/android/res/values-sw600dp/screen.xml \
         deployment/android/res/values-sw720dp/screen.xml \
-        deployment/android/src/com/footpal/client/Android.java
+        deployment/android/src/com/ertebat/client/Android.java
 }
 
 
@@ -136,7 +136,7 @@ TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/translations/, .ts)
 
 # run LUPDATE to generate or update the ts files
 qtPrepareTool(LUPDATE, lupdate)
-command = $$LUPDATE FootpalClient.pro
+command = $$LUPDATE ErtebatClient.pro
 system($$command)|error("Failed to run: $$command")
 
 # Used to embed the qm files in resources

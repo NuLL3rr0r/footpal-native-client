@@ -1,16 +1,16 @@
-#ifndef FOOTPAL_CRYPTO_HPP
-#define FOOTPAL_CRYPTO_HPP
+#ifndef ERTEBAT_CRYPTO_HPP
+#define ERTEBAT_CRYPTO_HPP
 
 
 #include <memory>
 #include <string>
 #include <cstddef>
 
-namespace Footpal {
+namespace Ertebat {
     class Crypto;
 }
 
-class Footpal::Crypto
+class Ertebat::Crypto
 {
 public:
     typedef unsigned char Byte_t;
@@ -58,5 +58,5 @@ public:
 };
 
 
-#endif /* FOOTPAL_CRYPTO_HPP */
+#endif /* ERTEBAT_CRYPTO_HPP */
 

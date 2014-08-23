@@ -10,7 +10,7 @@ void InitializeDatabase();
 
 int main(int argc, char *argv[])
 {
-    Footpal::Log::Initialize(std::cout);
+    Ertebat::Log::Initialize(std::cout);
 
 #if !defined ( Q_OS_ANDROID )
     /*! Change to executable path */
@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
     boost::filesystem::current_path(appPath);
 #endif // !defined ( Q_OS_ANDROID )
 
-    std::unique_ptr<Footpal::Application> app =
-            std::make_unique<Footpal::Application>(argc, argv);
+    std::unique_ptr<Ertebat::Application> app =
+            std::make_unique<Ertebat::Application>(argc, argv);
     app->InitializeDatabase();
     app->SetupUi();
 

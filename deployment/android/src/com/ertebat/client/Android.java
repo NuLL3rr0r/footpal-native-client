@@ -1,4 +1,4 @@
-package com.footpal.client;
+package com.ertebat.client;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -10,7 +10,7 @@ import java.lang.Exception;
 
 public class Android extends org.qtproject.qt5.android.bindings.QtActivity
 {
-    private static final String TAG = "[Android Interface / com.footpal.client.Android]";
+    private static final String TAG = "[Android Interface / com.ertebat.client.Android]";
 
     private static Android s_instance;
 

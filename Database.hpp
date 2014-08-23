@@ -1,16 +1,16 @@
-#ifndef FOOTPAL_DATABASE_HPP
-#define FOOTPAL_DATABASE_HPP
+#ifndef ERTEBAT_DATABASE_HPP
+#define ERTEBAT_DATABASE_HPP
 
 
 #include <memory>
 #include <string>
 #include <cppdb/frontend.h>
 
-namespace Footpal {
+namespace Ertebat {
 class Database;
 }
 
-class Footpal::Database
+class Ertebat::Database
 {
 private:
     struct Impl;
@@ -56,5 +56,5 @@ public:
 };
 
 
-#endif /* FOOTPAL_DATABASE_HPP */
+#endif /* ERTEBAT_DATABASE_HPP */
 
