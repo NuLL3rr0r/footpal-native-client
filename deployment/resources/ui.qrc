@@ -1,9 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>ui/custom/Toast.qml</file>
-        <file>ui/main.qml</file>
+        <file>ui/Main.qml</file>
         <file>ui/ForgotPassword.qml</file>
         <file>ui/SignIn.qml</file>
         <file>ui/SignUp.qml</file>
+        <file>ui/Splash.qml</file>
     </qresource>
 </RCC>

@@ -1,4 +1,4 @@
-import QtQuick 2.2;
+import QtQuick 2.3;
 import QtQuick.Controls 1.1;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
@@ -9,6 +9,7 @@ ApplicationWindow {
     width: 640;
     height: 480;
     title: qsTr("APP_TITLE");
+    color: "#203070";
 
     property Component buttonStyle: ButtonStyle {
         id: buttonStyle;
@@ -34,7 +35,7 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        pageLoader.setSource("SignIn.qml");
+        pageLoader.setSource("Splash.qml");
     }
 
     Loader {
