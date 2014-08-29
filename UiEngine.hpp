@@ -6,25 +6,30 @@
 #include <QtQml/QQmlApplicationEngine>
 
 namespace Ertebat {
+class Screen;
 class UiEngine;
 }
+
+class Ertebat::Screen : public QObject {
+    Q_OBJECT
+
+    Q_ENUMS( Type )
+
+public:
+    enum Type {
+        PC,
+        Phone,
+        Tablet7,
+        Tablet10
+    };
+};
 
 class Ertebat::UiEngine : public QQmlApplicationEngine
 {
     Q_OBJECT
 
-    Q_ENUMS( ScreenType )
-
     Q_PROPERTY ( QString EmptyLangString READ GetEmptyLangString NOTIFY signal_LanguageChanged )
-    Q_PROPERTY ( ScreenType ScreenType READ GetScreenType NOTIFY signal_ScreenTypeChangedChanged )
-
-public:
-    enum ScreenType {
-        ScreenType_PC,
-        ScreenType_Phone,
-        ScreenType_Tablet7,
-        ScreenType_Tablet10
-    };
+    Q_PROPERTY ( Ertebat::Screen::Type TargetScreenType READ GetTargetScreenType NOTIFY signal_TargetScreenTypeChanged )
 
 private:
     struct Impl;
@@ -38,11 +43,11 @@ public:
 
 signals:
     void signal_LanguageChanged();
-    void signal_ScreenTypeChangedChanged(ScreenType);
+    void signal_TargetScreenTypeChanged(Ertebat::Screen::Type);
 
 public:
     QString GetEmptyLangString() const;
-    ScreenType GetScreenType();
+    Ertebat::Screen::Type GetTargetScreenType();
 
 public:
     Q_INVOKABLE bool notify(const QString &title, const QString &text, const int id = 0) const;

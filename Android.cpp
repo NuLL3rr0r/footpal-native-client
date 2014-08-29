@@ -99,9 +99,9 @@ QString Android::GetScreenType()
     QAndroidJniObject ret = QAndroidJniObject::callStaticObjectMethod(
                 JAVA_CLASS,
                 "getScreenType",
-                "()Ljava/lang/CharSequence");
+                "()Ljava/lang/CharSequence;");
 
-    return QAndroidJniObject::toString();
+    return ret.toString();
 }
 
 bool Android::Notify(const QString &title, const QString &text, const int id)

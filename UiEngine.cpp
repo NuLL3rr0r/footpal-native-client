@@ -1,6 +1,7 @@
 #include <QtCore/QDebug>
 #include <QtCore/QVariant>
 #include <QtQml/QQmlContext>
+#include <QtQml/QtQml>
 #include <QtWidgets/QSystemTrayIcon>
 #if defined ( _WIN32 )
 #include <windows.h>
@@ -67,20 +68,20 @@ QString UiEngine::GetEmptyLangString() const
     return "";
 }
 
-UiEngine::ScreenType UiEngine::GetScreenType()
+Screen::Type UiEngine::GetTargetScreenType()
 {
 #if defined ( Q_OS_ANDROID )
     QString screenType(Pool::Android()->GetScreenType());
     if (screenType == "phone") {
-        return ScreenType_Phone;
+        return Screen::Phone;
     } else if (screenType == "7-inch-tablet") {
-        return ScreenType_Tablet7;
+        return Screen::Tablet7;
     } else if (screenType == "10-inch-tablet") {
-        return ScreenType_Tablet10;
+        return Screen::Tablet10;
     }
 #endif // defined ( Q_OS_ANDROID )
 
-    return ScreenType_PC;
+    return Screen::PC;
 }
 
 bool UiEngine::notify(const QString &title, const QString &text, const int id) const
@@ -143,6 +144,8 @@ UiEngine::Impl::~Impl()
 
 void UiEngine::Impl::Initialize()
 {
+    qmlRegisterType<Screen>("ScreenTypes", 1, 0, "ScreenType");
+
     QQmlContext *context = m_parent->rootContext();
     context->setContextProperty("UiEngine", m_parent);
     context->setContextProperty("RestApi", Pool::RestApi());
