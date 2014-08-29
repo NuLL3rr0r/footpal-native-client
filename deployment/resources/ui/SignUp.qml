@@ -65,6 +65,14 @@ Rectangle {
             placeholderText: qsTr("PASSWORD") + UiEngine.EmptyLangString;
         }
 
+        TextField {
+            id: confirmPasswordTextInput;
+            style: textFieldStyle;
+            width: parent.width;
+            echoMode: TextInput.Password;
+            placeholderText: qsTr("CONFIRM_PASSWORD") + UiEngine.EmptyLangString;
+        }
+
         Button {
             id: signUpButton;
             style: buttonStyle;
@@ -72,17 +80,27 @@ Rectangle {
             text: qsTr("SIGN_UP") + UiEngine.EmptyLangString;
             onClicked: {
                 if (!phoneNumberTextInput.acceptableInput) {
+                    UiEngine.showToast(qsTr("INVALID_PHONE_NUMBER"));
                     phoneNumberTextInput.focus = true;
                     phoneNumberTextInput.selectAll();
                     return;
                 }
                 if (!emailTextInput.acceptableInput) {
+                    UiEngine.showToast(qsTr("INVALID_EMAIL_ADDRESS"));
                     emailTextInput.focus = true;
                     emailTextInput.selectAll();
                     return;
                 }
                 if (passwordTextInput.text == "") {
+                    UiEngine.showToast(qsTr("INVALID_PASSWORD_LENGTH"));
                     passwordTextInput.focus = true;
+                    passwordTextInput.selectAll();
+                    return;
+                }
+                if (confirmPasswordTextInput.text != passwordTextInput.text) {
+                    UiEngine.showToast(qsTr("PASSWORDS_WONT_MATCH"));
+                    confirmPasswordTextInput.focus = true;
+                    confirmPasswordTextInput.selectAll();
                     return;
                 }
 

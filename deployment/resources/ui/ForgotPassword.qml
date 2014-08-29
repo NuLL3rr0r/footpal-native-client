@@ -32,10 +32,18 @@ Rectangle {
         }
 
         Button {
-            id: signInButton;
+            id: recoverPasswordButton;
             style: buttonStyle;
             width: parent.width;
             text: qsTr("RECOVER_PASSWORD") + UiEngine.EmptyLangString;
+            onClicked: {
+                if (!phoneNumberTextInput.acceptableInput) {
+                    UiEngine.showToast(qsTr("INVALID_PHONE_NUMBER"));
+                    phoneNumberTextInput.focus = true;
+                    phoneNumberTextInput.selectAll();
+                    return;
+                }
+            }
         }
     }
 

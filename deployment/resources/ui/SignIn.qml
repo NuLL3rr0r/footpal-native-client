@@ -64,12 +64,15 @@ Rectangle {
             text: qsTr("SIGN_IN") + UiEngine.EmptyLangString;
             onClicked: {
                 if (!usernameTextInput.acceptableInput) {
+                    UiEngine.showToast(qsTr("INVALID_PHONE_NUMBER"));
                     usernameTextInput.focus = true;
                     usernameTextInput.selectAll();
                     return;
                 }
                 if (passwordTextInput.text == "") {
+                    UiEngine.showToast(qsTr("INVALID_PASSWORD_LENGTH"));
                     passwordTextInput.focus = true;
+                    passwordTextInput.selectAll();
                     return;
                 }
 
