@@ -2,6 +2,7 @@ import QtQuick 2.3;
 import QtQuick.Controls 1.1;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
+import ScreenTypes 1.0;
 
 Rectangle {
     anchors.fill: parent;
@@ -16,7 +17,7 @@ Rectangle {
         spacing: 10;
 
         width: {
-            if (UiEngine.ScreenType == UiEngine.ScreenType_Phone) {
+            if (UiEngine.TargetScreenType === ScreenType.Phone) {
                 return parent.width * 0.8;
             } else {
                 return parent.width * 0.4;
