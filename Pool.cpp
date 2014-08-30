@@ -32,7 +32,7 @@ struct Pool::Impl
     typedef std::unique_ptr<Ertebat::Crypto> Crypto_t;
     typedef std::unique_ptr<Ertebat::Database> Database_t;
     typedef std::unique_ptr<Ertebat::RestApi> RestApi_t;
-    typedef std::unique_ptr<QTranslator> QTranslator_t;
+    typedef std::unique_ptr<QTranslator> Translator_t;
 
     static std::mutex StorageMutex;
     static Storage_t StorageInstance;
@@ -52,7 +52,7 @@ struct Pool::Impl
     static RestApi_t RestApiInstance;
 
     static std::mutex TranslatorMutex;
-    static QTranslator_t TranslatorInstance;
+    static Translator_t TranslatorInstance;
 };
 
 std::mutex Pool::Impl::StorageMutex;
@@ -73,7 +73,7 @@ std::mutex Pool::Impl::RestApiMutex;
 Pool::Impl::RestApi_t Pool::Impl::RestApiInstance = nullptr;
 
 std::mutex Pool::Impl::TranslatorMutex;
-Pool::Impl::QTranslator_t Pool::Impl::TranslatorInstance = nullptr;
+Pool::Impl::Translator_t Pool::Impl::TranslatorInstance = nullptr;
 
 Pool::StorageStruct *Pool::Storage()
 {
@@ -112,6 +112,8 @@ Ertebat::Crypto *Pool::Crypto()
         // Use this nice HEX/ASCII converter and your editor's replace dialog,
         // to create your own Key and IV.
         // http://www.dolcevie.com/js/converter.html
+        // or
+        // http://www.asciitohex.com/
         // To generate random password: https://strongpasswordgenerator.com/
 
         // bQN>S;989684747z
