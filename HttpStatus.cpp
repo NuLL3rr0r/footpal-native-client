@@ -45,9 +45,9 @@
 #define     HTTP_504_DEF        L"504 Gateway Timeout"
 #define     HTTP_505_DEF        L"505 HTTP Version Not Supported"
 
-using namespace  std;
-using namespace  boost;
-using namespace  Ertebat;
+using namespace std;
+using namespace boost;
+using namespace Ertebat;
 
 struct HttpStatus::Impl
 {
