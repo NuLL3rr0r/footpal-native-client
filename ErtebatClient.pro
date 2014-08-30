@@ -16,6 +16,7 @@ win32 {
 }
 DEFINES += "BUFFERSIZE=16777216"
 
+
 QMAKE_CXXFLAGS += -std=c++1y
 QMAKE_CXXFLAGS += -Wall -Wextra -pedantic
 #INCLUDEPATH += $$PWD/dependencies/include
