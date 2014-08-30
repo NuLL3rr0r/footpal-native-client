@@ -6,8 +6,6 @@
 #include "Application.hpp"
 #include "Log.hpp"
 
-void InitializeDatabase();
-
 int main(int argc, char *argv[])
 {
     Ertebat::Log::Initialize(std::cout);
