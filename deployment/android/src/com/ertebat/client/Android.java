@@ -1,3 +1,8 @@
+/**
+ * @author  Mohammad S. Babaei <info@babaei.net>
+ */
+
+
 package com.ertebat.client;
 
 import android.app.Notification;

@@ -1,3 +1,8 @@
+/**
+ * @author  Mohammad S. Babaei <info@babaei.net>
+ */
+
+
 #ifndef ERTEBAT_HTTP_STATUS_HPP
 #define ERTEBAT_HTTP_STATUS_HPP
 

@@ -1,3 +1,8 @@
+/**
+ * @author  Mohammad S. Babaei <info@babaei.net>
+ */
+
+
 import QtQuick 2.3;
 import QtGraphicalEffects 1.0;
 

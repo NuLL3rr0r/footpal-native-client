@@ -1,3 +1,8 @@
+/**
+ * @author  Mohammad S. Babaei <info@babaei.net>
+ */
+
+
 #ifndef ERTEBAT_REST_API_HPP
 #define ERTEBAT_REST_API_HPP
 

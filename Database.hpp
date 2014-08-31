@@ -1,3 +1,8 @@
+/**
+ * @author  Mohammad S. Babaei <info@babaei.net>
+ */
+
+
 #ifndef ERTEBAT_DATABASE_HPP
 #define ERTEBAT_DATABASE_HPP
 
