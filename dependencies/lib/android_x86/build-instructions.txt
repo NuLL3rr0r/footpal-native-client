@@ -24,6 +24,46 @@ cd ~/Desktop/Boost-for-Android
 ./build-android.sh --help
 ls /opt/android/ndk/toolchains/
 
+# Replace this one with all the other compilers
+nano -w ./configs/user-config-boost-1_55_0.jam
+########
+import os ;
+local AndroidNDKRoot = [ os.environ AndroidNDKRoot ] ;
+
+# --------------------------------------------------------------------
+using gcc : androidR8e
+:
+i686-linux-android-g++
+:
+<archiver>i686-linux-android-ar
+<compileflags>-fexceptions
+<compileflags>-frtti
+<compileflags>-fpic
+<compileflags>-ffunction-sections
+<compileflags>-funwind-tables
+<compileflags>-Os
+<compileflags>-fomit-frame-pointer
+<compileflags>-fno-strict-aliasing
+<compileflags>-finline-limit=64
+<compileflags>-I$(AndroidNDKRoot)/platforms/android-9/arch-x86/usr/include
+<compileflags>-Wa,--noexecstack
+<compileflags>-DANDROID
+<compileflags>-D__ANDROID__
+<compileflags>-DNDEBUG
+<compileflags>-O2
+<compileflags>-g
+<compileflags>-I$(AndroidNDKRoot)/sources/cxx-stl/gnu-libstdc++/4.8/include
+<compileflags>-I$(AndroidNDKRoot)/sources/cxx-stl/gnu-libstdc++/4.8/libs/x86/include
+# @Moss - Above are the 'official' android flags
+<architecture>x86
+<compileflags>-fvisibility=hidden
+<compileflags>-fvisibility-inlines-hidden
+<compileflags>-fdata-sections
+<cxxflags>-D_REENTRANT
+<cxxflags>-D_GLIBCXX__PTHREADS
+;
+########
+
 nano -w ./build-android.sh
 ########
 echo "Detected Android NDK version $NDK_RN"
@@ -35,17 +75,17 @@ case "$NDK_RN" in
     "8e (64-bit)")
         TOOLCHAIN=${TOOLCHAIN:-x86-4.8}
         CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/i686-linux-android-g++
-        TOOLSET=gcc-androidR8e
+        TOOLSET=gcc
         ;;
     "9 (64-bit)"|"9b (64-bit)"|"9c (64-bit)"|"9d (64-bit)")
         TOOLCHAIN=${TOOLCHAIN:-x86-4.8}
         CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/i686-linux-android-g++
-        TOOLSET=gcc-androidR8e
+        TOOLSET=gcc
         ;;
     "10 (64-bit)")
         TOOLCHAIN=${TOOLCHAIN:-x86-4.8}
         CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/i686-linux-android-g++
-        TOOLSET=gcc-androidR8e
+        TOOLSET=gcc
         ;;
     *)
         echo "Undefined or not supported Android NDK version!"
@@ -609,3 +649,6 @@ ls /opt/android/lib/android_x86/release/
 rm -rf obj
 
 #######################################
+
+
+
