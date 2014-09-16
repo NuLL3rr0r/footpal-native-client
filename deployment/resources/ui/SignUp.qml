@@ -28,6 +28,10 @@ Rectangle {
         RestApi.onSignal_SignUp.connect(onSingUpSuccess);
     }
 
+    Component.onDestruction: {
+        RestApi.onSignal_SignUp.disconnect(onSingUpSuccess);
+    }
+
     function onSingUpSuccess(response)
     {
         UiEngine.notify(qsTr("APP_TITLE"), response);
