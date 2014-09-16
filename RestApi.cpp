@@ -120,13 +120,11 @@ RestApi::Impl::Impl(RestApi *parent) :
 
 void RestApi::Impl::onSignUpCallback(const QString &response)
 {
-    qDebug() << 1;
     emit m_parent->signal_SignUp(response);
 }
 
 void RestApi::Impl::onSignInCallback(const QString &response)
 {
-    qDebug() << 2;
     emit m_parent->signal_SignIn(response);
 }
 
