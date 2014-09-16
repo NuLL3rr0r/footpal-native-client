@@ -67,6 +67,7 @@ HEADERS += \
     Application.hpp \
     Crypto.hpp \
     Database.hpp \
+    Exception.hpp \
     Http.hpp \
     HttpStatus.hpp \
     Log.hpp \
@@ -78,6 +79,7 @@ SOURCES += \
     Application.cpp \
     Crypto.cpp \
     Database.cpp \
+    Exception.cpp \
     Http.cpp \
     HttpStatus.cpp \
     Log.cpp \
