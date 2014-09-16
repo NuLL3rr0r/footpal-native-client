@@ -40,6 +40,7 @@ public slots:
     void onSignInCallback(const QString &response);
 
 public:
+    void SetupEvents();
 };
 
 #include "RestApi.moc" // this is a necessitas to QObject-based-Impl
@@ -55,12 +56,6 @@ RestApi::~RestApi() = default;
 
 void RestApi::signUp(const QString &phone, const QString &email, const QString &pwd)
 {
-    connect(m_pimpl->HttpSignUp.get(), SIGNAL(Signal_Finished(const QString &)),
-            m_pimpl.get(), SLOT(onSignUpCallback(const QString &)));
-    connect(m_pimpl->HttpSignUp.get(), SIGNAL(Signal_Error(const QString &)),
-            m_pimpl.get(), SLOT(onSignUpCallback(const QString &)));
-
-
     std::wstringstream stream;
     boost::property_tree::wptree tree;
     std::string outPwd;
@@ -79,12 +74,6 @@ void RestApi::signUp(const QString &phone, const QString &email, const QString &
 
 void RestApi::signIn(const QString &user, const QString &pwd)
 {
-    connect(m_pimpl->HttpSignIn.get(), SIGNAL(Signal_Finished(const QString &)),
-            m_pimpl.get(), SLOT(onSignInCallback(const QString &)));
-    connect(m_pimpl->HttpSignIn.get(), SIGNAL(Signal_Error(const QString &)),
-            m_pimpl.get(), SLOT(onSignInCallback(const QString &)));
-
-
     std::wstringstream stream;
     boost::property_tree::wptree tree;
     std::string outPwd;
@@ -126,17 +115,31 @@ RestApi::Impl::Impl(RestApi *parent) :
     HttpSignIn(std::make_unique<Http>()),
     HttpSignOut(std::make_unique<Http>())
 {
-
+    SetupEvents();
 }
 
 void RestApi::Impl::onSignUpCallback(const QString &response)
 {
+    qDebug() << 1;
     emit m_parent->signal_SignUp(response);
 }
 
 void RestApi::Impl::onSignInCallback(const QString &response)
 {
+    qDebug() << 2;
     emit m_parent->signal_SignIn(response);
 }
 
+void RestApi::Impl::SetupEvents()
+{
+    connect(HttpSignUp.get(), SIGNAL(Signal_Finished(const QString &)),
+            this, SLOT(onSignUpCallback(const QString &)));
+    connect(HttpSignUp.get(), SIGNAL(Signal_Error(const QString &)),
+            this, SLOT(onSignUpCallback(const QString &)));
+
+    connect(HttpSignIn.get(), SIGNAL(Signal_Finished(const QString &)),
+            this, SLOT(onSignInCallback(const QString &)));
+    connect(HttpSignIn.get(), SIGNAL(Signal_Error(const QString &)),
+            this, SLOT(onSignInCallback(const QString &)));
+}
 
