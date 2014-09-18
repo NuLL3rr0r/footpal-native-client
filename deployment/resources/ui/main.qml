@@ -12,8 +12,8 @@ import "custom";
 
 ApplicationWindow {
     visible: true;
-    width: 640;
-    height: 480;
+    width: 480;
+    height: 800;
     title: qsTr("APP_TITLE");
     color: "#203070";
 

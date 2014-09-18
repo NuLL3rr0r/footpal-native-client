@@ -1,4 +1,5 @@
 # @author  Mohammad S. Babaei <info@babaei.net>
+# @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
 
 
 TEMPLATE = app
@@ -95,7 +96,10 @@ android {
 lupdate_only {
     SOURCES += \
         deployment/resources/ui/Main.qml \
+        deployment/resources/ui/Chat.qml \
+        deployment/resources/ui/ChatLog.qml \
         deployment/resources/ui/ForgotPassword.qml \
+        deployment/resources/ui/Home.qml \
         deployment/resources/ui/SignIn.qml \
         deployment/resources/ui/SignUp.qml \
         deployment/resources/ui/Splash.qml
@@ -106,6 +110,7 @@ RESOURCES += \
     deployment/resources/db.qrc \
     deployment/resources/fnt.qrc \
     deployment/resources/img.qrc \
+    deployment/resources/js.qrc \
     deployment/resources/ui.qrc
 
 
