@@ -13,3 +13,4 @@ dependencies/lib/android_x86/*
 dependencies/lib/mingw482_32/*
 !dependencies/lib/mingw482_32/build-instructions.txt
 *.user
+*.user.*
