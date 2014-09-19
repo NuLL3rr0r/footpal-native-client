@@ -98,6 +98,7 @@ lupdate_only {
         deployment/resources/ui/Main.qml \
         deployment/resources/ui/Chat.qml \
         deployment/resources/ui/ChatLog.qml \
+        deployment/resources/ui/ContactSelection.qml \
         deployment/resources/ui/ForgotPassword.qml \
         deployment/resources/ui/Home.qml \
         deployment/resources/ui/SignIn.qml \

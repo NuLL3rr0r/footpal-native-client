@@ -82,7 +82,7 @@ Rectangle {
 
     ListView {
         anchors.top: topBar.bottom
-        anchors.bottom: parent.bottom
+        anchors.bottom: bottomBar.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 5

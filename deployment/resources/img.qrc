@@ -1,9 +1,12 @@
 <RCC>
     <qresource prefix="/">
+        <file>img/btn_bar_new_chat.png</file>
+        <file>img/btn_bar_new_chat_pressed.png</file>
         <file>img/btn_bar_return.png</file>
         <file>img/btn_bar_return_pressed.png</file>
         <file>img/bubble_left_green.png</file>
         <file>img/bubble_right_blue.png</file>
+        <file>img/ic_contact.png</file>
         <file>img/Splash.png</file>
     </qresource>
 </RCC>

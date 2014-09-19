@@ -48,6 +48,9 @@ Rectangle {
             width: Math.min(height * privates.buttonWHRatio, root.width * privates.buttonMaxWidthCoef);
             style: buttonStyle;
             text: qsTr("FRIENDS") + UiEngine.EmptyLangString;
+            onClicked: {
+                pageLoader.setSource("qrc:///ui/ContactSelection.qml")
+            }
         }
         Button {
             height: root.height * privates.buttonHeightCoef;
