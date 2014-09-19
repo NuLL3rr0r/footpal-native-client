@@ -1,5 +1,7 @@
 /**
  * @author  Mohammad S. Babaei <info@babaei.net>
+ *
+ * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
  */
 
 
@@ -54,6 +56,8 @@ Rectangle {
             id: phoneNumberTextInput;
             style: textFieldStyle;
             width: parent.width;
+            height: width / 8;
+            font.pixelSize: height * 0.5;
             placeholderText: qsTr("PHONE_NUMBER") + UiEngine.EmptyLangString;
             focus: true;
             validator: mobilePhoneRegExpValidator;
@@ -63,6 +67,8 @@ Rectangle {
             id: emailTextInput;
             style: textFieldStyle;
             width: parent.width;
+            height: width / 8;
+            font.pixelSize: height * 0.5;
             placeholderText: qsTr("EMAIL") + UiEngine.EmptyLangString;
             validator: emailRegExpValidator;
         }
@@ -71,6 +77,8 @@ Rectangle {
             id: passwordTextInput;
             style: textFieldStyle;
             width: parent.width;
+            height: width / 8;
+            font.pixelSize: height * 0.5;
             echoMode: TextInput.Password;
             placeholderText: qsTr("PASSWORD") + UiEngine.EmptyLangString;
         }
@@ -79,6 +87,8 @@ Rectangle {
             id: confirmPasswordTextInput;
             style: textFieldStyle;
             width: parent.width;
+            height: width / 8;
+            font.pixelSize: height * 0.5;
             echoMode: TextInput.Password;
             placeholderText: qsTr("CONFIRM_PASSWORD") + UiEngine.EmptyLangString;
         }
@@ -87,6 +97,7 @@ Rectangle {
             id: signUpButton;
             style: buttonStyle;
             width: parent.width;
+            height: width / 8;
             text: qsTr("SIGN_UP") + UiEngine.EmptyLangString;
             onClicked: {
                 if (!phoneNumberTextInput.acceptableInput) {
@@ -128,6 +139,7 @@ Rectangle {
         }
         color: "white";
         text: qsTr("RETURN") + UiEngine.EmptyLangString;
+        font.pixelSize: phoneNumberTextInput.font.pixelSize;
 
         MouseArea {
             anchors.fill: parent;

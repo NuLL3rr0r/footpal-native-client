@@ -56,23 +56,28 @@ Rectangle {
             id: usernameTextInput;
             style: textFieldStyle;
             width: parent.width;
+            height: width / 8;
             placeholderText: qsTr("USERNAME") + UiEngine.EmptyLangString;
             validator: mobilePhoneRegExpValidator;
             focus: true;
+            font.pixelSize: height * 0.5
         }
 
         TextField {
             id: passwordTextInput;
             style: textFieldStyle;
             width: parent.width;
+            height: width / 8
             echoMode: TextInput.Password;
             placeholderText: qsTr("PASSWORD") + UiEngine.EmptyLangString;
+            font.pixelSize: height * 0.5
         }
 
         Button {
             id: signInButton;
             style: buttonStyle;
             width: parent.width;
+            height: width / 8
             text: qsTr("SIGN_IN") + UiEngine.EmptyLangString;
             onClicked: {
 //                if (!usernameTextInput.acceptableInput) {
@@ -98,6 +103,7 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter;
             color: "white";
             text: qsTr("FORGOT_PASSWORD") + UiEngine.EmptyLangString;
+            font.pixelSize: passwordTextInput.font.pixelSize
 
             MouseArea {
                 anchors.fill: parent;
@@ -118,6 +124,7 @@ Rectangle {
         }
         color: "white";
         text: qsTr("SIGN_UP") + UiEngine.EmptyLangString;
+        font.pixelSize: passwordTextInput.font.pixelSize
 
         MouseArea {
             anchors.fill: parent;

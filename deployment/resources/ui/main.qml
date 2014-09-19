@@ -1,5 +1,7 @@
 /**
  * @author  Mohammad S. Babaei <info@babaei.net>
+ *
+ * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
  */
 
 
@@ -19,6 +21,12 @@ ApplicationWindow {
 
     property Component buttonStyle: ButtonStyle {
         id: buttonStyle;
+        label: Text {
+            font.pixelSize: control.height * 0.5;
+            text: control.text
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
         background: Rectangle {
             implicitHeight: 20;
             implicitWidth: 100;

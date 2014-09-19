@@ -22,7 +22,8 @@ Rectangle {
 
         property bool isInitialized: false
         property int barHeight: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.08 : 40
-        property int maxLeftBubbleWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.75 : Math.min(root.width * 0.75, 256)
+        property int bottomBarHeight: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.1 : 50
+        property int maxLeftBubbleWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.5 : Math.min(root.width * 0.75, 256)
         property int itemSpacing: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.01 : 5
         property int imageSize: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.15 : 75
     }
@@ -81,7 +82,9 @@ Rectangle {
     ListView {
         anchors.top: topBar.bottom
         anchors.bottom: parent.bottom
-        width: parent.width
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 5
         spacing: privates.itemSpacing
         model: jsonModel.model;
         delegate: Component {
@@ -150,6 +153,45 @@ Rectangle {
                             text: model.time
                         }
                     }
+                }
+            }
+        }
+    }
+
+    Rectangle {
+        id: bottomBar
+        width: root.width
+        height: privates.barHeight
+        anchors.bottom: parent.bottom
+        color: "#333"
+        z: 1
+
+        Row {
+            anchors.fill: parent
+            anchors.margins: 5
+            spacing: 5
+
+            TextField {
+                id: messageTextField
+                height: parent.height
+                width: parent.width * 0.6
+                font.pixelSize: height * 0.5
+                placeholderText: qsTr("TYPE_HERE") + UiEngine.EmptyLangString;
+                focus: true;
+            }
+
+            Button {
+                id: buttonSubmit
+                style: buttonStyle
+                width: parent.width * 0.25
+                height: parent.height
+                text: qsTr("SUBMIT") + UiEngine.EmptyLangString;
+                onClicked: {
+                    if (messageTextField.text == "")
+                        return;
+                    var data = { 'self': "true", 'contact': "Self", 'date': new Date().toDateString(), 'time': new Date().toTimeString().substring(0, 5), 'content': messageTextField.text }
+                    jsonModel.model.append(data)
+                    messageTextField.text = ""
                 }
             }
         }
