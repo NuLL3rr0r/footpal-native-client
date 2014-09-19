@@ -61,7 +61,8 @@ struct HttpStatus::Impl
     {
         std::size_t operator()(const _T &t) const
         {
-            return std::hash<unsigned char>()(static_cast<unsigned char>(t));
+            return std::hash<std::underlying_type<HttpStatusCode>::type>()
+                    (static_cast<std::underlying_type<HttpStatusCode>::type>(t));
         }
     };
 
