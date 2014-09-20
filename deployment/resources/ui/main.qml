@@ -18,8 +18,8 @@ import "scripts/ws.js" as WS
 
 ApplicationWindow {
     visible: true;
-    width: 480;
-    height: 600;
+    width: 1280;
+    height: 800;
     title: qsTr("APP_TITLE");
     color: "#203070";
 
@@ -38,6 +38,28 @@ ApplicationWindow {
             antialiasing: true;
             border.color: "gray";
             radius: height / 4;
+        }
+    }
+
+    property Component radioButtonStyle: RadioButtonStyle {
+        id: radioButtonStyle
+        indicator: Rectangle {
+                implicitWidth: control.height
+                implicitHeight: control.height
+                radius: control.height / 2
+                border.color: control.activeFocus ? "darkblue" : "gray"
+                border.width: 1
+                Rectangle {
+                    anchors.fill: parent
+                    visible: control.checked
+                    color: "#555"
+                    radius: 9
+                    anchors.margins: 4
+                }
+        }
+        label: Text {
+            text: control.text
+            font.pixelSize: control.height
         }
     }
 

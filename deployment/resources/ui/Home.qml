@@ -57,6 +57,9 @@ Rectangle {
             width: Math.min(height * privates.buttonWHRatio, root.width * privates.buttonMaxWidthCoef);
             style: buttonStyle;
             text: qsTr("EMAIL") + UiEngine.EmptyLangString;
+            onClicked: {
+                pageLoader.setSource("qrc:///ui/CreateRoom.qml")
+            }
         }
     }
 }

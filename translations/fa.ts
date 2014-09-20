@@ -4,17 +4,17 @@
 <context>
     <name>Chat</name>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="57"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="81"/>
         <source>CHAT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="179"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="189"/>
         <source>TYPE_HERE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="188"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="198"/>
         <source>SUBMIT</source>
         <translation type="unfinished"></translation>
     </message>
@@ -22,7 +22,7 @@
 <context>
     <name>ChatLog</name>
     <message>
-        <location filename="../deployment/resources/ui/ChatLog.qml" line="56"/>
+        <location filename="../deployment/resources/ui/ChatLog.qml" line="69"/>
         <source>CONVERSATIONS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -30,39 +30,90 @@
 <context>
     <name>ContactSelection</name>
     <message>
-        <location filename="../deployment/resources/ui/ContactSelection.qml" line="56"/>
+        <location filename="../deployment/resources/ui/ContactSelection.qml" line="57"/>
         <source>SELECT_CONTACTS</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/ContactSelection.qml" line="153"/>
+        <source>CONTINUE</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CreateRoom</name>
+    <message>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="57"/>
+        <source>ROOM_NAME</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="65"/>
+        <source>PUBLIC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="77"/>
+        <source>PRIVATE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="89"/>
+        <source>PASSWORD</source>
+        <translation type="unfinished">کلمه عبور</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="99"/>
+        <source>CONFIRM_PASSWORD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="107"/>
+        <source>CONFIRM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="110"/>
+        <source>INVALID_FIELD_LENGTH</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="116"/>
+        <source>INVALID_PASSWORD_LENGTH</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="122"/>
+        <source>PASSWORDS_WONT_MATCH</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="141"/>
+        <source>RETURN</source>
+        <translation type="unfinished">بازگشت</translation>
     </message>
 </context>
 <context>
     <name>Ertebat::Http</name>
     <message>
-        <location filename="../Http.cpp" line="66"/>
-        <location filename="../Http.cpp" line="82"/>
-        <location filename="../Http.cpp" line="98"/>
-        <location filename="../Http.cpp" line="114"/>
         <source>CONNECTION_FAILED</source>
-        <translation>خطای شبکه</translation>
+        <translation type="vanished">خطای شبکه</translation>
     </message>
 </context>
 <context>
     <name>Ertebat::Http::Impl</name>
     <message>
-        <location filename="../Http.cpp" line="136"/>
         <source>AUTHENTICATION_REQUIRED: %1</source>
-        <translation>Authentication Required</translation>
+        <translation type="vanished">Authentication Required</translation>
     </message>
     <message>
-        <location filename="../Http.cpp" line="155"/>
         <source>NO_NETWORK_ACCESS</source>
-        <translation>عدم دسترسی به اینترنت
+        <translation type="vanished">عدم دسترسی به اینترنت
 </translation>
     </message>
     <message>
-        <location filename="../Http.cpp" line="163"/>
         <source>PROXY_AUTHENTICATION_REQUIRED</source>
-        <translation>Proxy Authentication Required</translation>
+        <translation type="vanished">Proxy Authentication Required</translation>
     </message>
 </context>
 <context>
@@ -91,17 +142,17 @@
 <context>
     <name>Home</name>
     <message>
-        <location filename="../deployment/resources/ui/Home.qml" line="40"/>
+        <location filename="../deployment/resources/ui/Home.qml" line="41"/>
         <source>CHAT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Home.qml" line="49"/>
+        <location filename="../deployment/resources/ui/Home.qml" line="50"/>
         <source>FRIENDS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Home.qml" line="58"/>
+        <location filename="../deployment/resources/ui/Home.qml" line="59"/>
         <source>EMAIL</source>
         <translation type="unfinished">پست الکترونیکی</translation>
     </message>
@@ -109,7 +160,7 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="../deployment/resources/ui/Main.qml" line="19"/>
+        <location filename="../deployment/resources/ui/Main.qml" line="23"/>
         <source>APP_TITLE</source>
         <translation>ارتباط</translation>
     </message>
@@ -117,32 +168,32 @@
 <context>
     <name>SignIn</name>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="34"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="35"/>
         <source>APP_TITLE</source>
         <translation>ارتباط</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="60"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="66"/>
         <source>USERNAME</source>
         <translation>کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="72"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="78"/>
         <source>PASSWORD</source>
         <translation>کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="81"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="87"/>
         <source>SIGN_IN</source>
         <translation>ورود</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="105"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="111"/>
         <source>FORGOT_PASSWORD</source>
         <translation>بازیابی کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="126"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="132"/>
         <source>SIGN_UP</source>
         <translation>ثبت نام</translation>
     </message>

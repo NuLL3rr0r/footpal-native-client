@@ -76,11 +76,9 @@ Rectangle {
         json: ""
     }
 
-
-
     ListView {
         anchors.top: topBar.bottom
-        anchors.bottom: parent.bottom
+        anchors.bottom: bottomBar.top
         width: parent.width
         spacing: privates.itemSpacing
         model: jsonModel.model;
@@ -128,6 +126,34 @@ Rectangle {
                         WS.Context.currentRoomId = model.contact;
                         pageLoader.setSource("qrc:///ui/Chat.qml");
                     }
+                }
+            }
+        }
+    }
+
+    Rectangle {
+        id: bottomBar
+        width: root.width
+        height: privates.barHeight
+        anchors.bottom: parent.bottom
+        color: "#333"
+        z: 1
+
+        Row {
+            anchors.fill: parent
+            anchors.margins: 5
+            spacing: 5
+
+            ExtButton {
+                height: parent.height * 0.8;
+                width: height;
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: (parent.height - height) / 2;
+                defaultImage: "qrc:///img/btn_bar_new_chat.png"
+                pressedImage: "qrc:///img/btn_bar_new_chat_pressed.png"
+                onSignal_clicked: {
+                    pageLoader.setSource("qrc:///ui/ContactSelection.qml")
                 }
             }
         }

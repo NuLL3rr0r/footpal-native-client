@@ -86,21 +86,21 @@ Rectangle {
             height: width / 8
             text: qsTr("SIGN_IN") + UiEngine.EmptyLangString;
             onClicked: {
-                if (!usernameTextInput.acceptableInput) {
-                    UiEngine.showToast(qsTr("INVALID_PHONE_NUMBER"));
-                    usernameTextInput.focus = true;
-                    usernameTextInput.selectAll();
-                    return;
-                }
-                if (passwordTextInput.text == "") {
-                    UiEngine.showToast(qsTr("INVALID_PASSWORD_LENGTH"));
-                    passwordTextInput.focus = true;
-                    passwordTextInput.selectAll();
-                    return;
-                }
+//                if (!usernameTextInput.acceptableInput) {
+//                    UiEngine.showToast(qsTr("INVALID_PHONE_NUMBER"));
+//                    usernameTextInput.focus = true;
+//                    usernameTextInput.selectAll();
+//                    return;
+//                }
+//                if (passwordTextInput.text == "") {
+//                    UiEngine.showToast(qsTr("INVALID_PASSWORD_LENGTH"));
+//                    passwordTextInput.focus = true;
+//                    passwordTextInput.selectAll();
+//                    return;
+//                }
 
-                RestApi.signIn(usernameTextInput.text, passwordTextInput.text);
-//                pageLoader.setSource("Home.qml");
+//                RestApi.signIn(usernameTextInput.text, passwordTextInput.text);
+                pageLoader.setSource("Home.qml");
             }
         }
 
