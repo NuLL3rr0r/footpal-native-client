@@ -8,6 +8,7 @@ import QtQuick 2.3;
 import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
+import RestStatusCodes 1.0;
 import ScreenTypes 1.0;
 
 Rectangle {
@@ -26,17 +27,17 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        RestApi.onSignal_SignUp.connect(onSingUpSuccess);
+        RestApi.onSignal_SignUp.connect(onSingUpCallback);
     }
 
     Component.onDestruction: {
-        RestApi.onSignal_SignUp.disconnect(onSingUpSuccess);
+        RestApi.onSignal_SignUp.disconnect(onSingUpCallback);
     }
 
-    function onSingUpSuccess(response)
+    function onSingUpCallback(connectionStatus, statusCode, data)
     {
-        UiEngine.notify(qsTr("APP_TITLE"), response);
-        UiEngine.showToast(response);
+        UiEngine.notify(qsTr("APP_TITLE"), connectionStatus + " : " + statusCode + " : " + data);
+        UiEngine.showToast(connectionStatus + " : " + statusCode + " : " + data);
     }
 
     Column {

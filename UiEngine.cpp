@@ -149,6 +149,14 @@ UiEngine::Impl::~Impl()
 
 void UiEngine::Impl::Initialize()
 {
+    qRegisterMetaType<Ertebat::RestStatusCodes::ConnectionStatus>("Ertebat::RestStatusCodes::ConnectionStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::SignUpStatus>("Ertebat::RestStatusCodes::SignUpStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::SignInStatus>("Ertebat::RestStatusCodes::SignInStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::SignOutStatus>("Ertebat::RestStatusCodes::SignOutStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::GetCurrentProfileStatus>("Ertebat::RestStatusCodes::GetCurrentProfileStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::UsersListStatus>("Ertebat::RestStatusCodes::UsersListStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::CreateIndividualRoomStatus>("Ertebat::RestStatusCodes::CreateIndividualRoomStatus");
+
     qmlRegisterType<Ertebat::RestStatusCodes>("RestStatusCodes", 1, 0, "RestStatusCode");
     qmlRegisterType<Ertebat::Screen>("ScreenTypes", 1, 0, "ScreenType");
 
