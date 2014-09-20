@@ -36,12 +36,8 @@ Rectangle {
         }
     ]
 
-    Rectangle {
+    Bar {
         id: topBar
-        width: root.width
-        height: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.08 : 40
-        color: "#333"
-        z: 1
 
         ExtButton {
             height: parent.height * 0.8;
@@ -137,7 +133,7 @@ Rectangle {
         width: mainColumn.width;
         height: width / 8;
         anchors.horizontalCenter: parent.horizontalCenter
-        y: parent.height * 0.7
+        y: roomNameTextField.y + 4 * (roomNameTextField.height + (root.height * 0.025));
         text: qsTr("CONFIRM") + UiEngine.EmptyLangString;
         onClicked: {
             if (roomNameTextField == "") {

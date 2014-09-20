@@ -96,7 +96,6 @@ android {
 lupdate_only {
     SOURCES += \
         deployment/resources/ui/Main.qml \
-        deployment/resources/ui/AddFriend.qml \
         deployment/resources/ui/Chat.qml \
         deployment/resources/ui/ChatLog.qml \
         deployment/resources/ui/ContactList.qml \

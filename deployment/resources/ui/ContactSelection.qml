@@ -33,12 +33,8 @@ Rectangle {
         privates.isInitialized = true;
     }
 
-    Rectangle {
+    Bar {
         id: topBar
-        width: root.width
-        height: privates.barHeight
-        color: "#333"
-        z: 1
 
         ExtButton {
             height: parent.height * 0.8;
@@ -136,13 +132,10 @@ Rectangle {
         }
     }
 
-    Rectangle {
+    Bar {
         id: bottomBar
-        width: root.width
         height: privates.buttonHeight + 16
         anchors.bottom: parent.bottom
-        color: "#333"
-        z: 1
 
         Button {
             id: btnContinue

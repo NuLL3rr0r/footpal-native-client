@@ -58,7 +58,7 @@ ApplicationWindow {
         }
         label: Text {
             text: control.text
-            font.pixelSize: control.height
+            font.pixelSize: control.height * 0.75
         }
     }
 

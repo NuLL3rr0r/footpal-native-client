@@ -6,7 +6,6 @@
         <file>ui/custom/Toast.qml</file>
         <file>ui/utils/JSONListModel.qml</file>
         <file>ui/Main.qml</file>
-        <file>ui/AddFriend.qml</file>
         <file>ui/Chat.qml</file>
         <file>ui/ChatLog.qml</file>
         <file>ui/ContactList.qml</file>

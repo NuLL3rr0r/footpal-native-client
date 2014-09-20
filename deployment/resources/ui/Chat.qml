@@ -57,13 +57,7 @@ Rectangle {
         }
     }
 
-    Rectangle {
-        id: topBar
-        width: root.width
-        height: privates.barHeight
-        color: "#333"
-        z: 1
-
+    Bar {
         ExtButton {
             height: parent.height * 0.8;
             width: height;
@@ -169,12 +163,8 @@ Rectangle {
         }
     }
 
-    Rectangle {
+    Bar {
         id: bottomBarExtension
-        width: root.width
-        height: privates.barHeight
-        color: "#333"
-        z: 1
 
         Behavior on y {
             NumberAnimation { duration: 200 }
@@ -222,12 +212,9 @@ Rectangle {
         }
     }
 
-    Rectangle {
+    Bar {
         id: bottomBar
-        width: root.width
-        height: privates.barHeight
         anchors.bottom: parent.bottom
-        color: "#333"
         z: 2
 
         Item {
