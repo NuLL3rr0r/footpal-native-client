@@ -1,10 +1,11 @@
 /**
  * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
+ * @author  Mohammad S. Babaei <info@babaei.net>
  */
 
 
 import QtQuick 2.3;
-import QtQuick.Controls 1.1;
+import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
@@ -47,6 +48,9 @@ Rectangle {
             width: Math.min(height * privates.buttonWHRatio, root.width * privates.buttonMaxWidthCoef);
             style: buttonStyle;
             text: qsTr("FRIENDS") + UiEngine.EmptyLangString;
+            onClicked: {
+                pageLoader.setSource("qrc:///ui/ContactSelection.qml")
+            }
         }
         Button {
             height: root.height * privates.buttonHeightCoef;

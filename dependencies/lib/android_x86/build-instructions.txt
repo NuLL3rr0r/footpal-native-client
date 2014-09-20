@@ -1,6 +1,3 @@
-# @author  Mohammad S. Babaei <info@babaei.net>
-
-
 INSTRUCTIONS FOR BUILDING ON SLACKWARE64
 
 !! FIRST YOU SHOULD HAVE A FUNCTIONAL MULTILIB SLACKWARE INSTALLATION IN ORDER FOR THIS TO WORK !!
@@ -19,50 +16,10 @@ tar xvJf zlib-1.2.8.tar.xz
 #-sICU_PATH="/home/babaei/Desktop/icu" \
 
 git clone https://github.com/MysticTreeGames/Boost-for-Android.git
-cp -vr boost_1_55_0.tar.bz2 ~/Desktop/Boost-for-Android/
+cp -vr boost_1_55_0.tar.bz2 ~/Desktop/Boost-for-Android-master/
 cd ~/Desktop/Boost-for-Android
 ./build-android.sh --help
 ls /opt/android/ndk/toolchains/
-
-# Replace this one with all the other compilers
-nano -w ./configs/user-config-boost-1_55_0.jam
-########
-import os ;
-local AndroidNDKRoot = [ os.environ AndroidNDKRoot ] ;
-
-# --------------------------------------------------------------------
-using gcc : androidR8e
-:
-i686-linux-android-g++
-:
-<archiver>i686-linux-android-ar
-<compileflags>-fexceptions
-<compileflags>-frtti
-<compileflags>-fpic
-<compileflags>-ffunction-sections
-<compileflags>-funwind-tables
-<compileflags>-Os
-<compileflags>-fomit-frame-pointer
-<compileflags>-fno-strict-aliasing
-<compileflags>-finline-limit=64
-<compileflags>-I$(AndroidNDKRoot)/platforms/android-9/arch-x86/usr/include
-<compileflags>-Wa,--noexecstack
-<compileflags>-DANDROID
-<compileflags>-D__ANDROID__
-<compileflags>-DNDEBUG
-<compileflags>-O2
-<compileflags>-g
-<compileflags>-I$(AndroidNDKRoot)/sources/cxx-stl/gnu-libstdc++/4.8/include
-<compileflags>-I$(AndroidNDKRoot)/sources/cxx-stl/gnu-libstdc++/4.8/libs/x86/include
-# @Moss - Above are the 'official' android flags
-<architecture>x86
-<compileflags>-fvisibility=hidden
-<compileflags>-fvisibility-inlines-hidden
-<compileflags>-fdata-sections
-<cxxflags>-D_REENTRANT
-<cxxflags>-D_GLIBCXX__PTHREADS
-;
-########
 
 nano -w ./build-android.sh
 ########
@@ -75,17 +32,17 @@ case "$NDK_RN" in
     "8e (64-bit)")
         TOOLCHAIN=${TOOLCHAIN:-x86-4.8}
         CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/i686-linux-android-g++
-        TOOLSET=gcc
+        TOOLSET=gcc-androidR8e
         ;;
     "9 (64-bit)"|"9b (64-bit)"|"9c (64-bit)"|"9d (64-bit)")
         TOOLCHAIN=${TOOLCHAIN:-x86-4.8}
         CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/i686-linux-android-g++
-        TOOLSET=gcc
+        TOOLSET=gcc-androidR8e
         ;;
     "10 (64-bit)")
         TOOLCHAIN=${TOOLCHAIN:-x86-4.8}
         CXXPATH=$AndroidNDKRoot/toolchains/${TOOLCHAIN}/prebuilt/${PlatformOS}-x86_64/bin/i686-linux-android-g++
-        TOOLSET=gcc
+        TOOLSET=gcc-androidR8e
         ;;
     *)
         echo "Undefined or not supported Android NDK version!"
@@ -294,7 +251,7 @@ if [ ! -d "$ANDROID_NDK_ROOT/sources/cxx-stl/gnu-libstdc++/4.8/include/" ]; then
 fi
 
 # If more than one library is using STLport, all libraries ***must*** use the shared version
-# STLPORT_LIB=libgnustl_static.a
+# STLPORT_LIB=libgnustl_shared.a
 STLPORT_LIB=libgnustl_shared.so
 
 

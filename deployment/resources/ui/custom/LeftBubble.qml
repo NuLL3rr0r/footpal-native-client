@@ -1,5 +1,11 @@
+/**
+ * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
+ * @author  Mohammad S. Babaei <info@babaei.net>
+ */
+
+
 import QtQuick 2.3;
-import QtQuick.Controls 1.1;
+import QtQuick.Controls 1.2;
 
 BorderImage {
     id: leftBubble

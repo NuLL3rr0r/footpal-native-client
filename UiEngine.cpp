@@ -149,7 +149,8 @@ UiEngine::Impl::~Impl()
 
 void UiEngine::Impl::Initialize()
 {
-    qmlRegisterType<Screen>("ScreenTypes", 1, 0, "ScreenType");
+    qmlRegisterType<Ertebat::RestStatusCodes>("RestStatusCodes", 1, 0, "RestStatusCode");
+    qmlRegisterType<Ertebat::Screen>("ScreenTypes", 1, 0, "ScreenType");
 
     QQmlContext *context = m_parent->rootContext();
     context->setContextProperty("UiEngine", m_parent);

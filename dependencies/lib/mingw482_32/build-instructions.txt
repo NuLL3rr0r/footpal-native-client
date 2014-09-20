@@ -1,4 +1,4 @@
-# @author  Mohammad S. Babaei <info@babaei.net>
+
 
 
 ################# BOOST
@@ -58,10 +58,10 @@ sqlite3ext.h
 6. Create both build_debug and build_release directories inside the source tree of CppDB.
 
 7. For debug build:
-cmake -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=Debug -DCMAKE_LIBRARY_PATH=../sqlite3/debug -DCMAKE_INCLUDE_PATH=../sqlite3/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ..\
+cmake -G "MinGW Makefiles"  -D CMAKE_BUILD_TYPE=Debug -DCMAKE_LIBRARY_PATH=../sqlite3/debug -DCMAKE_INCLUDE_PATH=../sqlite3/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ..\
 
 8. For release build:
-cmake -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=../sqlite3/release -DCMAKE_INCLUDE_PATH=../sqlite3/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ..\
+cmake -G "MinGW Makefiles"  -D CMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=../sqlite3/release -DCMAKE_INCLUDE_PATH=../sqlite3/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ..\
 
 9. For each build:
 mingw32-make -j5
@@ -125,3 +125,6 @@ CONFIG -= qt
 debug/b64.dll
 release/b64.dll
 include/b64/*
+
+
+

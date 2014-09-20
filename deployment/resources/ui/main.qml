@@ -1,6 +1,5 @@
 /**
  * @author  Mohammad S. Babaei <info@babaei.net>
- *
  * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
  *
  * @author  Majid Sadeghi Alavijeh <majid.sadeghi.alavijeh@gmail.com>
@@ -8,10 +7,11 @@
 
 
 import QtQuick 2.3;
-import QtQuick.Controls 1.1;
+import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
 import Qt.WebSockets 1.0
+import RestStatusCodes 1.0;
 import ScreenTypes 1.0;
 import "custom";
 import "scripts/ws.js" as WS

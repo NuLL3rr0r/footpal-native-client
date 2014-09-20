@@ -7,6 +7,7 @@
         <file>ui/Main.qml</file>
         <file>ui/Chat.qml</file>
         <file>ui/ChatLog.qml</file>
+        <file>ui/ContactSelection.qml</file>
         <file>ui/ForgotPassword.qml</file>
         <file>ui/Home.qml</file>
         <file>ui/SignIn.qml</file>
