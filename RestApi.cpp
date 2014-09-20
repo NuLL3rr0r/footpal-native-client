@@ -245,7 +245,6 @@ void RestApi::Impl::OnSignInRequestFailed(const Http::Error &error)
 void RestApi::Impl::OnSignInRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
                                             const QString &data)
 {
-    (void)data;
     emit m_parent->signal_SignIn(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
                                  static_cast<Ertebat::RestStatusCodes::SignInStatus>(statusCode),
                                  data);

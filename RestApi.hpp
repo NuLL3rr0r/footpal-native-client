@@ -106,28 +106,28 @@ public:
 signals:
     void signal_SignUp(Ertebat::RestStatusCodes::ConnectionStatus,
                        Ertebat::RestStatusCodes::SignUpStatus,
-                       const QString &data);
+                       const QString &);
     void signal_SignIn(Ertebat::RestStatusCodes::ConnectionStatus,
                        Ertebat::RestStatusCodes::SignInStatus,
-                       const QString &data);
+                       const QString &);
     void signal_SignOut(Ertebat::RestStatusCodes::ConnectionStatus,
                         Ertebat::RestStatusCodes::SignOutStatus,
-                        const QString &data);
+                        const QString &);
 
     void signal_GetCurrentProfile(Ertebat::RestStatusCodes::ConnectionStatus,
                                   Ertebat::RestStatusCodes::GetCurrentProfileStatus,
-                                  const QString &data);
+                                  const QString &);
     void signal_UsersList(Ertebat::RestStatusCodes::ConnectionStatus,
                           Ertebat::RestStatusCodes::UsersListStatus,
-                          const QString &data);
+                          const QString &);
 
     void signal_CreateIndividualRoom(Ertebat::RestStatusCodes::ConnectionStatus,
                                      Ertebat::RestStatusCodes::CreateIndividualRoomStatus,
-                                     const QString &data);
+                                     const QString &);
 
     void signal_GetIndividualContacts(Ertebat::RestStatusCodes::ConnectionStatus,
                                       Ertebat::RestStatusCodes::GetIndividualContactsStatus,
-                                      const QString &data);
+                                      const QString &);
 
 public:
     Q_INVOKABLE bool isOnline();
