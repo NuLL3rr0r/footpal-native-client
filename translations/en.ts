@@ -43,54 +43,58 @@
 <context>
     <name>CreateRoom</name>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="57"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="61"/>
+        <source>CREATE_A_ROOM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="86"/>
         <source>ROOM_NAME</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="65"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="94"/>
         <source>PUBLIC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="77"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="107"/>
         <source>PRIVATE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="89"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="120"/>
         <source>PASSWORD</source>
         <translation type="unfinished">Password</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="99"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="130"/>
         <source>CONFIRM_PASSWORD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="107"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="141"/>
         <source>CONFIRM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="110"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="144"/>
         <source>INVALID_FIELD_LENGTH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="116"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="150"/>
         <source>INVALID_PASSWORD_LENGTH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="122"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="156"/>
         <source>PASSWORDS_WONT_MATCH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="141"/>
         <source>RETURN</source>
-        <translation type="unfinished">Return</translation>
+        <translation type="obsolete">Return</translation>
     </message>
 </context>
 <context>

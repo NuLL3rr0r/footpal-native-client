@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>ui/custom/ExtButton.qml</file>
-        <file>ui/custom/LeftBubble.qml</file>
+        <file>ui/custom/Bubble.qml</file>
         <file>ui/custom/Toast.qml</file>
         <file>ui/utils/JSONListModel.qml</file>
         <file>ui/Main.qml</file>

@@ -148,8 +148,6 @@ Rectangle {
                 height: parent.height * 0.8;
                 width: height;
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: (parent.height - height) / 2;
                 defaultImage: "qrc:///img/btn_bar_new_chat.png"
                 pressedImage: "qrc:///img/btn_bar_new_chat_pressed.png"
                 onSignal_clicked: {

@@ -117,7 +117,7 @@ Rectangle {
                         height: privates.imageSize
                         source: "qrc:///img/Splash.png"
                     }
-                    LeftBubble {
+                    Bubble {
                         id: speechBubble
                         isSenderSelf: model.self === "true" ? true : false
                         //                    anchors.left: isSenderSelf ? null : contactImage.right
@@ -169,22 +169,77 @@ Rectangle {
     }
 
     Rectangle {
+        id: bottomBarExtension
+        width: root.width
+        height: privates.barHeight
+        color: "#333"
+        z: 1
+
+        Behavior on y {
+            NumberAnimation { duration: 200 }
+        }
+
+        state: "normal"
+
+        states: [
+            State {
+                name: "normal"
+                PropertyChanges { target: bottomBarExtension; y: root.height - height }
+            },
+            State {
+                name: "extended"
+                PropertyChanges { target: bottomBarExtension; y: root.height - 2 * height }
+            }
+        ]
+
+        Item {
+            anchors.fill: parent
+            anchors.margins: 5
+
+            ExtButton {
+                id: buttonNewContact
+                height: parent.height;
+                width: height;
+                anchors.left: parent.left
+                defaultImage: "qrc:///img/btn_bar_new_contact.png"
+                pressedImage: "qrc:///img/btn_bar_new_contact_pressed.png"
+                onSignal_clicked: {
+                    pageLoader.setSource("qml:///ui/ContactSelection.qml")
+                }
+            }
+
+            ExtButton {
+                id: buttonSettings
+                height: parent.height;
+                width: height;
+                anchors.right: parent.right
+                defaultImage: "qrc:///img/btn_bar_settings.png"
+                pressedImage: "qrc:///img/btn_bar_settings_pressed.png"
+                onSignal_clicked: {
+                }
+            }
+        }
+    }
+
+    Rectangle {
         id: bottomBar
         width: root.width
         height: privates.barHeight
         anchors.bottom: parent.bottom
         color: "#333"
-        z: 1
+        z: 2
 
-        Row {
+        Item {
             anchors.fill: parent
             anchors.margins: 5
-            spacing: 5
 
             TextField {
                 id: messageTextField
                 height: parent.height
-                width: parent.width * 0.6
+//                width: parent.width * 0.6
+                anchors.left: parent.left
+                anchors.right: buttonSubmit.left
+                anchors.margins: 5
                 font.pixelSize: height * 0.5
                 placeholderText: qsTr("TYPE_HERE") + UiEngine.EmptyLangString;
                 focus: true;
@@ -194,6 +249,8 @@ Rectangle {
                 id: buttonSubmit
                 style: buttonStyle
                 width: parent.width * 0.25
+                anchors.right: buttonMore.left
+                anchors.margins: 5
                 height: parent.height
                 text: qsTr("SUBMIT") + UiEngine.EmptyLangString;
                 onClicked: {
@@ -203,6 +260,22 @@ Rectangle {
                     //                    jsonModel.model.append(data)
                     //                    messageTextField.text = ""
                     WS.sendTextMessageToRoom(messageTextField.text, WS.Context.currentRoomId)
+                }
+            }
+
+            ExtButton {
+                id: buttonMore
+                height: parent.height;
+                width: height;
+                anchors.right: parent.right
+                defaultImage: "qrc:///img/btn_bar_more.png"
+                pressedImage: "qrc:///img/btn_bar_more_pressed.png"
+                onSignal_clicked: {
+                    if (bottomBarExtension.state == "normal") {
+                        bottomBarExtension.state = "extended"
+                    } else {
+                        bottomBarExtension.state = "normal"
+                    }
                 }
             }
         }

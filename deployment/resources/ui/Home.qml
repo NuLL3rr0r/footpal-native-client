@@ -40,7 +40,7 @@ Rectangle {
             style: buttonStyle;
             text: qsTr("CHAT") + UiEngine.EmptyLangString;
             onClicked: {
-                pageLoader.setSource("qrc:///ui/ChatLog.qml")
+                pageLoader.setSource("qrc:///ui/Chat.qml")
             }
         }
         Button {
