@@ -1,6 +1,5 @@
 /**
  * @author  Mohammad S. Babaei <info@babaei.net>
- *
  * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
  */
 

@@ -1,12 +1,12 @@
 /**
  * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
- *
  * @author  Majid Sadeghi Alavijeh <majid.sadeghi.alavijeh@gmail.com>
+ * @author  Mohammad S. Babaei <info@babaei.net>
  */
 
 
 import QtQuick 2.3;
-import QtQuick.Controls 1.1;
+import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
