@@ -1,5 +1,7 @@
 /**
  * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
+ *
+ * @author  Majid Sadeghi Alavijeh <majid.sadeghi.alavijeh@gmail.com>
  */
 
 
@@ -8,6 +10,7 @@ import QtQuick.Controls 1.1;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
+import "scripts/ws.js" as WS
 import "custom"
 import "utils"
 
@@ -29,6 +32,16 @@ Rectangle {
     Component.onCompleted: {
         privates.isInitialized = true;
         privates.itemHeight = UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.2 : 100
+        loadConversations();
+    }
+
+    function loadConversations(){
+        console.log("Load conversations");
+        console.log(WS.Context.rooms.length);
+        for(var i = 0 ; i < WS.Context.rooms.length ; i++){
+            var tmpConversation = { "contact" : WS.Context.rooms[i].id , "date" : "9/17/2014", "time": "15:24" };
+             jsonModel.model.append(tmpConversation);
+        }
     }
 
     Rectangle {
@@ -60,23 +73,10 @@ Rectangle {
 
     JSONListModel {
         id: jsonModel
-        json: "{ \"log\" : { \"conversation\" : [ "
-              + "{ \"contact\" : \"Majid\", \"date\" : \"9/17/2014\", \"time\": \"15:24\" }, "
-              + "{ \"contact\" : \"Sadegh\", \"date\" : \"10/17/2014\", \"time\": \"13:12\" }, "
-              + "{ \"contact\" : \"Morteza\", \"date\" : \"11/17/2014\", \"time\": \"10:44\" }"
-              + " ] } }"
-        query: "$.log.conversation[*]"
+        json: ""
     }
 
-    ListModel {
-        id: model1
 
-        ListElement { contact: "Majid"; date: "9/17/2014"; time: "15:24" }
-        ListElement { contact: "Majid"; date: "9/17/2014"; time: "15:24" }
-        ListElement { contact: "Majid"; date: "9/17/2014"; time: "15:24" }
-        ListElement { contact: "Majid"; date: "9/17/2014"; time: "15:24" }
-        ListElement { contact: "Majid"; date: "9/17/2014"; time: "15:24" }
-    }
 
     ListView {
         anchors.top: topBar.bottom
@@ -123,7 +123,10 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        pageLoader.setSource("qrc:///ui/Chat.qml")
+                        console.log(index);
+                        console.log(model.contact + ":" + WS.Context.currentRoomId);
+                        WS.Context.currentRoomId = model.contact;
+                        pageLoader.setSource("qrc:///ui/Chat.qml");
                     }
                 }
             }

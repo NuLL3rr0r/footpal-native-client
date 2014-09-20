@@ -2,6 +2,8 @@
  * @author  Mohammad S. Babaei <info@babaei.net>
  *
  * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
+ *
+ * @author  Majid Sadeghi Alavijeh <majid.sadeghi.alavijeh@gmail.com>
  */
 
 
@@ -9,13 +11,15 @@ import QtQuick 2.3;
 import QtQuick.Controls 1.1;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
+import Qt.WebSockets 1.0
 import ScreenTypes 1.0;
 import "custom";
+import "scripts/ws.js" as WS
 
 ApplicationWindow {
     visible: true;
     width: 480;
-    height: 800;
+    height: 600;
     title: qsTr("APP_TITLE");
     color: "#203070";
 
@@ -49,8 +53,27 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
-        pageLoader.setSource("Splash.qml");
+        WS.registerSocket(socket);
+        console.log(socket.url);
+        WS.openSocket();
+        pageLoader.setSource("Splash.qml");    
     }
+
+    WebSocket {
+         id: socket
+         url: WS.url;
+         onTextMessageReceived: {
+             WS.parseTextMessage(message);
+         }
+         onStatusChanged: if (socket.status == WebSocket.Error) {
+                              WS.webSocketError(socket.errorString);
+                          } else if (socket.status == WebSocket.Open) {
+                              WS.websocketOpened();
+                          } else if (socket.status == WebSocket.Closed) {
+                              WS.webSocketClosed();
+                          }
+         active: false
+     }
 
     Loader {
         id: pageLoader;

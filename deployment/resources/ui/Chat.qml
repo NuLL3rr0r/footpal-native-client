@@ -1,15 +1,18 @@
 /**
  * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
+ *
+ * @author  Majid Sadeghi Alavijeh <majid.sadeghi.alavijeh@gmail.com>
  */
-
 
 import QtQuick 2.3;
 import QtQuick.Controls 1.1;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
-import "custom"
-import "utils"
+import "scripts/ws.js" as WS;
+import "custom";
+import "utils";
+
 
 Rectangle {
     id: root
@@ -30,6 +33,27 @@ Rectangle {
 
     Component.onCompleted: {
         privates.isInitialized = true;
+        initChatRoom();
+    }
+
+    function messageHandler(roomId, message){
+        console.log("chat room message handler");
+        var self = false;
+        if(message.from === WS.Context.currentProfile.id || message.from === 'self')
+            self = true;
+        var data = { 'self': self , 'contact': message.from , 'date': message.date , 'time': message.time , 'content': message.body };
+        jsonModel.model.append(data)
+    }
+
+    function initChatRoom(){
+        console.log("Room id is : " + WS.Context.currentRoomId);
+        var room = WS.Context.getRoomById(WS.Context.currentRoomId);
+        if(room){
+            var messages = room.getMessages();
+            console.log("Exist Messages : " + messages.length)
+            //Register as message Reader for this room
+            WS.Context.regitserRoomMessageReaderCallback(WS.Context.currentRoomId, messageHandler);
+        }
     }
 
     Rectangle {
@@ -61,22 +85,8 @@ Rectangle {
 
     JSONListModel {
         id: jsonModel
-        json: "{ \"log\" : { \"conversation\" : [ "
-              + "{ \"self\" : \"false\", \"contact\" : \"Majid\", \"date\" : \"9/17/2014\", \"time\": \"15:24\", \"content\": \"Hi!\" }, "
-              + "{ \"self\" : \"true\", \"date\" : \"10/17/2014\", \"time\": \"13:12\", \"content\": \"How are you doing?\" }, "
-              + "{ \"self\" : \"false\", \"date\" : \"11/17/2014\", \"time\": \"10:44\", \"content\": \"Is everything alright? I tried to call you the other day.\" }"
-              + " ] } }"
+        json: ""
         query: "$.log.conversation[*]"
-    }
-
-    ListModel {
-        id: model1
-
-        ListElement { contact: "Majid"; date: "9/17/2014"; time: "15:24" }
-        ListElement { contact: "Majid"; date: "9/17/2014"; time: "15:24" }
-        ListElement { contact: "Majid"; date: "9/17/2014"; time: "15:24" }
-        ListElement { contact: "Majid"; date: "9/17/2014"; time: "15:24" }
-        ListElement { contact: "Majid"; date: "9/17/2014"; time: "15:24" }
     }
 
     ListView {
@@ -189,9 +199,10 @@ Rectangle {
                 onClicked: {
                     if (messageTextField.text == "")
                         return;
-                    var data = { 'self': "true", 'contact': "Self", 'date': new Date().toDateString(), 'time': new Date().toTimeString().substring(0, 5), 'content': messageTextField.text }
-                    jsonModel.model.append(data)
-                    messageTextField.text = ""
+                    //                    var data = { 'self': "true", 'contact': "Self", 'date': new Date().toDateString(), 'time': new Date().toTimeString().substring(0, 5), 'content': messageTextField.text }
+                    //                    jsonModel.model.append(data)
+                    //                    messageTextField.text = ""
+                    WS.sendTextMessageToRoom(messageTextField.text, WS.Context.currentRoomId)
                 }
             }
         }

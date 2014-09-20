@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>ui/utils/jsonpath.js</file>
+        <file>ui/scripts/chat.js</file>
+        <file>ui/scripts/ws.js</file>
     </qresource>
 </RCC>
