@@ -2,19 +2,37 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
+    <name>AddFriend</name>
+    <message>
+        <location filename="../deployment/resources/ui/AddFriend.qml" line="52"/>
+        <source>ADD_A_FRIEND</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/AddFriend.qml" line="80"/>
+        <source>PHONE_NUMBER</source>
+        <translation type="unfinished">Phone Number</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/AddFriend.qml" line="91"/>
+        <source>SEARCH</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Chat</name>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="81"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="82"/>
         <source>CHAT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="189"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="245"/>
         <source>TYPE_HERE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="198"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="256"/>
         <source>SUBMIT</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28,14 +46,22 @@
     </message>
 </context>
 <context>
+    <name>ContactList</name>
+    <message>
+        <location filename="../deployment/resources/ui/ContactList.qml" line="57"/>
+        <source>MY_FRIENDS</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ContactSelection</name>
     <message>
-        <location filename="../deployment/resources/ui/ContactSelection.qml" line="57"/>
+        <location filename="../deployment/resources/ui/ContactSelection.qml" line="58"/>
         <source>SELECT_CONTACTS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/ContactSelection.qml" line="153"/>
+        <location filename="../deployment/resources/ui/ContactSelection.qml" line="154"/>
         <source>CONTINUE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -163,7 +189,7 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="../deployment/resources/ui/Main.qml" line="23"/>
+        <location filename="../deployment/resources/ui/Main.qml" line="22"/>
         <source>APP_TITLE</source>
         <translation>Ertebat</translation>
     </message>
@@ -171,32 +197,32 @@
 <context>
     <name>SignIn</name>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="35"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="34"/>
         <source>APP_TITLE</source>
         <translation>Ertebat</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="66"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="65"/>
         <source>USERNAME</source>
         <translation>Username</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="78"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="77"/>
         <source>PASSWORD</source>
         <translation>Password</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="87"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="86"/>
         <source>SIGN_IN</source>
         <translation>Sign In</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="111"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="110"/>
         <source>FORGOT_PASSWORD</source>
         <translation>Forgot Password</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="132"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="131"/>
         <source>SIGN_UP</source>
         <translation>Sign Up</translation>
     </message>
@@ -204,57 +230,57 @@
 <context>
     <name>SignUp</name>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="39"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="38"/>
         <source>APP_TITLE</source>
         <translation>Ertebat</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="61"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="60"/>
         <source>PHONE_NUMBER</source>
         <translation>Phone Number</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="72"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="71"/>
         <source>EMAIL</source>
         <translation>Email</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="83"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="82"/>
         <source>PASSWORD</source>
         <translation>Password</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="93"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="92"/>
         <source>CONFIRM_PASSWORD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="101"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="100"/>
         <source>SIGN_UP</source>
         <translation>Sign Up</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="104"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="103"/>
         <source>INVALID_PHONE_NUMBER</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="110"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="109"/>
         <source>INVALID_EMAIL_ADDRESS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="116"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="115"/>
         <source>INVALID_PASSWORD_LENGTH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="122"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="121"/>
         <source>PASSWORDS_WONT_MATCH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="141"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="140"/>
         <source>RETURN</source>
         <translation>Return</translation>
     </message>

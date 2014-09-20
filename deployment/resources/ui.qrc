@@ -1,12 +1,15 @@
 <RCC>
     <qresource prefix="/">
-        <file>ui/custom/ExtButton.qml</file>
+        <file>ui/custom/Bar.qml</file>
         <file>ui/custom/Bubble.qml</file>
+        <file>ui/custom/ExtButton.qml</file>
         <file>ui/custom/Toast.qml</file>
         <file>ui/utils/JSONListModel.qml</file>
         <file>ui/Main.qml</file>
+        <file>ui/AddFriend.qml</file>
         <file>ui/Chat.qml</file>
         <file>ui/ChatLog.qml</file>
+        <file>ui/ContactList.qml</file>
         <file>ui/ContactSelection.qml</file>
         <file>ui/CreateRoom.qml</file>
         <file>ui/ForgotPassword.qml</file>
