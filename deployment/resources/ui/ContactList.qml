@@ -186,8 +186,8 @@ Rectangle {
                 onClicked: {
                     if (!phoneNumberTextField.acceptableInput) {
                         UiEngine.showToast(qsTr("INVALID_PHONE_NUMBER"));
-                        phoneNumberTextInput.focus = true;
-                        phoneNumberTextInput.selectAll();
+                        phoneNumberTextField.focus = true;
+                        phoneNumberTextField.selectAll();
                         return;
                     }
 

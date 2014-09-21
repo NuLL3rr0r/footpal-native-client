@@ -52,7 +52,7 @@ ApplicationWindow {
                     anchors.fill: parent
                     visible: control.checked
                     color: "#555"
-                    radius: 9
+                    radius: control.height / 2
                     anchors.margins: 4
                 }
         }

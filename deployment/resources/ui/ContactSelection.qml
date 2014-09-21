@@ -27,6 +27,7 @@ Rectangle {
         property int itemSpacing: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.01 : 5
         property int checkBoxSize: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.05 : 25
         property int buttonHeight: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.08 : 40
+        property var selectedContacts: new Array();
     }
 
     Component.onCompleted: {
@@ -109,6 +110,13 @@ Rectangle {
                                     }
                             }
                         }
+                    onCheckedChanged: {
+                        if (checked) {
+                            privates.selectedContacts.push(model.name)
+                        } else {
+                            privates.selectedContacts.pop(model.name)
+                        }
+                    }
                 }
 
                 Image {
@@ -145,6 +153,9 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
             style: buttonStyle
             text: qsTr("CONTINUE") + UiEngine.EmptyLangString;
+            onClicked: {
+                console.log(privates.selectedContacts.toString())
+            }
         }
     }
 }

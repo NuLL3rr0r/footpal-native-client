@@ -4,35 +4,24 @@
 <context>
     <name>AddFriend</name>
     <message>
-        <location filename="../deployment/resources/ui/AddFriend.qml" line="52"/>
-        <source>ADD_A_FRIEND</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deployment/resources/ui/AddFriend.qml" line="80"/>
         <source>PHONE_NUMBER</source>
-        <translation type="unfinished">شماره موبایل</translation>
-    </message>
-    <message>
-        <location filename="../deployment/resources/ui/AddFriend.qml" line="91"/>
-        <source>SEARCH</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">شماره موبایل</translation>
     </message>
 </context>
 <context>
     <name>Chat</name>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="82"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="76"/>
         <source>CHAT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="245"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="232"/>
         <source>TYPE_HERE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="256"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="243"/>
         <source>SUBMIT</source>
         <translation type="unfinished"></translation>
     </message>
@@ -40,7 +29,7 @@
 <context>
     <name>ChatLog</name>
     <message>
-        <location filename="../deployment/resources/ui/ChatLog.qml" line="69"/>
+        <location filename="../deployment/resources/ui/ChatLog.qml" line="65"/>
         <source>CONVERSATIONS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -48,20 +37,35 @@
 <context>
     <name>ContactList</name>
     <message>
-        <location filename="../deployment/resources/ui/ContactList.qml" line="57"/>
+        <location filename="../deployment/resources/ui/ContactList.qml" line="58"/>
         <source>MY_FRIENDS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/ContactList.qml" line="173"/>
+        <source>PHONE_NUMBER</source>
+        <translation type="unfinished">شماره موبایل</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/ContactList.qml" line="185"/>
+        <source>ADD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/ContactList.qml" line="188"/>
+        <source>INVALID_PHONE_NUMBER</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ContactSelection</name>
     <message>
-        <location filename="../deployment/resources/ui/ContactSelection.qml" line="58"/>
+        <location filename="../deployment/resources/ui/ContactSelection.qml" line="54"/>
         <source>SELECT_CONTACTS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/ContactSelection.qml" line="154"/>
+        <location filename="../deployment/resources/ui/ContactSelection.qml" line="147"/>
         <source>CONTINUE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -69,52 +73,52 @@
 <context>
     <name>CreateRoom</name>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="61"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="57"/>
         <source>CREATE_A_ROOM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="86"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="82"/>
         <source>ROOM_NAME</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="94"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="90"/>
         <source>PUBLIC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="107"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="103"/>
         <source>PRIVATE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="120"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="116"/>
         <source>PASSWORD</source>
         <translation type="unfinished">کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="130"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="126"/>
         <source>CONFIRM_PASSWORD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="141"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="137"/>
         <source>CONFIRM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="144"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="140"/>
         <source>INVALID_FIELD_LENGTH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="150"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="146"/>
         <source>INVALID_PASSWORD_LENGTH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="156"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="152"/>
         <source>PASSWORDS_WONT_MATCH</source>
         <translation type="unfinished"></translation>
     </message>

@@ -88,8 +88,9 @@ Rectangle {
             ExclusiveGroup { id: roomAccessiblityGroup }
             RadioButton {
                 text: qsTr("PUBLIC") + UiEngine.EmptyLangString;
-                checked: true
-                exclusiveGroup: roomAccessiblityGroup
+                checked: true;
+                height: roomNameTextField.height * 0.5;
+                exclusiveGroup: roomAccessiblityGroup;
                 onCheckedChanged: {
                     if (checked) {
                         root.state = "public"
@@ -97,12 +98,13 @@ Rectangle {
                         root.state = "private"
                     }
                 }
-                style: radioButtonStyle
+                style: radioButtonStyle;
             }
             RadioButton {
                 text: qsTr("PRIVATE") + UiEngine.EmptyLangString;
-                exclusiveGroup: roomAccessiblityGroup
-                style: radioButtonStyle
+                height: roomNameTextField.height * 0.5;
+                exclusiveGroup: roomAccessiblityGroup;
+                style: radioButtonStyle;
             }
         }
 
@@ -133,7 +135,7 @@ Rectangle {
         width: mainColumn.width;
         height: width / 8;
         anchors.horizontalCenter: parent.horizontalCenter
-        y: roomNameTextField.y + 4 * (roomNameTextField.height + (root.height * 0.025));
+        y: mainColumn.y + 4 * (roomNameTextField.height + (root.height * 0.025));
         text: qsTr("CONFIRM") + UiEngine.EmptyLangString;
         onClicked: {
             if (roomNameTextField == "") {
