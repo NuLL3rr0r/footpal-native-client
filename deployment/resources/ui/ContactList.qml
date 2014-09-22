@@ -105,6 +105,14 @@ Rectangle {
                     text: model.name
                     font.pixelSize: parent.height * 0.2
                 }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        // TODO: remeber contact's ID in order to retrieve it's information in the ContactProfile page
+
+                        pageLoader.setSource("qrc:///ui/ContactProfile.qml")
+                    }
+                }
             }
         }
     }
