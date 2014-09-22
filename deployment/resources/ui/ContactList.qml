@@ -1,5 +1,6 @@
 /**
  * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
+ * @author  Majid Sadeghi Alavijeh <majid.sadeghi.alavijeh@gmail.com>
  */
 
 
@@ -10,6 +11,7 @@ import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
 import "custom"
 import "utils"
+import "scripts/ws.js" as WS
 
 Rectangle {
     id: root
@@ -35,7 +37,23 @@ Rectangle {
 
     Component.onCompleted: {
         privates.isInitialized = true;
+        WS.Context.registerNewFriendCallback(onNewFriend);
+        loadContacts();
     }
+
+    function loadContacts(){
+        var friends = WS.Context.friends;
+        for(var i = 0 ; i < friends.length ; i++){
+            var newContact = {"Id" : friends[i].friendId, "name" : friends[i].friendUsername , "picture" : "qrc:///img/ic_contact.png" };
+            jsonModel.model.append(newContact);
+        }
+    }
+
+    function onNewFriend(friend){
+        var newContact = {"Id" : friend.friendId, "name" : friend.friendUsername , "picture" : "qrc:///img/ic_contact.png" };
+        jsonModel.model.append(newContact);
+    }
+
 
     Bar {
         id: topBar
@@ -62,11 +80,7 @@ Rectangle {
 
     JSONListModel {
         id: jsonModel
-        json: "{ \"friends\" : { \"contact\" : [ "
-              + "{ \"name\" : \"Majid\", \"picture\" : \"qrc:///img/ic_contact.png\" }, "
-              + "{ \"name\" : \"Sadegh\", \"picture\" : \"qrc:///img/ic_contact.png\" }, "
-              + "{ \"name\" : \"Morteza\", \"picture\" : \"qrc:///img/ic_contact.png\" }"
-              + " ] } }"
+        json: ""
         query: "$.friends.contact[*]"
     }
 
@@ -199,8 +213,8 @@ Rectangle {
                         return;
                     }
 
-                    //  TODO: Search and Add the requested member
-                }
+                    WS.addFriendToList(phoneNumberTextField.text);
+                    newContactBar.state = "normal"                }
             }
         }
     }
