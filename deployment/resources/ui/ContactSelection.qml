@@ -11,6 +11,8 @@ import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
 import "custom"
 import "utils"
+import "scripts/ws.js" as WS;
+
 
 Rectangle {
     id: root
@@ -31,7 +33,25 @@ Rectangle {
     }
 
     Component.onCompleted: {
+        RestApi.onSignal_CreateIndividualRoom.connect(onCreatedRoom);
         privates.isInitialized = true;
+        loadContacts();
+    }
+
+    Component.onDestruction: {
+        RestApi.onSignal_CreateIndividualRoom.disconnect(onCreatedRoom);
+    }
+
+    function onCreatedRoom(connection, status, response){
+
+    }
+
+    function loadContacts(){
+        var friends = WS.Context.friends;
+        for(var i = 0 ; i < friends.length ; i++){
+            var newContact = {"Id" : friends[i].friendId, "name" : friends[i].friendUsername , "picture" : "qrc:///img/ic_contact.png" };
+            jsonModel.model.append(newContact);
+        }
     }
 
     Bar {
@@ -59,11 +79,7 @@ Rectangle {
 
     JSONListModel {
         id: jsonModel
-        json: "{ \"friends\" : { \"contact\" : [ "
-              + "{ \"name\" : \"Majid\", \"picture\" : \"qrc:///img/ic_contact.png\" }, "
-              + "{ \"name\" : \"Sadegh\", \"picture\" : \"qrc:///img/ic_contact.png\" }, "
-              + "{ \"name\" : \"Morteza\", \"picture\" : \"qrc:///img/ic_contact.png\" }"
-              + " ] } }"
+        json: ""
         query: "$.friends.contact[*]"
     }
 
