@@ -112,7 +112,7 @@ void RestApi::signUp(const QString &phone, const QString &email, const QString &
     QByteArray data;
     data.append(QString::fromStdWString(stream.str()));
 
-    m_pimpl->HttpSignUp->Post("http://www.13x17.org/api/signup", data);
+    m_pimpl->HttpSignUp->Post(QString("%1/api/signup").arg(REST_BASE_URL), data);
 }
 
 void RestApi::signIn(const QString &user, const QString &pwd)
@@ -131,7 +131,7 @@ void RestApi::signIn(const QString &user, const QString &pwd)
     QByteArray data;
     data.append(QString::fromStdWString(stream.str()));
 
-    m_pimpl->HttpSignIn->Post("http://www.13x17.org/api/signin", data);
+    m_pimpl->HttpSignIn->Post(QString("%1/api/signin").arg(REST_BASE_URL), data);
 }
 
 void RestApi::signOut(const QString &token, const QString &user, const QString &pwd)
@@ -153,7 +153,7 @@ void RestApi::signOut(const QString &token, const QString &user, const QString &
     QByteArray data;
     data.append(QString::fromStdWString(stream.str()));
 
-    m_pimpl->HttpSignOut->Post("http://www.13x17.org/api/signout", data, headers);
+    m_pimpl->HttpSignOut->Post(QString("%1/api/signout").arg(REST_BASE_URL), data, headers);
 }
 
 void RestApi::getCurrentProfile(const QString &token)
@@ -161,7 +161,7 @@ void RestApi::getCurrentProfile(const QString &token)
     Http::Headers_t headers;
     headers["token"] = token;
 
-    m_pimpl->HttpGetCurrentProfile->Get("http://www.13x17.org/api/getCurrentProfile", headers);
+    m_pimpl->HttpGetCurrentProfile->Get(QString("%1/api/getCurrentProfile").arg(REST_BASE_URL), headers);
 }
 
 void RestApi::usersList(const QString &token)
@@ -169,7 +169,7 @@ void RestApi::usersList(const QString &token)
     Http::Headers_t headers;
     headers["token"] = token;
 
-    m_pimpl->HttpUsersList->Get("http://www.13x17.org/api/userList", headers);
+    m_pimpl->HttpUsersList->Get(QString("%1/api/userList").arg(REST_BASE_URL), headers);
 }
 
 void RestApi::createIndividualRoom(const QString &token, const QString &otherParty)
@@ -187,7 +187,7 @@ void RestApi::createIndividualRoom(const QString &token, const QString &otherPar
     QByteArray data;
     data.append(QString::fromStdWString(stream.str()));
 
-    m_pimpl->HttpCreateIndividualRoom->Post("http://www.13x17.org/api/createIndividualRoom", data, headers);
+    m_pimpl->HttpCreateIndividualRoom->Post(QString("%1/api/createIndividualRoom").arg(REST_BASE_URL), data, headers);
 }
 
 void RestApi::getIndividualContacts(const QString &token)
@@ -203,7 +203,7 @@ void RestApi::getIndividualContacts(const QString &token)
     QByteArray data;
     data.append(QString::fromStdWString(stream.str()));
 
-    m_pimpl->HttpGetIndividualContacts->Post("http://www.13x17.org/api/getIndividualContacts", data, headers);
+    m_pimpl->HttpGetIndividualContacts->Post(QString("%1/api/getIndividualContacts").arg(REST_BASE_URL), data, headers);
 }
 
 RestApi::Impl::Impl(RestApi *parent) :
