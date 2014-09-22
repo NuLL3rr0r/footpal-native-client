@@ -2,6 +2,7 @@
  * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
  */
 
+
 import QtQuick 2.3;
 import QtQuick.Controls 1.2;
 import ScreenTypes 1.0;
