@@ -26,6 +26,7 @@ function parseTextMessage(message){
         console.log("Send GetIndividualRooms cmd");
         getIndividualRooms();
         getMyProfile();
+        getFriendList();
     }
     else if(encoded.code === 5){
         console.log("IndividualContacts result");
@@ -58,6 +59,16 @@ function parseTextMessage(message){
 
         if(room){
             room.addNewMessage(new MessageSchema(self, encoded.value.roomId, new Date().toDateString(), new Date().toTimeString().substring(0, 5), encoded.value.content));
+        }
+    }
+    else if(encoded.code === 8){
+        console.log("user added to database successfully : " + encoded.friend.friendId);
+        Context.addFriend(encoded.friend.friendId, encoded.friend.friendUsername, encoded.friend.state   );
+    }
+    else if(encoded.code === 9 ){
+        for(var i = 0 ; i <encoded.friends.length; i++){
+            console.log(encoded.friends[i].friendId + " : " + encoded.friends[i].friendUsername);
+            Context.addFriend(encoded.friends[i].friendId, encoded.friends[i].friendUsername, encoded.friends[i].state   );
         }
     }
 }
@@ -98,6 +109,18 @@ function authorizeToWs(token){
 
 function getIndividualRooms(){
     var cmd = "{\"requestCode\" : \"3\", \"message\": \"GetIndividualRooms\"}";
+    console.log(cmd);
+    socketJs.sendTextMessage(cmd);
+}
+
+function addFriendToList(username){
+    var cmd = "{\"requestCode\" : \"6\", \"message\": \"AddUserToFriend\", \"username\" : \"" + username + "\"}";
+    console.log(cmd);
+    socketJs.sendTextMessage(cmd);
+}
+
+function getFriendList(){
+    var cmd = "{\"requestCode\" : \"7\", \"message\": \"GetFriendList\"}";
     console.log(cmd);
     socketJs.sendTextMessage(cmd);
 }

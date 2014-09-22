@@ -15,11 +15,37 @@ else{
 }
 
 function ContextSchema(){
+    this.friends = [];
     this.rooms = [];
     this.token = "Nan";
     this.username = 'Nan';
     this.currentProfile = null;
     this.currentRoomId = null;
+}
+
+ContextSchema.prototype.addFriend = function(friendId, friendUsername, state){
+    if(!this.isFriendExist(friendUsername)){
+        var newFriend = new FriendSchema(friendId, friendUsername, state);
+        this.friends.push(newFriend);
+        if(this.newFriendCallback)
+            this.newFriendCallback(newFriend);
+    }
+}
+
+ContextSchema.prototype.registerNewFriendCallback = function(cb){
+    this.newFriendCallback = cb;
+}
+
+ContextSchema.prototype.unregisterNewFriendCallback = function(){
+    this.newFriendCallback = null;
+}
+
+ContextSchema.prototype.isFriendExist = function(friendUsername){
+    for(var i = 0 ;  i < this.friends.length ; i++){
+        if(this.friends[i].friendUsername === friendUsername)
+            return i;
+    }
+    return null;
 }
 
 ContextSchema.prototype.addNewRoom = function(roomName, roomId, roomDesc, roomLogo, roomType){
@@ -193,3 +219,9 @@ function MessageSchema(from, to, date, time, body){
     this.body = body;
 }
 
+
+function FriendSchema(friendId, friendUsername, state){
+    this.friendId = friendId;
+    this.friendUsername = friendUsername;
+    this.state = state;
+}
