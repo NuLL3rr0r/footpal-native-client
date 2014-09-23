@@ -58,7 +58,7 @@ Rectangle {
             style: buttonStyle;
             text: qsTr("EMAIL") + UiEngine.EmptyLangString;
             onClicked: {
-                pageLoader.setSource("qrc:///ui/CreateRoom.qml")
+                pageLoader.setSource("qrc:///ui/MailServers.qml")
             }
         }
     }

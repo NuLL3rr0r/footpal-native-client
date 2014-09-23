@@ -17,8 +17,8 @@ import "scripts/ws.js" as WS
 
 ApplicationWindow {
     visible: true;
-    width: 1280;
-    height: 800;
+    width: 1024;
+    height: 768;
     title: qsTr("APP_TITLE");
     color: "#203070";
 
@@ -37,6 +37,15 @@ ApplicationWindow {
             antialiasing: true;
             border.color: "gray";
             radius: height / 4;
+        }
+    }
+
+    property Component comboBoxStyle: ComboBoxStyle {
+        id: comboBoxStyle
+        label: Text {
+            text: control.currentText;
+            font.pixelSize: control.height * 0.5
+            verticalAlignment: Text.AlignVCenter
         }
     }
 
@@ -59,6 +68,29 @@ ApplicationWindow {
         label: Text {
             text: control.text
             font.pixelSize: control.height * 0.75
+        }
+    }
+
+    property Component whiteRadioButtonStyle: RadioButtonStyle {
+        id: whiteRadioButtonStyle
+        indicator: Rectangle {
+                implicitWidth: control.height
+                implicitHeight: control.height
+                radius: control.height / 2
+                border.color: control.activeFocus ? "darkblue" : "gray"
+                border.width: 1
+                Rectangle {
+                    anchors.fill: parent
+                    visible: control.checked
+                    color: "#555"
+                    radius: control.height / 2
+                    anchors.margins: 4
+                }
+        }
+        label: Text {
+            text: control.text
+            font.pixelSize: control.height * 0.75
+            color: "white"
         }
     }
 

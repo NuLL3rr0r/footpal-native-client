@@ -97,6 +97,7 @@ android {
 lupdate_only {
     SOURCES += \
         deployment/resources/ui/Main.qml \
+        deployment/resources/ui/AddMailServer.qml \
         deployment/resources/ui/Chat.qml \
         deployment/resources/ui/ChatLog.qml \
         deployment/resources/ui/ContactList.qml \
@@ -105,6 +106,8 @@ lupdate_only {
         deployment/resources/ui/CreateRoom.qml \
         deployment/resources/ui/ForgotPassword.qml \
         deployment/resources/ui/Home.qml \
+        deployment/resources/ui/Mailbox.qml \
+        deployment/resources/ui/MailServers.qml \
         deployment/resources/ui/SignIn.qml \
         deployment/resources/ui/SignUp.qml \
         deployment/resources/ui/Splash.qml
