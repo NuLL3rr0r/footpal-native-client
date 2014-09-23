@@ -1,5 +1,6 @@
 /**
  * @author  Mohammad S. Babaei <info@babaei.net>
+ * @author  Majid Sadeghi Alavijeh <majid.sadeghi.alavijeh@gmail.com>
  */
 
 
@@ -187,7 +188,7 @@ void RestApi::createIndividualRoom(const QString &token, const QString &otherPar
     QByteArray data;
     data.append(QString::fromStdWString(stream.str()));
 
-    m_pimpl->HttpCreateIndividualRoom->Post(QString("%1/api/createIndividualRoom").arg(REST_BASE_URL), data, headers);
+    m_pimpl->HttpCreateIndividualRoom->Post(QString("%1/chat/createIndividualRoom").arg(REST_BASE_URL), data, headers);
 }
 
 void RestApi::getIndividualContacts(const QString &token)
@@ -203,7 +204,7 @@ void RestApi::getIndividualContacts(const QString &token)
     QByteArray data;
     data.append(QString::fromStdWString(stream.str()));
 
-    m_pimpl->HttpGetIndividualContacts->Post(QString("%1/api/getIndividualContacts").arg(REST_BASE_URL), data, headers);
+    m_pimpl->HttpGetIndividualContacts->Post(QString("%1/chat/getIndividualContacts").arg(REST_BASE_URL), data, headers);
 }
 
 RestApi::Impl::Impl(RestApi *parent) :

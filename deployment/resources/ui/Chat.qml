@@ -58,6 +58,7 @@ Rectangle {
     }
 
     Bar {
+        id: topBar
         ExtButton {
             height: parent.height * 0.8;
             width: height;

@@ -21,6 +21,7 @@ function ContextSchema(){
     this.username = 'Nan';
     this.currentProfile = null;
     this.currentRoomId = null;
+    this.currentContactId = null;
 }
 
 ContextSchema.prototype.addFriend = function(friendId, friendUsername, state){

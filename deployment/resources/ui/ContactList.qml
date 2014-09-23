@@ -44,13 +44,13 @@ Rectangle {
     function loadContacts(){
         var friends = WS.Context.friends;
         for(var i = 0 ; i < friends.length ; i++){
-            var newContact = {"Id" : friends[i].friendId, "name" : friends[i].friendUsername , "picture" : "qrc:///img/ic_contact.png" };
+            var newContact = {"id" : friends[i].friendId, "name" : friends[i].friendUsername , "picture" : "qrc:///img/ic_contact.png" };
             jsonModel.model.append(newContact);
         }
     }
 
     function onNewFriend(friend){
-        var newContact = {"Id" : friend.friendId, "name" : friend.friendUsername , "picture" : "qrc:///img/ic_contact.png" };
+        var newContact = {"id" : friend.friendId, "name" : friend.friendUsername , "picture" : "qrc:///img/ic_contact.png" };
         jsonModel.model.append(newContact);
     }
 
@@ -122,8 +122,8 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        // TODO: remeber contact's ID in order to retrieve it's information in the ContactProfile page
-
+                        console.log("model is : " + model.id);
+                        WS.Context.currentContactId = model.id;
                         pageLoader.setSource("qrc:///ui/ContactProfile.qml")
                     }
                 }
@@ -214,7 +214,8 @@ Rectangle {
                     }
 
                     WS.addFriendToList(phoneNumberTextField.text);
-                    newContactBar.state = "normal"                }
+                    newContactBar.state = "normal"
+                }
             }
         }
     }

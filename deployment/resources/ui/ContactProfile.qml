@@ -9,6 +9,8 @@ import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
 import "custom"
+import "scripts/ws.js" as WS
+
 
 Rectangle {
     id: root
@@ -18,9 +20,24 @@ Rectangle {
     state: "public"
 
     Component.onCompleted: {
+        loadProfile();
+        RestApi.onSignal_CreateIndividualRoom.connect(onCreateIndividualCallback);
     }
 
     Component.onDestruction: {
+        RestApi.onSignal_CreateIndividualRoom.disconnect(onCreateIndividualCallback);
+    }
+
+    function onCreateIndividualCallback(connectionStatus, signInStatus, response){
+        console.log(connectionStatus + " : " + signInStatus + " : " + response)
+        var result = JSON.parse(response);
+        console.log("room id is : " + result.roomId);
+        WS.Context.currentRoomId = result.roomId;
+        pageLoader.setSource("qrc:///ui/Chat.qml")
+    }
+
+    function loadProfile(){
+        //TODO : Load profile from the server or local repository
     }
 
     QtObject {
@@ -96,9 +113,9 @@ Rectangle {
                 defaultImage: "qrc:///img/btn_bar_new_chat.png"
                 pressedImage: "qrc:///img/btn_bar_new_chat_pressed.png"
                 onSignal_clicked: {
-                    //  TODO: prepare to start a chat with this contact
-
-                    pageLoader.setSource("qrc:///ui/Chat.qml")
+                    console.log("try to chat with : " + WS.Context.currentContactId);
+                    RestApi.createIndividualRoom(WS.Context.token, WS.Context.currentContactId);
+                    //TODO : Show Progress bar that hide via timeout or by server responce in CreateiIndividualRoom call back
                 }
             }
         }
