@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
+        <file>img/btn_bar_forward.png</file>
+        <file>img/btn_bar_forward_pressed.png</file>
         <file>img/btn_bar_more.png</file>
         <file>img/btn_bar_more_pressed.png</file>
         <file>img/btn_bar_new_chat.png</file>
@@ -10,6 +12,8 @@
         <file>img/btn_bar_new_mail_pressed.png</file>
         <file>img/btn_bar_new_mail_server.png</file>
         <file>img/btn_bar_new_mail_server_pressed.png</file>
+        <file>img/btn_bar_reply.png</file>
+        <file>img/btn_bar_reply_pressed.png</file>
         <file>img/btn_bar_return.png</file>
         <file>img/btn_bar_return_pressed.png</file>
         <file>img/btn_bar_settings.png</file>

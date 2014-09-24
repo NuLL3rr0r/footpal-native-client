@@ -107,6 +107,7 @@ lupdate_only {
         deployment/resources/ui/ForgotPassword.qml \
         deployment/resources/ui/Home.qml \
         deployment/resources/ui/Mailbox.qml \
+        deployment/resources/ui/MailDetails.qml \
         deployment/resources/ui/MailServers.qml \
         deployment/resources/ui/SignIn.qml \
         deployment/resources/ui/SignUp.qml \

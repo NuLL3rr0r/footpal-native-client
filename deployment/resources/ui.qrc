@@ -17,6 +17,7 @@
         <file>ui/ForgotPassword.qml</file>
         <file>ui/Home.qml</file>
         <file>ui/Mailbox.qml</file>
+        <file>ui/MailDetails.qml</file>
         <file>ui/MailServers.qml</file>
         <file>ui/SignIn.qml</file>
         <file>ui/SignUp.qml</file>

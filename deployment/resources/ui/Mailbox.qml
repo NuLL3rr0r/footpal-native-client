@@ -139,7 +139,7 @@ Rectangle {
                     onClicked: {
                         // TODO: remeber contact's ID in order to retrieve it's information in the ContactProfile page
 
-//                        pageLoader.setSource("qrc:///ui/ContactProfile.qml")
+                        pageLoader.setSource("qrc:///ui/MailDetails.qml")
                     }
                 }
             }
