@@ -114,6 +114,18 @@ Rectangle {
                     anchors.margins: 5
                     text: model.time
                 }
+                NumberCircle {
+                    id: messageCount
+                    height: parent.height * 0.4
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.margins: 10
+                    value: model.count
+                    onValueChanged: {
+                        if (value == 0)
+                            visible = false;
+                    }
+                }
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
