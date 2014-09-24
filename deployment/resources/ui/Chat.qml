@@ -42,7 +42,9 @@ Rectangle {
         var self = false;
         if(message.from === WS.Context.currentProfile.id || message.from === 'self')
             self = true;
-        var data = { 'self': self , 'contact': message.from , 'date': message.date , 'time': message.time , 'content': message.body };
+        console.log("self : " + self + " : " + WS.Context.currentProfile.id )
+        var data = { 'self': self, 'contact': message.from , 'date': message.date , 'time': message.time , 'content': message.body };
+        console.log(data)
         jsonModel.model.append(data)
     }
 
@@ -52,7 +54,9 @@ Rectangle {
         if(room){
             var messages = room.getMessages();
             console.log("Exist Messages : " + messages.length)
-            //Register as message Reader for this room
+            for(var i = 0 ; i < messages.length ; i++){
+                messageHandler(WS.Context.currentRoomId, messages[i])
+            }
             WS.Context.regitserRoomMessageReaderCallback(WS.Context.currentRoomId, messageHandler);
         }
     }
@@ -102,7 +106,7 @@ Rectangle {
                 Row {
                     width: parent.width
                     anchors.verticalCenter: parent.verticalCenter
-                    layoutDirection: model.self === "true" ? Qt.RightToLeft : Qt.LeftToRight
+                    layoutDirection: model.self == true ? Qt.RightToLeft : Qt.LeftToRight
                     spacing: 5
                     Image {
                         id: contactImage
@@ -115,7 +119,7 @@ Rectangle {
                     }
                     Bubble {
                         id: speechBubble
-                        isSenderSelf: model.self === "true" ? true : false
+                        isSenderSelf: model.self == true ? true : false
                         //                    anchors.left: isSenderSelf ? null : contactImage.right
                         anchors.top: parent.top
                         anchors.margins: 5

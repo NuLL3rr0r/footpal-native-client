@@ -125,12 +125,14 @@ RoomSchema.prototype.addNewMessage = function(message){
     if(!this.unreadMessages)
         this.unreadMessages = [];
     if(this.messageReaderCallback){
+        console.log("MessageReaderRegistered");
         if(!this.messages)
             this.messages = [];
         this.messages.push(message);
         this.messageReaderCallback(this.id, message);
     }
     else{
+        console.log("MessageAnnouncerRegistered");
         this.unreadMessages.push(message);
         if(this.messageAnnouncerCallback)
             this.messageAnnouncerCallback(this.id, message);
@@ -142,7 +144,7 @@ RoomSchema.prototype.getMessages = function(){
         this.messages = [];
     }
     if(this.unreadMessages){
-        for(var i = 0 ; i < this.unreadMessages.length ; i++){
+        for(var i = 0 ; i <= this.unreadMessages.length ; i++){
             this.messages.push(this.unreadMessages.shift());
         }
     }

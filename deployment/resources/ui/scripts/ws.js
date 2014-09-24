@@ -6,7 +6,7 @@
 
 Qt.include("chat.js")
 
-var url = "ws://13x17.org:1337";
+var url = "ws://localhost:1337";
 
 var socketJs;
 

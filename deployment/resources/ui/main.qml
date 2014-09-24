@@ -17,8 +17,8 @@ import "scripts/ws.js" as WS
 
 ApplicationWindow {
     visible: true;
-    width: 1024;
-    height: 768;
+    width: 800;
+    height: 600;
     title: qsTr("APP_TITLE");
     color: "#203070";
 

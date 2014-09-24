@@ -35,11 +35,24 @@ Rectangle {
         loadConversations();
     }
 
+    function announcerCallback(roomId, message){
+        console.log("announcerCallback : " + roomId + " : " + message);
+        var count = jsonModel.model.count;
+        for(var i = 0 ; i < count ; i++)
+            if(jsonModel.model.get(i).contact == roomId)
+                jsonModel.model.get(i).count++;
+    }
+
     function loadConversations(){
         console.log("Load conversations");
         console.log(WS.Context.rooms.length);
         for(var i = 0 ; i < WS.Context.rooms.length ; i++){
-            var tmpConversation = { "contact" : WS.Context.rooms[i].id , "date" : "9/17/2014", "time": "15:24" };
+            WS.Context.regitserRoomAnnouncerCallback(announcerCallback);
+            var count = 0;
+            if(WS.Context.rooms[i].unreadMessages)
+                count = WS.Context.rooms[i].unreadMessages.length;
+            console.log(WS.Context.rooms[i].id + " : " + count);
+            var tmpConversation = { "count": count, "contact" : WS.Context.rooms[i].id , "date" : "9/17/2014", "time": "15:24" };
              jsonModel.model.append(tmpConversation);
         }
     }
