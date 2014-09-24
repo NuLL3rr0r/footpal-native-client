@@ -134,12 +134,7 @@ Rectangle {
                     anchors.bottom: parent.bottom
                     anchors.margins: 5
                     value: model.count
-                    onValueChanged: {
-                        if (value > 0)
-                            visible = true;
-                        else
-                            visible = false;
-                    }
+                    visible: model.count > 0
                 }
                 MouseArea {
                     anchors.fill: parent
