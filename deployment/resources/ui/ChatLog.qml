@@ -116,10 +116,10 @@ Rectangle {
                 }
                 NumberCircle {
                     id: messageCount
-                    height: parent.height * 0.4
+                    height: parent.height * 0.3
                     anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins: 10
+                    anchors.bottom: parent.bottom
+                    anchors.margins: 5
                     value: model.count
                     onValueChanged: {
                         if (value == 0)
