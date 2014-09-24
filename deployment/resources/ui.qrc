@@ -10,6 +10,7 @@
         <file>ui/AddMailServer.qml</file>
         <file>ui/Chat.qml</file>
         <file>ui/ChatLog.qml</file>
+        <file>ui/ComposeMail.qml</file>
         <file>ui/ContactList.qml</file>
         <file>ui/ContactProfile.qml</file>
         <file>ui/ContactSelection.qml</file>

@@ -164,7 +164,7 @@ Rectangle {
                 defaultImage: "qrc:///img/btn_bar_new_mail.png"
                 pressedImage: "qrc:///img/btn_bar_new_mail_pressed.png"
                 onSignal_clicked: {
-
+                    pageLoader.setSource("qrc:///ui/ComposeMail.qml");
                 }
             }
         }

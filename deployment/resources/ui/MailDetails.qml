@@ -159,7 +159,7 @@ Rectangle {
                 defaultImage: "qrc:///img/btn_bar_reply.png"
                 pressedImage: "qrc:///img/btn_bar_reply_pressed.png"
                 onSignal_clicked: {
-                    //  TODO: Go to ComposeMail page
+                    pageLoader.setSource("qrc:///ui/ComposeMail.qml");
                 }
             }
 
@@ -172,7 +172,7 @@ Rectangle {
                 defaultImage: "qrc:///img/btn_bar_forward.png"
                 pressedImage: "qrc:///img/btn_bar_forward_pressed.png"
                 onSignal_clicked: {
-                    //  TODO: Go to ComposeMail page
+                    pageLoader.setSource("qrc:///ui/ComposeMail.qml");
                 }
             }
         }

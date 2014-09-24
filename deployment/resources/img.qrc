@@ -16,8 +16,12 @@
         <file>img/btn_bar_reply_pressed.png</file>
         <file>img/btn_bar_return.png</file>
         <file>img/btn_bar_return_pressed.png</file>
+        <file>img/btn_bar_send.png</file>
+        <file>img/btn_bar_send_pressed.png</file>
         <file>img/btn_bar_settings.png</file>
         <file>img/btn_bar_settings_pressed.png</file>
+        <file>img/btn_signout.png</file>
+        <file>img/btn_signout_pressed.png</file>
         <file>img/bubble_left_green.png</file>
         <file>img/bubble_right_blue.png</file>
         <file>img/ic_contact.png</file>
