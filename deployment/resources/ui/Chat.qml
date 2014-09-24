@@ -101,9 +101,10 @@ Rectangle {
             Rectangle {
                 color: "#00ffffff"
                 width: parent.width
-                height: childrenRect.height + 10
+                height: deleateRow.height + 10
 
                 Row {
+                    id: deleateRow
                     width: parent.width
                     anchors.verticalCenter: parent.verticalCenter
                     layoutDirection: model.self == true ? Qt.RightToLeft : Qt.LeftToRight
@@ -124,21 +125,20 @@ Rectangle {
                         anchors.top: parent.top
                         anchors.margins: 5
                         width: childrenRect.width + speechBubble.border.left + speechBubble.border.right
-                        height: childrenRect.height + speechBubble.border.top + speechBubble.border.bottom
+                        height: contentText.paintedHeight + speechBubble.border.top + speechBubble.border.bottom
 
                         Text {
-                            id: contentText
-                            text: model.content
-                            x: speechBubble.border.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            wrapMode: Text.NoWrap
-                            property bool updateFlag: false
+                            id: contentText;
+                            text: model.content;
+                            wrapMode: Text.Wrap;
+                            x: speechBubble.border.left;
+                            anchors.verticalCenter: parent.verticalCenter;
 
-                            onContentSizeChanged: {
+                            onContentWidthChanged: {
                                 if (width > privates.maxLeftBubbleWidth) {
                                     console.log(width)
-                                    wrapMode = Text.WordWrap
                                     width = privates.maxLeftBubbleWidth
+                                    wrapMode = Text.Wrap
                                 }
                             }
                         }
@@ -149,8 +149,8 @@ Rectangle {
                         //                    anchors.left: speechBubble.right
                         anchors.top: parent.top
                         anchors.margins: 5
-                        width: childrenRect.width + 10
-                        height: childrenRect.height + 5
+                        width: timeText.width + 10
+                        height: timeText.height + 5
 
                         color: "white";
                         antialiasing: true;
@@ -249,9 +249,9 @@ Rectangle {
                 onClicked: {
                     if (messageTextField.text == "")
                         return;
-                    //                    var data = { 'self': "true", 'contact': "Self", 'date': new Date().toDateString(), 'time': new Date().toTimeString().substring(0, 5), 'content': messageTextField.text }
-                    //                    jsonModel.model.append(data)
-                    //                    messageTextField.text = ""
+//                    var data = { 'self': "true", 'contact': "Self", 'date': new Date().toDateString(), 'time': new Date().toTimeString().substring(0, 5), 'content': messageTextField.text }
+//                    jsonModel.model.append(data)
+//                    messageTextField.text = ""
                     WS.sendTextMessageToRoom(messageTextField.text, WS.Context.currentRoomId)
                 }
             }

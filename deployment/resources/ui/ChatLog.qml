@@ -135,7 +135,9 @@ Rectangle {
                     anchors.margins: 5
                     value: model.count
                     onValueChanged: {
-                        if (value == 0)
+                        if (value > 0)
+                            visible = true;
+                        else
                             visible = false;
                     }
                 }

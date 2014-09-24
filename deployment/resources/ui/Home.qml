@@ -62,5 +62,21 @@ Rectangle {
             }
         }
     }
+
+    ExtButton {
+        id: buttonSignout
+        height: root.height * 0.1;
+        width: height;
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.margins: root.height * 0.075
+        defaultImage: "qrc:///img/btn_signout.png"
+        pressedImage: "qrc:///img/btn_signout_pressed.png"
+        onSignal_clicked: {
+            //  TODO: Signout
+
+            pageLoader.setSource("qrc:///ui/SignIn.qml")
+        }
+    }
 }
 
