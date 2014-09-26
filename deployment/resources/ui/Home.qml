@@ -78,5 +78,20 @@ Rectangle {
             pageLoader.setSource("qrc:///ui/SignIn.qml")
         }
     }
+
+    ExtButton {
+        id: buttonProfile
+        height: root.height * 0.1;
+        width: height;
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: root.height * 0.075
+        defaultImage: "qrc:///img/btn_account.png"
+        pressedImage: "qrc:///img/btn_account_pressed.png"
+        onSignal_clicked: {
+            pageLoader.setSource("qrc:///ui/UserProfile.qml")
+        }
+        antialiasing: true
+    }
 }
 
