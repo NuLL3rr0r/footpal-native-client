@@ -1,6 +1,7 @@
 # @author  Mohammad S. Babaei <info@babaei.net>
 
 
+
 ################# BOOST
 
 1. In boost source tree:
@@ -125,3 +126,156 @@ CONFIG -= qt
 debug/b64.dll
 release/b64.dll
 include/b64/*
+
+
+
+################# VMIME
+
+# Note: You have to install Git-bash for perl.exe, sh.exe, etc. (Note: Install it somewhere without space in the path or you will get errors in the OpenSSL configuration stage)
+
+# Download the latest version of the following dependencies:
+http://ftp.gnu.org/pub/gnu/gettext/                         # e.g. gettext-0.19.2.tar.xz
+http://gmplib.org/download/gmp/                             # e.g. gmp-6.0.0a.tar.xz
+ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2                     # check for stable latest version here http://gnutls.org/download.html first, e.g. gnutls-3.2.17.tar.xz
+http://ftp.gnu.org/gnu/gsasl/                               # e.g. libgsasl-1.8.0.tar.gz
+http://ftp.gnu.org/pub/gnu/libiconv/                        # e.g. libiconv-1.14.tar.gz
+http://ftp.gnu.org/gnu/libtasn1/                            # e.g. libtasn1-4.2.tar.gz
+http://ftp.gnu.org/gnu/nettle/                              # e.g. nettle-3.0.tar.gz
+https://www.openssl.org/source/                             # e.g. openssl-1.0.1i.tar.gz
+http://p11-glue.freedesktop.org/releases/                   # e.g. p11-kit-0.20.6.tar.gz
+http://sourceforge.net/projects/trousers/files/trousers/    # e.g. trousers-0.3.13.tar.gz
+http://unbound.net/downloads/                               # e.g. unbound-1.4.22.tar.gz
+http://zlib.net/zlib-1.2.8.tar.xz
+
+# Checkout VMime from GitHub (Since the master branch migrated to CMake):
+git clone https://github.com/kisli/vmime.git
+
+
+** zlib
+
+tar xvJf zlib-1.2.8.tar.xz
+cd zlib-1.2.8
+mkdir _debug _release
+
+# debug build
+cd _debug && cmake -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=D:\build\_deb-zlib ..\
+mingw32-make.exe -j5 && mingw32-make.exe install
+
+# release build
+cd _release && cmake -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=D:\build\_rel-zlib ..\
+mingw32-make.exe -j5 && mingw32-make.exe install
+
+# Copy the following:
+    _rel-zlib/include/* to our include dir
+    _rel-zlib/bin/*.dll to our rel-lib dir
+    _deb-zlib/bin/*.dll to our deb-lib dir
+
+
+** libiconv
+
+tar xvzf libiconv-1.14.tar.gz
+cd libiconv-1.14
+mkdir _debug _release
+
+# debug build
+cd _debug && ../configure --prefix=/d/build/_deb-libiconv CFLAGS="-g3 -O0" CPPFLAGS="-g3 -O0" CXXFLAGS="-g3 -O0"
+make -j5 && make install
+
+# release build
+cd _release && ../configure --prefix=/d/build/_rel-libiconv CFLAGS="-DDEBUG" CPPFLAGS="-DDEBUG" CXXFLAGS="-DDEBUG"
+make -j5 && make install
+
+# Copy the following:
+    _rel-libiconv/include/* to our include dir
+    _rel-libiconv/bin/*.dll to our rel-lib dir
+    _deb-libiconv/bin/*.dll to our deb-lib dir
+
+
+** gmp
+
+tar xvJf gmp-6.0.0a.tar.xz
+cd gmp-6.0.0
+mkdir _debug _release
+
+# debug build
+cd _debug && ../configure --prefix=/d/build/_deb-gmp --disable-static --enable-shared --disable-assembly --enable-cxx CPPFLAGS=-DDEBUG CFLAGS="-g3 -O0" CXXFLAGS="-g3 -O0"
+make -j5 && make install
+
+# release build
+cd _release && ../configure --prefix=/d/build/_rel-gmp --disable-static --enable-shared --disable-assembly --enable-cxx CFLAGS="-DDEBUG" CPPFLAGS="-DDEBUG" CXXFLAGS="-DDEBUG"
+make -j5 && make install
+
+# Copy the following:
+    _rel-gmp/include/* to our include dir
+    _rel-gmp/bin/*.dll to our rel-lib dir
+    _deb-gmp/bin/*.dll to our deb-lib dir
+
+
+
+
+
+
+** openssl
+
+tar xvzf openssl-1.0.1i.tar.gz
+cd openssl-1.0.1i
+
+./Configure mingw shared zlib-dynamic no-asm -I/d/build/_rel-zlib/include/ -L/d/build/_rel-zlib/bin/ --prefix=./dist --openssldir=/d/build/_openssl
+
+make depend -j5
+make -j5
+make install
+
+
+cd _debug && ../configure --prefix=/d/build/_deb-openssl CFLAGS="-g3 -O0" CPPFLAGS="-g3 -O0" CXXFLAGS="-g3 -O0"
+make -j5 && make install
+
+cd ..
+
+# release build
+cd _release && ../configure --prefix=/d/build/_rel-openssl CFLAGS="-DDEBUG" CPPFLAGS="-DDEBUG" CXXFLAGS="-DDEBUG"
+make -j5 && make install
+
+Copy the following:
+    _rel-openssl/include/* to our include dir
+    _rel-openssl/bin/*.dll to our rel-lib dir
+    _deb-openssl/bin/*.dll to our deb-lib dir
+
+
+
+
+
+
+
+tar xvJf gettext-0.19.2.tar.xz
+cd gettext-0.19.2
+mkdir _debug _release
+
+# debug build
+cd _debug && ../configure --prefix=/d/build/_deb-gettext CFLAGS="-g3 -O0 -Id:/build/_deb-libiconv/include" CPPFLAGS="-g3 -O0 -Id:/build/_deb-libiconv/include" CXXFLAGS="-g3 -O0 -Id:/build/_deb-libiconv/include" LDFLAGS="-Ld:/build/_deb-libiconv/bin"
+make -j5 && make install
+
+cd ..
+
+# release build
+cd _release && ../configure --prefix=/d/build/_rel-gettext CFLAGS="-DDEBUG" CPPFLAGS="-DDEBUG" CXXFLAGS="-DDEBUG"
+make -j5 && make install
+
+Copy the following:
+    _rel-gettext/include/* to our include dir
+    _rel-gettext/bin/*.dll to our rel-lib dir
+    _deb-gettext/bin/*.dll to our deb-lib dir
+
+cd ../../
+
+
+
+tar xvJf gnutls-3.2.17.tar.xz
+tar xvzf libgsasl-1.8.0.tar.gz
+tar xvzf nettle-3.0.tar.gz
+tar xvzf p11-kit-0.20.6.tar.gz
+tar xvzf trousers-0.3.13.tar.gz
+tar xvzf unbound-1.4.22.tar.gz
+tar xvJf zlib-1.2.8.tar.xz
+
+
