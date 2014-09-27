@@ -171,6 +171,10 @@ Rectangle {
             text: qsTr("CONTINUE") + UiEngine.EmptyLangString;
             onClicked: {
                 console.log(privates.selectedContacts.toString())
+
+                /*  TODO: access the list of selected contacts like in the above line. Create a 2-party room if only
+                *   one contact has been selected. Otherwise, Go to CreateRoom
+                */
             }
         }
     }

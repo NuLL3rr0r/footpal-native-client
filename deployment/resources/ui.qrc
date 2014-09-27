@@ -8,6 +8,7 @@
         <file>ui/utils/JSONListModel.qml</file>
         <file>ui/Main.qml</file>
         <file>ui/AddMailServer.qml</file>
+        <file>ui/ChangePassword.qml</file>
         <file>ui/Chat.qml</file>
         <file>ui/ChatLog.qml</file>
         <file>ui/ComposeMail.qml</file>

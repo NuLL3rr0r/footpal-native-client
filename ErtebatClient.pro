@@ -98,6 +98,7 @@ lupdate_only {
     SOURCES += \
         deployment/resources/ui/Main.qml \
         deployment/resources/ui/AddMailServer.qml \
+        deployment/resources/ui/ChangePassword.qml \
         deployment/resources/ui/Chat.qml \
         deployment/resources/ui/ChatLog.qml \
         deployment/resources/ui/ComposeMail.qml \

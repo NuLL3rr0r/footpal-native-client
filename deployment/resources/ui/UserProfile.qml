@@ -30,6 +30,7 @@ Rectangle {
         property int firstNameWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.2 : root.width * 0.3
         property int lastNameWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.3 : root.width * 0.4
         property int textFieldHeight: root.height * 0.075
+        property int textHeight: root.height * 0.05
     }
 
     Bar {
@@ -91,16 +92,47 @@ Rectangle {
         }
     }
 
-    TextField {
+    Text {
         id: emailText
-        width: nameRow.width
         height: privates.textFieldHeight
         font.pixelSize: height / 2
         text: "morteza.sabetraftar@gmail.com"
         anchors.top: nameRow.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.topMargin: root.height * 0.05
-        style: textFieldStyle
+        anchors.topMargin: root.height * 0.1
+        color: "white"
+    }
+
+    Text {
+        id: phoneNumberText
+        height: privates.textFieldHeight
+        font.pixelSize: height / 2
+        text: "+09125300764"
+        anchors.top: emailText.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.topMargin: root.height * 0.025
+        color: "white"
+    }
+
+    Text {
+        id: signUpText;
+        height: privates.textHeight
+        anchors {
+            bottom: parent.bottom;
+            bottomMargin: root.height * 0.05;
+            horizontalCenter: parent.horizontalCenter;
+        }
+        color: "white";
+        text: qsTr("CHANGE_PASSWORD") + UiEngine.EmptyLangString;
+        font.pixelSize: height / 2
+
+        MouseArea {
+            anchors.fill: parent;
+            cursorShape: Qt.PointingHandCursor;
+            onClicked: {
+                pageLoader.setSource("ChangePassword.qml");
+            }
+        }
     }
 }
 
