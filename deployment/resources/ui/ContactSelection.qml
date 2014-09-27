@@ -42,8 +42,12 @@ Rectangle {
         RestApi.onSignal_CreateIndividualRoom.disconnect(onCreatedRoom);
     }
 
-    function onCreatedRoom(connection, status, response){
-
+    function onCreatedRoom(connectionStatus, status, response){
+        console.log(connectionStatus + " : " + status + " : " + response)
+        var result = JSON.parse(response);
+        console.log("room id is : " + result.roomId);
+        WS.Context.currentRoomId = result.roomId;
+        pageLoader.setSource("qrc:///ui/Chat.qml")
     }
 
     function loadContacts(){
@@ -128,9 +132,9 @@ Rectangle {
                         }
                     onCheckedChanged: {
                         if (checked) {
-                            privates.selectedContacts.push(model.name)
+                            privates.selectedContacts.push(model.Id)
                         } else {
-                            privates.selectedContacts.pop(model.name)
+                            privates.selectedContacts.pop(model.Id)
                         }
                     }
                 }
@@ -171,10 +175,17 @@ Rectangle {
             text: qsTr("CONTINUE") + UiEngine.EmptyLangString;
             onClicked: {
                 console.log(privates.selectedContacts.toString())
-
-                /*  TODO: access the list of selected contacts like in the above line. Create a 2-party room if only
-                *   one contact has been selected. Otherwise, Go to CreateRoom
-                */
+                var users = privates.selectedContacts.toString().split(",");
+                if(users.length == 1){
+                    RestApi.createIndividualRoom(WS.Context.token, users[0]);
+                }
+                else if(users.length > 1){
+                    console.log("Create group room");
+                }
+                else {
+                    console.log("Please select one user at least");
+                    //TODO : show dialog that contains the warning
+                }
             }
         }
     }
