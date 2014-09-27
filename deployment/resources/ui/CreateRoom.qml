@@ -138,7 +138,7 @@ Rectangle {
         y: mainColumn.y + 4 * (roomNameTextField.height + (root.height * 0.025));
         text: qsTr("CONFIRM") + UiEngine.EmptyLangString;
         onClicked: {
-            if (roomNameTextField == "") {
+            if (roomNameTextField.text == "") {
                 UiEngine.showToast(qsTr("INVALID_FIELD_LENGTH"));
                 roomNameTextField.focus = true;
                 roomNameTextField.selectAll();
@@ -157,6 +157,9 @@ Rectangle {
                 return;
             }
 
+            var isPublic = (state == "public");
+            var roomName = roomNameTextField.text;
+            var password = passwordTextField.text;
             //  TODO: create the room
         }
     }
