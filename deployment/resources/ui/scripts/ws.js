@@ -9,9 +9,14 @@ Qt.include("chat.js")
 var url = "ws://localhost:1337";
 
 var socketJs;
+var timer;
 
 function registerSocket(socketIns){
     socketJs = socketIns;
+}
+
+function registerTimer(ti){
+    timer = ti;
 }
 
 function openSocket(){
@@ -92,13 +97,12 @@ function websocketOpened(){
 function webSocketClosed(){
     console.log("Socket has been closed");
     console.log("try to open about 5 seconds later");
-    setTimeout(function(){
-         socketJs.active = true;
-    }, 5000);
+    timer.restart();
 }
 
 function webSocketError(err){
     console.log("Error: " + err);
+    timer.restart();
 }
 
 function authorizeToWs(token){

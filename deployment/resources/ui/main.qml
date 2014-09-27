@@ -107,10 +107,19 @@ ApplicationWindow {
 
     Component.onCompleted: {
         WS.registerSocket(socket);
+        WS.registerTimer(elapsedTimer);
         console.log(socket.url);
         WS.openSocket();
         pageLoader.setSource("Splash.qml");    
     }
+
+    Timer  {
+            id: elapsedTimer
+            interval: 1000;
+            running: false;
+            repeat: false
+            onTriggered: WS.openSocket()
+        }
 
     WebSocket {
          id: socket
