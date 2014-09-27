@@ -1,4 +1,4 @@
-# @author  Mohammad S. Babaei <info@babaei.net>
+
 
 
 ################# BOOST
@@ -58,10 +58,10 @@ sqlite3ext.h
 6. Create both build_debug and build_release directories inside the source tree of CppDB.
 
 7. For debug build:
-cmake -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=Debug -DCMAKE_LIBRARY_PATH=../sqlite3/debug -DCMAKE_INCLUDE_PATH=../sqlite3/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ..\
+cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_LIBRARY_PATH=../sqlite3/debug -DCMAKE_INCLUDE_PATH=../sqlite3/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ..\
 
 8. For release build:
-cmake -G "MinGW Makefiles" -D CMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=../sqlite3/release -DCMAKE_INCLUDE_PATH=../sqlite3/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ..\
+cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=../sqlite3/release -DCMAKE_INCLUDE_PATH=../sqlite3/ -DSQLITE_BACKEND_INTERNAL=OFF -DDISABLE_MYSQL=ON -DDISABLE_PQ=ON -DDISABLE_ODBC=ON ..\
 
 9. For each build:
 mingw32-make -j5
@@ -125,3 +125,126 @@ CONFIG -= qt
 debug/b64.dll
 release/b64.dll
 include/b64/*
+
+
+
+################# VMIME
+
+# Note: You have to install Git-bash for perl.exe, sh.exe, etc. (Note: Install it somewhere without space in the path or you will get errors in the OpenSSL configuration stage)
+
+# Download the latest version of the following dependencies:
+http://ftp.gnu.org/gnu/gsasl/                               # e.g. libgsasl-1.8.0.tar.gz
+http://ftp.gnu.org/pub/gnu/libiconv/                        # e.g. libiconv-1.14.tar.gz
+https://www.openssl.org/source/                             # e.g. openssl-1.0.1i.tar.gz
+http://zlib.net/zlib-1.2.8.tar.xz
+
+# Checkout VMime from GitHub (Since the master branch migrated to CMake):
+git clone https://github.com/kisli/vmime.git
+
+
+** libgsasl
+
+tar xvzf libgsasl-1.8.0.tar.gz
+cd libgsasl-1.8.0
+mkdir _debug _release
+
+# debug build
+cd _debug && ../configure --prefix=/d/build/_deb-libgsasl CFLAGS="-g3 -O0" CPPFLAGS="-g3 -O0" CXXFLAGS="-g3 -O0"
+// note if it fails to build, do it without parallel builds
+make -j5 && make install
+
+# release build
+cd _release && ../configure --prefix=/d/build/_rel-libgsasl CFLAGS="-DDEBUG" CPPFLAGS="-DDEBUG" CXXFLAGS="-DDEBUG"
+// note if it fails to build, do it without parallel builds
+make -j5 && make install
+
+# Copy the following:
+    _rel-libiconv/include/* to D:\build\__deps\include
+    _rel-libiconv/lib/* to D:\build\__deps\lib\rel
+    _deb-libiconv/lib/* to D:\build\__deps\lib\deb
+
+
+** libiconv
+
+tar xvzf libiconv-1.14.tar.gz
+cd libiconv-1.14
+mkdir _debug _release
+
+# debug build
+cd _debug && ../configure --prefix=/d/build/_deb-libiconv CFLAGS="-g3 -O0" CPPFLAGS="-g3 -O0" CXXFLAGS="-g3 -O0"
+make -j5 && make install
+
+# release build
+cd _release && ../configure --prefix=/d/build/_rel-libiconv CFLAGS="-DDEBUG" CPPFLAGS="-DDEBUG" CXXFLAGS="-DDEBUG"
+make -j5 && make install
+
+# Copy the following:
+    _rel-libiconv/include/* to D:\build\__deps\include
+    _rel-libiconv/bin/* D:\build\__deps\lib\rel
+    _deb-libiconv/bin/* D:\build\__deps\lib\deb
+
+
+** zlib
+
+tar xvJf zlib-1.2.8.tar.xz
+cd zlib-1.2.8
+mkdir _debug _release
+
+# debug build
+cd _debug && cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=D:\build\_deb-zlib ..\
+mingw32-make.exe -j5 && mingw32-make.exe install
+
+# release build
+cd _release && cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=D:\build\_rel-zlib ..\
+mingw32-make.exe -j5 && mingw32-make.exe install
+
+# Copy the following:
+    _rel-zlib/include/* to D:\build\__deps\include
+    _rel-zlib/bin/* to D:\build\__deps\lib\rel
+    _deb-zlib/bin/* to D:\build\__deps\lib\deb
+
+
+** openssl
+
+// avoid using tar due to a known symlink issue
+unrar openssl-1.0.1i.tar.gz
+cd openssl-1.0.1i
+
+./Configure mingw shared zlib-dynamic no-shared no-asm -I/d/build/__deps/include/ -L/d/__deps/rel --prefix=./dist
+
+// do not use -j5
+make depend
+make
+
+# Copy the following:
+    include/openssl to our include dir
+    libcrypto.a to D:\build\__deps\lib\rel
+    libssl.a to D:\build\__deps\lib\rel
+    libcrypto.pc to D:\build\__deps\lib\rel\pkgconfig
+    libssl.pc to D:\build\__deps\lib\rel\pkgconfig
+    libcrypto.a to D:\build\__deps\lib\deb
+    libssl.a to D:\build\__deps\lib\deb
+    libcrypto.pc to D:\build\__deps\lib\deb\pkgconfig
+    libssl.pc to D:\build\__deps\lib\deb\pkgconfig
+
+
+** vmime
+
+cd vmime
+mkdir _debug _release
+
+# debug build
+cd _debug && cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_LIBRARY_PATH=..\\__deps\\lib\\deb -DCMAKE_INCLUDE_PATH=..\\__deps\\include -DVMIME_BUILD_SHARED_LIBRARY=YES -DVMIME_BUILD_STATIC_LIBRARY=NO -DVMIME_BUILD_TESTS=NO -DVMIME_BUILD_SAMPLES=NO -DVMIME_HAVE_MESSAGING_FEATURES=YES -DVMIME_HAVE_MESSAGING_PROTO_POP3=YES -DVMIME_HAVE_MESSAGING_PROTO_SMTP=YES -DVMIME_HAVE_MESSAGING_PROTO_IMAP=YES -DVMIME_HAVE_MESSAGING_PROTO_MAILDIR=NO -DVMIME_HAVE_MESSAGING_PROTO_SENDMAIL=NO -DVMIME_HAVE_FILESYSTEM_FEATURES=YES -DVMIME_HAVE_SASL_SUPPORT=YES -DVMIME_HAVE_TLS_SUPPORT=YES -DVMIME_TLS_SUPPORT_LIB=openssl -DVMIME_SHARED_PTR_USE_CXX=YES -DVMIME_SHARED_PTR_USE_BOOST=NO -DVMIME_BUILD_DOCUMENTATION=NO -DCMAKE_INSTALL_PREFIX=D:\build\_deb-vmime ..\
+mingw32-make.exe -j5 && mingw32-make.exe install
+
+# release build
+cd _release && cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=..\\__deps\\lib\\rel -DCMAKE_INCLUDE_PATH=..\\__deps\\include -DVMIME_BUILD_SHARED_LIBRARY=YES -DVMIME_BUILD_STATIC_LIBRARY=NO -DVMIME_BUILD_TESTS=NO -DVMIME_BUILD_SAMPLES=NO -DVMIME_HAVE_MESSAGING_FEATURES=YES -DVMIME_HAVE_MESSAGING_PROTO_POP3=YES -DVMIME_HAVE_MESSAGING_PROTO_SMTP=YES -DVMIME_HAVE_MESSAGING_PROTO_IMAP=YES -DVMIME_HAVE_MESSAGING_PROTO_MAILDIR=NO -DVMIME_HAVE_MESSAGING_PROTO_SENDMAIL=NO -DVMIME_HAVE_FILESYSTEM_FEATURES=YES -DVMIME_HAVE_SASL_SUPPORT=YES -DVMIME_HAVE_TLS_SUPPORT=YES -DVMIME_TLS_SUPPORT_LIB=openssl -DVMIME_SHARED_PTR_USE_CXX=YES -DVMIME_SHARED_PTR_USE_BOOST=NO -DVMIME_BUILD_DOCUMENTATION=NO -DCMAKE_INSTALL_PREFIX=D:\build\_rel-vmime ..\
+mingw32-make.exe -j5 && mingw32-make.exe install
+
+# Copy the following files to your own corresponding directory:
+    _rel-vmime/include/vmime
+    _release/build/bin/libvmime.dll
+    _debug/build/bin/libvmime.dll
+
+
+

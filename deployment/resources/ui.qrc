@@ -23,5 +23,6 @@
         <file>ui/SignIn.qml</file>
         <file>ui/SignUp.qml</file>
         <file>ui/Splash.qml</file>
+        <file>ui/UserProfile.qml</file>
     </qresource>
 </RCC>

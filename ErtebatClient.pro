@@ -112,7 +112,8 @@ lupdate_only {
         deployment/resources/ui/MailServers.qml \
         deployment/resources/ui/SignIn.qml \
         deployment/resources/ui/SignUp.qml \
-        deployment/resources/ui/Splash.qml
+        deployment/resources/ui/Splash.qml \
+        deployment/resources/ui/UserProfile.qml
 }
 
 
