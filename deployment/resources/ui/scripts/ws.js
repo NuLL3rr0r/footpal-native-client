@@ -16,10 +16,12 @@ function registerSocket(socketIns){
 }
 
 function registerTimer(ti){
+    console.log("socket registered");
     timer = ti;
 }
 
 function openSocket(){
+    console.log("try to open socket");
     socketJs.active = true;
 }
 
@@ -27,7 +29,10 @@ function parseTextMessage(message){
     console.log("new message : " + message);
     var encoded = JSON.parse(message);
     console.log(encoded + " : " + encoded.code);
-    if(encoded.code === 1){
+    if(encoded.code === 0){
+        authorizeToWs(Context.token);
+    }
+    else if(encoded.code === 1){
         console.log("Send GetIndividualRooms cmd");
         getIndividualRooms();
         getMyProfile();
@@ -84,6 +89,15 @@ function getMyProfile(){
     socketJs.sendTextMessage(cmd);
 }
 
+function TryToConnectToWS(){
+    console.log(socketJs.status);
+    if(socketJs.status != 0 || socketJs.status != 1)
+    {
+        socketJs.active = false;
+        openSocket();
+    }
+}
+
 function getUserByUserId(userId){
     var cmd = "{\"requestCode\" : \"5\", \"message\": \"GetUsernameViaUserId\"}";
     console.log(cmd);
@@ -92,17 +106,18 @@ function getUserByUserId(userId){
 
 function websocketOpened(){
     console.log("Socket has been opened");
+    timer.stop();
 }
 
 function webSocketClosed(){
     console.log("Socket has been closed");
     console.log("try to open about 5 seconds later");
-    timer.restart();
+    timer.start();
 }
 
 function webSocketError(err){
     console.log("Error: " + err);
-    timer.restart();
+    timer.start();
 }
 
 function authorizeToWs(token){

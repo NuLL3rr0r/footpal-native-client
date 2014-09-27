@@ -52,18 +52,18 @@ ApplicationWindow {
     property Component radioButtonStyle: RadioButtonStyle {
         id: radioButtonStyle
         indicator: Rectangle {
-                implicitWidth: control.height
-                implicitHeight: control.height
+            implicitWidth: control.height
+            implicitHeight: control.height
+            radius: control.height / 2
+            border.color: control.activeFocus ? "darkblue" : "gray"
+            border.width: 1
+            Rectangle {
+                anchors.fill: parent
+                visible: control.checked
+                color: "#555"
                 radius: control.height / 2
-                border.color: control.activeFocus ? "darkblue" : "gray"
-                border.width: 1
-                Rectangle {
-                    anchors.fill: parent
-                    visible: control.checked
-                    color: "#555"
-                    radius: control.height / 2
-                    anchors.margins: 4
-                }
+                anchors.margins: 4
+            }
         }
         label: Text {
             text: control.text
@@ -74,18 +74,18 @@ ApplicationWindow {
     property Component whiteRadioButtonStyle: RadioButtonStyle {
         id: whiteRadioButtonStyle
         indicator: Rectangle {
-                implicitWidth: control.height
-                implicitHeight: control.height
+            implicitWidth: control.height
+            implicitHeight: control.height
+            radius: control.height / 2
+            border.color: control.activeFocus ? "darkblue" : "gray"
+            border.width: 1
+            Rectangle {
+                anchors.fill: parent
+                visible: control.checked
+                color: "#555"
                 radius: control.height / 2
-                border.color: control.activeFocus ? "darkblue" : "gray"
-                border.width: 1
-                Rectangle {
-                    anchors.fill: parent
-                    visible: control.checked
-                    color: "#555"
-                    radius: control.height / 2
-                    anchors.margins: 4
-                }
+                anchors.margins: 4
+            }
         }
         label: Text {
             text: control.text
@@ -109,33 +109,33 @@ ApplicationWindow {
         WS.registerSocket(socket);
         WS.registerTimer(elapsedTimer);
         console.log(socket.url);
-        WS.openSocket();
-        pageLoader.setSource("Splash.qml");    
+        elapsedTimer.start();
+        pageLoader.setSource("Splash.qml");
     }
 
     Timer  {
-            id: elapsedTimer
-            interval: 1000;
-            running: false;
-            repeat: false
-            onTriggered: WS.openSocket()
-        }
+        id: elapsedTimer
+        interval: 1000;
+        running: true;
+        repeat: false;
+        onTriggered : WS.TryToConnectToWS();
+    }
 
     WebSocket {
-         id: socket
-         url: WS.url;
-         onTextMessageReceived: {
-             WS.parseTextMessage(message);
-         }
-         onStatusChanged: if (socket.status == WebSocket.Error) {
-                              WS.webSocketError(socket.errorString);
-                          } else if (socket.status == WebSocket.Open) {
-                              WS.websocketOpened();
-                          } else if (socket.status == WebSocket.Closed) {
-                              WS.webSocketClosed();
-                          }
-         active: false
-     }
+        id: socket
+        url: WS.url;
+        onTextMessageReceived: {
+            WS.parseTextMessage(message);
+        }
+        onStatusChanged: if (socket.status == WebSocket.Error) {
+                             WS.webSocketError(socket.errorString);
+                         } else if (socket.status == WebSocket.Open) {
+                             WS.websocketOpened();
+                         } else if (socket.status == WebSocket.Closed) {
+                             WS.webSocketClosed();
+                         }
+        active: false
+    }
 
     Loader {
         id: pageLoader;
