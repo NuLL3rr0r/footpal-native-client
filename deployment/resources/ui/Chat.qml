@@ -200,7 +200,7 @@ Rectangle {
                 defaultImage: "qrc:///img/btn_bar_new_contact.png"
                 pressedImage: "qrc:///img/btn_bar_new_contact_pressed.png"
                 onSignal_clicked: {
-                    pageLoader.setSource("qml:///ui/ContactSelection.qml")
+                    pageLoader.setSource("qrc:///ui/ContactSelection.qml")
                 }
             }
 
