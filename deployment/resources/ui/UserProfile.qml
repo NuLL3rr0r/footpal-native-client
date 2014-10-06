@@ -33,6 +33,12 @@ Rectangle {
         property int textHeight: root.height * 0.05
     }
 
+    ListModel {
+        id: languageModel
+        ListElement { text: "English"; }
+        ListElement { text: "فارسی"; }
+    }
+
     Bar {
         id: topBar
 
@@ -92,14 +98,33 @@ Rectangle {
         }
     }
 
+    ComboBox {
+        id: comboBoxLanguage
+        model: languageModel;
+        width: nameRow.width;
+        height: privates.textFieldHeight;
+        anchors.top: nameRow.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.topMargin: root.height * 0.05
+        style: comboBoxStyle;
+        currentIndex: 0;
+        onCurrentIndexChanged: {
+            if (currentIndex == 0) {
+                //  TODO: change language to English
+            } else if (currentIndex == 1) {
+                //  TODO: change language to Persian
+            }
+        }
+    }
+
     Text {
         id: emailText
         height: privates.textFieldHeight
         font.pixelSize: height / 2
         text: "morteza.sabetraftar@gmail.com"
-        anchors.top: nameRow.bottom
+        anchors.top: comboBoxLanguage.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.topMargin: root.height * 0.1
+        anchors.topMargin: root.height * 0.05
         color: "white"
     }
 

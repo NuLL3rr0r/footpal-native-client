@@ -30,6 +30,11 @@ Rectangle {
         property int maxLeftBubbleWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.5 : Math.min(root.width * 0.75, 256)
         property int itemSpacing: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.01 : 5
         property int imageSize: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.15 : 75
+        property string testJSON: "{ \"log\":" +
+                                  "{ \"conversation\": [" +
+                                  "{ \"self\": \"true\", \"content\": \"Hi Sam! How are you doing?\", \"time\": \"14:27\" }," +
+                                  "{ \"self\": \"false\", \"content\": \"Hi Mike! Thanks, I'm fine. How are you?\", \"time\": \"14:29\" }" +
+                                  "] } }";
     }
 
     Component.onCompleted: {
@@ -116,7 +121,7 @@ Rectangle {
                         anchors.margins: 5
                         width: privates.imageSize
                         height: privates.imageSize
-                        source: "qrc:///img/Splash.png"
+                        source: "qrc:///img/ic_contact.png"
                     }
                     Bubble {
                         id: speechBubble
