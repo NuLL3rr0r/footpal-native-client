@@ -155,13 +155,13 @@ make -j5 && make install
 
 # release build
 cd _release && ../configure --prefix=/d/build/_rel-libgsasl CFLAGS="-DDEBUG" CPPFLAGS="-DDEBUG" CXXFLAGS="-DDEBUG"
-// note if it fails to build, do it without parallel builds
-make -j5 && make install
+// note since it fails to build, do it without parallel build
+make && make install
 
 # Copy the following:
-    _rel-libiconv/include/* to D:\build\__deps\include
-    _rel-libiconv/lib/* to D:\build\__deps\lib\rel
-    _deb-libiconv/lib/* to D:\build\__deps\lib\deb
+    _rel-libgsasl/include/* to D:\build\__deps\include\
+    _rel-libgsasl/lib/libgsasl-7.dll to D:\build\__deps\lib\rel\libgsasl.dll
+    _deb-libgsasl/lib/libgsasl-7.dll to D:\build\__deps\lib\deb\libgsasl.dll
 
 
 ** libiconv
@@ -179,9 +179,11 @@ cd _release && ../configure --prefix=/d/build/_rel-libiconv CFLAGS="-DDEBUG" CPP
 make -j5 && make install
 
 # Copy the following:
-    _rel-libiconv/include/* to D:\build\__deps\include
-    _rel-libiconv/bin/* D:\build\__deps\lib\rel
-    _deb-libiconv/bin/* D:\build\__deps\lib\deb
+    _rel-libiconv/include/* to D:\build\__deps\include\
+    _rel-libiconv/bin/libcharset-1.dll to D:\build\__deps\lib\rel\libcharset.dll
+    _rel-libiconv/bin/libiconv-2.dll to D:\build\__deps\lib\rel\libiconv.dll
+    _deb-libiconv/bin/libcharset-1.dll to D:\build\__deps\lib\deb\libcharset.dll
+    _deb-libiconv/bin/libiconv-2.dll to D:\build\__deps\lib\deb\libiconv.dll
 
 
 ** zlib
@@ -199,9 +201,9 @@ cd _release && cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INS
 mingw32-make.exe -j5 && mingw32-make.exe install
 
 # Copy the following:
-    _rel-zlib/include/* to D:\build\__deps\include
-    _rel-zlib/bin/* to D:\build\__deps\lib\rel
-    _deb-zlib/bin/* to D:\build\__deps\lib\deb
+    _rel-zlib/include/* to D:\build\__deps\include\
+    _rel-zlib/bin/libzlib.dll to D:\build\__deps\lib\rel\
+    _deb-zlib/bin/libzlib.dll to D:\build\__deps\lib\deb\
 
 
 ** openssl
@@ -210,22 +212,18 @@ mingw32-make.exe -j5 && mingw32-make.exe install
 unrar openssl-1.0.1i.tar.gz
 cd openssl-1.0.1i
 
-./Configure mingw shared zlib-dynamic no-shared no-asm -I/d/build/__deps/include/ -L/d/__deps/rel --prefix=./dist
-
-// do not use -j5
+./Configure --prefix=$PWD/dist no-idea no-mdc2 no-rc5 shared mingw -I/d/build/__deps/include/ -L/d/__deps/rel
+// do not build using parallel builds
 make depend
 make
+make install
 
 # Copy the following:
-    include/openssl to our include dir
-    libcrypto.a to D:\build\__deps\lib\rel
-    libssl.a to D:\build\__deps\lib\rel
-    libcrypto.pc to D:\build\__deps\lib\rel\pkgconfig
-    libssl.pc to D:\build\__deps\lib\rel\pkgconfig
-    libcrypto.a to D:\build\__deps\lib\deb
-    libssl.a to D:\build\__deps\lib\deb
-    libcrypto.pc to D:\build\__deps\lib\deb\pkgconfig
-    libssl.pc to D:\build\__deps\lib\deb\pkgconfig
+    ./dist/include/openssl to D:\build\__deps\include\
+    ./dist/bin/libeay32.dll to D:\build\__deps\lib\rel\
+    ./dist/bin/ssleay32.dll to D:\build\__deps\lib\rel\
+    ./dist/bin/libeay32.dll to D:\build\__deps\lib\deb\
+    ./dist/bin/ssleay32.dll to D:\build\__deps\lib\deb\
 
 
 ** vmime
@@ -241,10 +239,13 @@ mingw32-make.exe -j5 && mingw32-make.exe install
 cd _release && cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=..\\__deps\\lib\\rel -DCMAKE_INCLUDE_PATH=..\\__deps\\include -DVMIME_BUILD_SHARED_LIBRARY=YES -DVMIME_BUILD_STATIC_LIBRARY=NO -DVMIME_BUILD_TESTS=NO -DVMIME_BUILD_SAMPLES=NO -DVMIME_HAVE_MESSAGING_FEATURES=YES -DVMIME_HAVE_MESSAGING_PROTO_POP3=YES -DVMIME_HAVE_MESSAGING_PROTO_SMTP=YES -DVMIME_HAVE_MESSAGING_PROTO_IMAP=YES -DVMIME_HAVE_MESSAGING_PROTO_MAILDIR=NO -DVMIME_HAVE_MESSAGING_PROTO_SENDMAIL=NO -DVMIME_HAVE_FILESYSTEM_FEATURES=YES -DVMIME_HAVE_SASL_SUPPORT=YES -DVMIME_HAVE_TLS_SUPPORT=YES -DVMIME_TLS_SUPPORT_LIB=openssl -DVMIME_SHARED_PTR_USE_CXX=YES -DVMIME_SHARED_PTR_USE_BOOST=NO -DVMIME_BUILD_DOCUMENTATION=NO -DCMAKE_INSTALL_PREFIX=D:\build\_rel-vmime ..\
 mingw32-make.exe -j5 && mingw32-make.exe install
 
-# Copy the following files to your own corresponding directory:
+# Copy the following files to your own corresponding directory (Note: You should rename every vmime's dll to it's original name before copying them to the final destination):
+    D:\build\__deps\lib\deb\*.dll
+    D:\build\__deps\lib\rel\*.dll
     _rel-vmime/include/vmime
     _release/build/bin/libvmime.dll
     _debug/build/bin/libvmime.dll
+
 
 
 
