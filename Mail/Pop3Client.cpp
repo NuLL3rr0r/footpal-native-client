@@ -102,8 +102,8 @@ bool Pop3Client::Connect()
                                 m_pimpl->Host.toStdString(),
                                 static_cast<vmime::port_t>(m_pimpl->Port),
                                 std::string(""),
-                                m_pimpl->Username.toStdString(),
-                                m_pimpl->Password.toStdString()
+                                std::string(""),
+                                std::string("")
                                 );
 #endif // !defined ( Q_OS_ANDROID )
 
