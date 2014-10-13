@@ -24,6 +24,7 @@ DEFINES += REST_BASE_URL=\\\"http://www.13x17.org\\\"
 
 QMAKE_CXXFLAGS += -std=c++1y
 QMAKE_CXXFLAGS += -Wall -Wextra -pedantic
+INCLUDEPATH += $$PWD
 #INCLUDEPATH += $$PWD/dependencies/include
 QMAKE_CFLAGS += -isystem $$PWD/dependencies/include
 QMAKE_CXXFLAGS += -isystem $$PWD/dependencies/include
@@ -62,10 +63,20 @@ win32 {
     }
 }
 LIBS += -lb64 -lboost_date_time -lboost_filesystem -lboost_system -lcppdb -lcppdb_sqlite3 -lcryptopp -lsqlite3
+win32 {
+    LIBS += -lvmime
+}
 
 
 HEADERS += \
     make_unique.hpp \
+    Mail/BlindCertificateVerifier.hpp \
+    Mail/ImapClient.hpp \
+    Mail/Mail.hpp \
+    Mail/Mailbox.hpp \
+    Mail/Message.hpp \
+    Mail/Pop3Client.hpp \
+    Mail/SmtpClient.hpp \
     Application.hpp \
     Crypto.hpp \
     Database.hpp \
@@ -78,6 +89,12 @@ HEADERS += \
     UiEngine.hpp
 SOURCES += \
     main.cpp \
+    Mail/BlindCertificateVerifier.cpp \
+    Mail/ImapClient.cpp \
+    Mail/Mailbox.cpp \
+    Mail/Message.cpp \
+    Mail/Pop3Client.cpp \
+    Mail/SmtpClient.cpp \
     Application.cpp \
     Crypto.cpp \
     Database.cpp \
@@ -131,6 +148,7 @@ android {
 
     OTHER_FILES += \
         deployment/android/AndroidManifest.xml \
+        deployment/android/libs/javax.mail.jar \
         deployment/android/res/drawable-hdpi/icon.png \
         deployment/android/res/drawable-ldpi/icon.png \
         deployment/android/res/drawable-mdpi/icon.png \
