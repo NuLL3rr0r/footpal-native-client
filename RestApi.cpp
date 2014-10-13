@@ -120,11 +120,8 @@ void RestApi::signIn(const QString &user, const QString &pwd)
 {
     std::wstringstream stream;
     boost::property_tree::wptree tree;
-    //std::string outPwd;
 
     tree.put(L"username", user.toStdWString());
-    //Pool::Crypto()->GenerateHash(pwd.toStdString(), outPwd);
-    //tree.put(L"password", QString::fromStdString(outPwd).toStdWString());
     tree.put(L"password", pwd.toStdWString());
 
     boost::property_tree::write_json(stream, tree);
@@ -139,11 +136,8 @@ void RestApi::signOut(const QString &token, const QString &user, const QString &
 {
     std::wstringstream stream;
     boost::property_tree::wptree tree;
-    //std::string outPwd;
 
     tree.put(L"username", user.toStdWString());
-    //Pool::Crypto()->GenerateHash(pwd.toStdString(), outPwd);
-    //tree.put(L"password", QString::fromStdString(outPwd).toStdWString());
     tree.put(L"password", pwd.toStdWString());
 
     boost::property_tree::write_json(stream, tree);
