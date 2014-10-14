@@ -46,6 +46,7 @@ public:
 public:
     bool Connect();
     void Disconnect();
+    bool Fetch();
 };
 
 

@@ -120,7 +120,7 @@ bool SmtpClient::Connect()
                                 std::string("")
                                 );
         m_pimpl->Session = vmime::make_shared<vmime::net::session>();
-        m_pimpl->Transport= m_pimpl->Session->getTransport(url);
+        m_pimpl->Transport = m_pimpl->Session->getTransport(url);
         m_pimpl->BlindCertificateVerifier = vmime::make_shared<Ertebat::Mail::BlindCertificateVerifier>();
 
         if (m_pimpl->SecurityType == Mail::SecurityType::STARTTLS) {

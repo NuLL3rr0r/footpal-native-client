@@ -1,15 +1,11 @@
 #include <cassert>
 #include <QString>
 #if !defined ( Q_OS_ANDROID )
-#if !defined ( _WIN32 )
-#include <vmime/platforms/posix/posixHandler.hpp>
-#else
-#include <vmime/platforms/windows/windowsHandler.hpp>
-#endif // !defined (_WIN32 )
 #include <vmime/vmime.hpp>
 #endif // !defined ( Q_OS_ANDROID )
 #include "make_unique.hpp"
 #include "ImapClient.hpp"
+#include "BlindCertificateVerifier.hpp"
 #include "Log.hpp"
 
 #define         UNKNOWN_ERROR               "  ** ImapClient ->  Unknown Error!"
@@ -27,7 +23,8 @@ struct ImapClient::Impl
 
 #if !defined ( Q_OS_ANDROID )
     vmime::shared_ptr<vmime::net::session> Session;
-    vmime::shared_ptr<vmime::net::transport> Transport;
+    vmime::shared_ptr<vmime::net::store> Store;
+    vmime::shared_ptr<Ertebat::Mail::BlindCertificateVerifier> BlindCertificateVerifier;
 #endif // !defined ( Q_OS_ANDROID )
 
     Impl();
@@ -98,13 +95,46 @@ bool ImapClient::Connect()
 {
     try {
 #if !defined ( Q_OS_ANDROID )
-        vmime::utility::url url(std::string(""),
+        std::string protocol;
+        switch (m_pimpl->SecurityType) {
+        case Mail::SecurityType::SSL_TLS:
+            protocol = "imaps";
+            break;
+        case Mail::SecurityType::None:
+            // fall through
+        case Mail::SecurityType::STARTTLS:
+            // fall through
+        default:
+            protocol = "imap";
+            break;
+        }
+
+        vmime::utility::url url(protocol,
                                 m_pimpl->Host.toStdString(),
                                 static_cast<vmime::port_t>(m_pimpl->Port),
                                 std::string(""),
                                 std::string(""),
                                 std::string("")
                                 );
+        m_pimpl->Session = vmime::make_shared<vmime::net::session>();
+        m_pimpl->Store = m_pimpl->Session->getStore(url);
+        m_pimpl->BlindCertificateVerifier = vmime::make_shared<Ertebat::Mail::BlindCertificateVerifier>();
+
+        if (m_pimpl->SecurityType == Mail::SecurityType::STARTTLS) {
+            m_pimpl->Store->setProperty("connection.tls", true);
+        }
+
+        if (m_pimpl->Password != "") {
+            m_pimpl->Store->setProperty("auth.username", m_pimpl->Username.toStdString().c_str());
+            m_pimpl->Store->setProperty("auth.password", m_pimpl->Password.toStdString().c_str());
+            m_pimpl->Store->setProperty("options.need-authentication", true);
+        }
+
+        if (m_pimpl->SecurityType != Mail::SecurityType::None) {
+             m_pimpl->Store->setCertificateVerifier(m_pimpl->BlindCertificateVerifier);
+        }
+
+        m_pimpl->Store->connect();
 #endif // !defined ( Q_OS_ANDROID )
 
         return true;
@@ -127,8 +157,8 @@ void ImapClient::Disconnect()
 {
     try {
 #if !defined ( Q_OS_ANDROID )
-        if (m_pimpl->Transport != nullptr) {
-            m_pimpl->Transport->disconnect();
+        if (m_pimpl->Store != nullptr) {
+            m_pimpl->Store->disconnect();
         }
 #endif // !defined ( Q_OS_ANDROID )
     }
