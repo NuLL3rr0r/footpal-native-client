@@ -24,29 +24,29 @@ private:
     std::unique_ptr<Impl> m_pimpl;
 
 public:
-    ImapClient();
+    Q_INVOKABLE ImapClient();
     ~ImapClient();
 
 public:
-    const Ertebat::Mail::SecurityType &GetSecurityType() const;
-    void SetSecurityType(const Ertebat::Mail::SecurityType &securityType);
+    Q_INVOKABLE const Ertebat::Mail::SecurityType &GetSecurityType() const;
+    Q_INVOKABLE void SetSecurityType(const Ertebat::Mail::SecurityType &securityType);
 
-    const QString &GetHost() const;
-    void SetHost(const QString &host);
+    Q_INVOKABLE const QString &GetHost() const;
+    Q_INVOKABLE void SetHost(const QString &host);
 
-    const Mail::Port_t &GetPort() const;
-    void SetPort(const Mail::Port_t &port);
+    Q_INVOKABLE const Mail::Port_t &GetPort() const;
+    Q_INVOKABLE void SetPort(const Mail::Port_t &port);
 
-    const QString &GetUsername() const;
-    void SetUsername(const QString &username);
+    Q_INVOKABLE const QString &GetUsername() const;
+    Q_INVOKABLE void SetUsername(const QString &username);
 
-    const QString &GetPassword() const;
-    void SetPassword(const QString &password);
+    Q_INVOKABLE const QString &GetPassword() const;
+    Q_INVOKABLE void SetPassword(const QString &password);
 
 public:
-    bool Connect();
-    void Disconnect();
-    bool Fetch();
+    Q_INVOKABLE bool Connect();
+    Q_INVOKABLE void Disconnect();
+    Q_INVOKABLE bool Fetch(std::vector<Message>);
 };
 
 

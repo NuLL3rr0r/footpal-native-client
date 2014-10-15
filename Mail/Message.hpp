@@ -30,34 +30,34 @@ private:
     std::unique_ptr<Impl> m_pimpl;
 
 public:
-    Message();
+    Q_INVOKABLE Message();
     ~Message();
 
 public:
-    const Mail::Mailbox &GetFrom() const;
-    void SetFrom(const Mail::Mailbox &from);
+    Q_INVOKABLE const Mail::Mailbox &GetFrom() const;
+    Q_INVOKABLE void SetFrom(const Mail::Mailbox &from);
 
-    const Mail::Mailbox &GetReplyTo() const;
-    void SetReplyTo(const Mail::Mailbox &replyTo);
+    Q_INVOKABLE const Mail::Mailbox &GetReplyTo() const;
+    Q_INVOKABLE void SetReplyTo(const Mail::Mailbox &replyTo);
 
-    const std::vector<Mail::Recipient> &GetRecipients() const;
-    void AddRecipient(const Mail::RecipientType &type, const Mail::Mailbox &recipient);
-    void ClearRecipients();
+    Q_INVOKABLE const std::vector<Mail::Recipient> &GetRecipients() const;
+    Q_INVOKABLE void AddRecipient(const Mail::RecipientType &type, const Mail::Mailbox &recipient);
+    Q_INVOKABLE void ClearRecipients();
 
-    const QString &GetSubject() const;
-    void SetSubject(const QString &subject);
+    Q_INVOKABLE const QString &GetSubject() const;
+    Q_INVOKABLE void SetSubject(const QString &subject);
 
-    const QString &GetPlainBody() const;
-    void SetPlainBody(const QString &plainBody);
+    Q_INVOKABLE const QString &GetPlainBody() const;
+    Q_INVOKABLE void SetPlainBody(const QString &plainBody);
 
-    const QString &GetHtmlBody() const;
-    void SetHtmlBody(const QString &htmlBody);
+    Q_INVOKABLE const QString &GetHtmlBody() const;
+    Q_INVOKABLE void SetHtmlBody(const QString &htmlBody);
 
-    const std::vector<QString> &GetAttachments() const;
-    void AddAttachment(const QString &filePath);
-    void ClearAttachments();
+    Q_INVOKABLE const std::vector<QString> &GetAttachments() const;
+    Q_INVOKABLE void AddAttachment(const QString &filePath);
+    Q_INVOKABLE void ClearAttachments();
 
-    void Clear();
+    Q_INVOKABLE void Clear();
 };
 
 

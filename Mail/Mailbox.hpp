@@ -25,15 +25,15 @@ private:
     std::shared_ptr<Impl> m_pimpl;
 
 public:
-    Mailbox();
-    Mailbox(const QString &address);
-    Mailbox(const QString &address, const QString &name);
+    Q_INVOKABLE Mailbox();
+    Q_INVOKABLE Mailbox(const QString &address);
+    Q_INVOKABLE Mailbox(const QString &address, const QString &name);
     ~Mailbox();
 
 public:
-    bool IsEmpty() const;
-    const QString &GetName() const;
-    const QString &GetAddress() const;
+    Q_INVOKABLE bool IsEmpty() const;
+    Q_INVOKABLE const QString &GetName() const;
+    Q_INVOKABLE const QString &GetAddress() const;
 };
 
 

@@ -11,6 +11,12 @@
 #if defined ( _WIN32 )
 #include <windows.h>
 #endif  // defined ( _WIN32 )
+#include "Mail/Mail.hpp"
+#include "Mail/ImapClient.hpp"
+#include "Mail/Mailbox.hpp"
+#include "Mail/Message.hpp"
+#include "Mail/Pop3Client.hpp"
+#include "Mail/SmtpClient.hpp"
 #include "make_unique.hpp"
 #include "uiengine.hpp"
 #if defined ( Q_OS_ANDROID )
