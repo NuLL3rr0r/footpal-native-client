@@ -26,6 +26,12 @@ enum class RecipientType : unsigned char {
     Bcc
 };
 
+enum class SortType : unsigned char {
+    Time_Ascending,
+    Time_Descneding,
+    Default
+};
+
 struct Recipient {
     Mail::RecipientType Type;
     Mail::Mailbox Mailbox;

@@ -15,6 +15,7 @@
 #include "Mail.hpp"
 
 class QString;
+class QDateTime;
 
 namespace Ertebat {
 namespace Mail {
@@ -56,6 +57,9 @@ public:
     Q_INVOKABLE const std::vector<QString> &GetAttachments() const;
     Q_INVOKABLE void AddAttachment(const QString &filePath);
     Q_INVOKABLE void ClearAttachments();
+
+    Q_INVOKABLE QDateTime GetTime() const;
+    Q_INVOKABLE void SetTime(QDateTime t);
 
     Q_INVOKABLE void Clear();
 };

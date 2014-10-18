@@ -46,7 +46,7 @@ public:
 public:
     Q_INVOKABLE bool Connect();
     Q_INVOKABLE void Disconnect();
-    Q_INVOKABLE bool Fetch(std::vector<Message>);
+    //Q_INVOKABLE bool Fetch(std::vector<Message>);
 };
 
 

@@ -18,17 +18,29 @@ class Mailbox;
 }
 }
 
-class Ertebat::Mail::Mailbox
+class Ertebat::Mail::Mailbox : public QObject
 {
+    Q_OBJECT
+
 private:
     struct Impl;
-    std::shared_ptr<Impl> m_pimpl;
+
+    typedef std::shared_ptr<Impl> Pimple_Type;
+
+    Pimple_Type m_pimpl;
 
 public:
     Q_INVOKABLE Mailbox();
     Q_INVOKABLE Mailbox(const QString &address);
     Q_INVOKABLE Mailbox(const QString &address, const QString &name);
-    ~Mailbox();
+
+    Mailbox(Mailbox const& x);
+    Mailbox(Mailbox&& x);
+
+    Mailbox& operator = (Mailbox const& x);
+    Mailbox& operator = (Mailbox&& x);
+
+    virtual ~Mailbox();
 
 public:
     Q_INVOKABLE bool IsEmpty() const;

@@ -22,6 +22,12 @@ class Pool;
 class RestApi;
 }
 
+namespace Ertebat {
+namespace Mail {
+class Mailbox;
+}
+}
+
 class Ertebat::Pool
 {
 private:
@@ -39,6 +45,7 @@ public:
     static Ertebat::Database *Database();
     static Ertebat::RestApi *RestApi();
     static QTranslator *Translator();
+    static Ertebat::Mail::Mailbox* Mailbox();
 };
 
 

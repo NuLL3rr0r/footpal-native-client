@@ -19,7 +19,7 @@ win32 {
     DEFINES += SHARED_LINK_DEPENDENCIES
 }
 DEFINES += "BUFFERSIZE=16777216"
-DEFINES += REST_BASE_URL=\\\"http://www.13x17.org\\\"
+DEFINES += REST_BASE_URL=\\\"http://localhost:4000\\\"
 
 
 QMAKE_CXXFLAGS += -std=c++1y
@@ -86,7 +86,11 @@ HEADERS += \
     Log.hpp \
     Pool.hpp \
     RestApi.hpp \
-    UiEngine.hpp
+    UiEngine.hpp \
+    Mail/Client.hpp \
+    Mail/MailDatabase.hpp \
+    Mail/MailFolder.hpp \
+    Mail/MailView.hpp
 SOURCES += \
     main.cpp \
     Mail/BlindCertificateVerifier.cpp \
@@ -104,7 +108,8 @@ SOURCES += \
     Log.cpp \
     Pool.cpp \
     RestApi.cpp \
-    UiEngine.cpp
+    UiEngine.cpp \
+    Mail/MailDatabase.cpp
 android {
     HEADERS += \
         Android.hpp

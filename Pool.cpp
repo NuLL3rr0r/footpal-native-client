@@ -17,6 +17,15 @@
 #include "Crypto.hpp"
 #include "Database.hpp"
 #include "RestApi.hpp"
+#include "Mail/Mailbox.hpp"
+
+/*
+ *  PLEASE NOTE: WINDOWS SUPPORTS DIRECTORY SEPERATOR '/'
+ *  WE CAN USE THE SAME FOR ANY PLATFORM
+ *
+ *  MEHDI KHARATIZADEH
+ *
+ */
 
 #if defined ( _WIN32 )
 #define     DATABASE_RELATIVE_PATH          "resources\\db"
@@ -38,6 +47,7 @@ struct Pool::Impl
     typedef std::unique_ptr<Ertebat::Database> Database_t;
     typedef std::unique_ptr<Ertebat::RestApi> RestApi_t;
     typedef std::unique_ptr<QTranslator> Translator_t;
+    typedef std::unique_ptr<Ertebat::Mail::Mailbox> Mailbox_t;
 
     static std::mutex StorageMutex;
     static Storage_t StorageInstance;
@@ -58,6 +68,9 @@ struct Pool::Impl
 
     static std::mutex TranslatorMutex;
     static Translator_t TranslatorInstance;
+
+    static std::mutex MailboxMutex;
+    static Mailbox_t MailboxInstance;
 };
 
 std::mutex Pool::Impl::StorageMutex;
@@ -79,6 +92,9 @@ Pool::Impl::RestApi_t Pool::Impl::RestApiInstance = nullptr;
 
 std::mutex Pool::Impl::TranslatorMutex;
 Pool::Impl::Translator_t Pool::Impl::TranslatorInstance = nullptr;
+
+std::mutex Pool::Impl::MailboxMutex;
+Pool::Impl::Mailbox_t Pool::Impl::MailboxInstance = nullptr;
 
 Pool::StorageStruct *Pool::Storage()
 {
@@ -198,3 +214,15 @@ QTranslator *Pool::Translator()
     return Impl::TranslatorInstance.get();
 }
 
+
+Ertebat::Mail::Mailbox* Pool::Mailbox() {
+    lock_guard<mutex> lock(Impl::MailboxMutex);
+    ((void) lock);
+
+    if(Impl::MailboxInstance == nullptr) {
+        Impl::MailboxInstance =
+                Impl::Mailbox_t(new Ertebat::Mail::Mailbox("my-name", "my-value~"));
+    }
+
+    return Impl::MailboxInstance.get();
+}
