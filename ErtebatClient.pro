@@ -148,6 +148,8 @@ android {
 
     OTHER_FILES += \
         deployment/android/AndroidManifest.xml \
+        deployment/android/libs/activation.jar \
+        deployment/android/libs/additionnal.jar \
         deployment/android/libs/javax.mail.jar \
         deployment/android/res/drawable-hdpi/icon.png \
         deployment/android/res/drawable-ldpi/icon.png \
