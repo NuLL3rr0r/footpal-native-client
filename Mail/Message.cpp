@@ -1,6 +1,7 @@
 #include <QString>
 #include "make_unique.hpp"
 #include "Message.hpp"
+#include "Mailbox.hpp"
 
 using namespace Ertebat;
 using namespace Ertebat::Mail;
@@ -61,9 +62,7 @@ void Message::ClearRecipients()
 
 void Message::AddRecipient(const Mail::RecipientType &type, const Mail::Mailbox &recipient)
 {
-    Recipient r;
-    r.Type = type;
-    r.Mailbox = recipient;
+    Recipient r(type, recipient);
     m_pimpl->Recipients.push_back(r);
 }
 

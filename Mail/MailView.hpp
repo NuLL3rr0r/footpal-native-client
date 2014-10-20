@@ -33,10 +33,13 @@ namespace Ertebat { namespace Mail {
         std::size_t GetCount() const;
         std::size_t GetViewFrom() const;
         std::size_t GetViewTo() const;
+        std::size_t GetViewCount() const;
         bool ChangeView(std::size_t from, std::size_t to);
         QString const& GetSearchKeyword() const;
         void SetSearchKeyword(QString const& s);
         Message Get(size_t i);
+        MailFolder& GetFolder();
+        Mailbox& GetMailbox();
 
 
     signals:

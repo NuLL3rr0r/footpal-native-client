@@ -9,10 +9,11 @@
 
 #include <memory>
 #include <QObject>
-#include "Mailbox.hpp"
 
 namespace Ertebat {
 namespace Mail {
+
+class Mailbox;
 
 enum class SecurityType : unsigned char {
     None,
@@ -34,7 +35,12 @@ enum class SortType : unsigned char {
 
 struct Recipient {
     Mail::RecipientType Type;
-    Mail::Mailbox Mailbox;
+    std::reference_wrapper<const Mail::Mailbox> Mailbox;
+    Recipient(Mail::RecipientType type, Mail::Mailbox const& mailbox)
+        : Type(type), Mailbox(mailbox)
+    {
+
+    }
 };
 
 typedef unsigned short Port_t;

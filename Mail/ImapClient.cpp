@@ -7,6 +7,9 @@
 #include "ImapClient.hpp"
 #include "BlindCertificateVerifier.hpp"
 #include "Log.hpp"
+#include "Message.hpp"
+#include "Mailbox.hpp"
+#include <boost/filesystem.hpp>
 
 #define         UNKNOWN_ERROR               "  ** ImapClient ->  Unknown Error!"
 
@@ -24,11 +27,47 @@ struct ImapClient::Impl
 #if !defined ( Q_OS_ANDROID )
     vmime::shared_ptr<vmime::net::session> Session;
     vmime::shared_ptr<vmime::net::store> Store;
+    vmime::shared_ptr<vmime::net::transport> Transport;
     vmime::shared_ptr<Ertebat::Mail::BlindCertificateVerifier> BlindCertificateVerifier;
 #endif // !defined ( Q_OS_ANDROID )
 
     Impl();
 };
+
+
+std::vector<Message> ImapClient::Fetch() {
+    std::vector<Message> ret;
+
+    try {
+
+        vmime::shared_ptr<vmime::net::folder> f = m_pimpl->Store->getDefaultFolder();
+        f->open(vmime::net::folder::MODE_READ_WRITE);
+
+        int count = f->getMessageCount();
+        for(int i = count; i >= 1; --i) {
+            vmime::shared_ptr<vmime::net::message> msg = f->getMessage(i);
+
+            f->fetchMessage(msg, vmime::net::fetchAttributes::FULL_HEADER);
+            Message out;
+             ExtractMessage(out, msg);
+        }
+
+
+        return ret;
+    }
+#if !defined ( Q_OS_ANDROID )
+    catch (vmime::exception &ex) {
+        LOG_ERROR(ex.what());
+    }
+#endif // !defined ( Q_OS_ANDROID )
+    catch (std::exception &ex) {
+        LOG_ERROR(ex.what());
+    } catch(...) {
+        LOG_ERROR(UNKNOWN_ERROR);
+    }
+
+    return std::vector<Message>();
+}
 
 ImapClient::ImapClient() :
     m_pimpl(std::make_unique<ImapClient::Impl>())
@@ -118,6 +157,7 @@ bool ImapClient::Connect()
                                 );
         m_pimpl->Session = vmime::make_shared<vmime::net::session>();
         m_pimpl->Store = m_pimpl->Session->getStore(url);
+        m_pimpl->Transport = m_pimpl->Session->getTransport(url);
         m_pimpl->BlindCertificateVerifier = vmime::make_shared<Ertebat::Mail::BlindCertificateVerifier>();
 
         if (m_pimpl->SecurityType == Mail::SecurityType::STARTTLS) {
@@ -152,6 +192,103 @@ bool ImapClient::Connect()
 
     return false;
 }
+
+
+bool ImapClient::Send(const Message &message)
+{
+    try {
+#if !defined ( Q_OS_ANDROID )
+        if (m_pimpl->Transport != nullptr) {
+            vmime::messageBuilder mb;
+
+            if (!message.GetFrom().IsEmpty()) {
+                mb.setExpeditor(vmime::mailbox(
+                                    vmime::text(message.GetFrom().GetName().toStdString()),
+                                    vmime::emailAddress(message.GetFrom().GetAddress().toStdString()))
+                                );
+            }
+
+            for (const Mail::Recipient &r : message.GetRecipients()) {
+                switch (r.Type) {
+                case RecipientType::To:
+                    mb.getRecipients().appendAddress(
+                                vmime::make_shared<vmime::mailbox>(
+                                    vmime::text(r.Mailbox.get().GetName().toStdString()),
+                                    vmime::emailAddress(r.Mailbox.get().GetAddress().toStdString()))
+                                );
+                    break;
+                case RecipientType::Cc:
+                    mb.getCopyRecipients().appendAddress(
+                                vmime::make_shared<vmime::mailbox>(
+                                    vmime::text(r.Mailbox.get().GetName().toStdString()),
+                                    vmime::emailAddress(r.Mailbox.get().GetAddress().toStdString()))
+                                );
+                    break;
+                case RecipientType::Bcc:
+                    mb.getBlindCopyRecipients().appendAddress(
+                                vmime::make_shared<vmime::mailbox>(
+                                    vmime::text(r.Mailbox.get().GetName().toStdString()),
+                                    vmime::emailAddress(r.Mailbox.get().GetAddress().toStdString()))
+                                );
+                    break;
+                default:
+                    break;
+                }
+            }
+
+            if (message.GetSubject() != "") {
+                mb.setSubject(*vmime::text::newFromString(message.GetSubject().toStdString(),
+                                                          vmime::charsets::UTF_8));
+            }
+
+            mb.constructTextPart(vmime::mediaType(vmime::mediaTypes::TEXT, vmime::mediaTypes::TEXT_HTML));
+            mb.getTextPart()->setCharset(vmime::charsets::UTF_8);
+
+            vmime::htmlTextPart &textPart = *vmime::dynamicCast <vmime::htmlTextPart>(mb.getTextPart());
+
+            if (message.GetPlainBody() != "") {
+                textPart.setPlainText(
+                            vmime::make_shared<vmime::stringContentHandler>(message.GetPlainBody().toStdString()));
+            }
+
+            if (message.GetHtmlBody() != "") {
+                textPart.setText(
+                            vmime::make_shared<vmime::stringContentHandler>((message.GetHtmlBody().toStdString())));
+            }
+
+            if (message.GetAttachments().size() > 0) {
+                for (const QString &a : message.GetAttachments()) {
+                    vmime::shared_ptr<vmime::attachment> attachment = vmime::make_shared<vmime::fileAttachment>
+                            (a.toStdString(), vmime::mediaType("application/octet-stream"),
+                             vmime::text(boost::filesystem::path(a.toStdString()).stem().string()));
+                    mb.appendAttachment(attachment);
+                }
+            }
+
+            m_pimpl->Transport->send(mb.construct());
+
+            return true;
+        }
+#else
+        (void)message;
+
+        return true;
+#endif // !defined ( Q_OS_ANDROID )
+    }
+#if !defined ( Q_OS_ANDROID )
+    catch (vmime::exception &ex) {
+        LOG_ERROR(ex.what());
+    }
+#endif // !defined ( Q_OS_ANDROID )
+    catch (std::exception &ex) {
+        LOG_ERROR(ex.what());
+    } catch(...) {
+        LOG_ERROR(UNKNOWN_ERROR);
+    }
+
+    return false;
+}
+
 
 void ImapClient::Disconnect()
 {

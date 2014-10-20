@@ -10,6 +10,7 @@
 #include <memory>
 #include <QObject>
 #include "Mail.hpp"
+#include "Client.hpp"
 
 namespace Ertebat {
 namespace Mail {
@@ -17,7 +18,7 @@ class ImapClient;
 }
 }
 
-class Ertebat::Mail::ImapClient
+class Ertebat::Mail::ImapClient : public Client
 {
 private:
     struct Impl;
@@ -43,10 +44,12 @@ public:
     Q_INVOKABLE const QString &GetPassword() const;
     Q_INVOKABLE void SetPassword(const QString &password);
 
+    Q_INVOKABLE bool Send(const Message &message);
+
 public:
     Q_INVOKABLE bool Connect();
     Q_INVOKABLE void Disconnect();
-    //Q_INVOKABLE bool Fetch(std::vector<Message>);
+    Q_INVOKABLE std::vector<Message> Fetch();
 };
 
 

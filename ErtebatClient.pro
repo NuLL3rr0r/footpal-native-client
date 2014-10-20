@@ -109,7 +109,9 @@ SOURCES += \
     Pool.cpp \
     RestApi.cpp \
     UiEngine.cpp \
-    Mail/MailDatabase.cpp
+    Mail/MailDatabase.cpp \
+    Mail/MailView.cpp \
+    Mail/Client.cpp
 android {
     HEADERS += \
         Android.hpp

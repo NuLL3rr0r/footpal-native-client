@@ -10,6 +10,7 @@
 #include "BlindCertificateVerifier.hpp"
 #include "Log.hpp"
 #include "Message.hpp"
+#include "Mailbox.hpp"
 
 #define         UNKNOWN_ERROR               "  ** SmtpClient ->  Unknown Error!"
 
@@ -27,6 +28,7 @@ struct SmtpClient::Impl
 #if !defined ( Q_OS_ANDROID )
     vmime::shared_ptr<vmime::net::session> Session;
     vmime::shared_ptr<vmime::net::transport> Transport;
+    vmime::shared_ptr<vmime::net::store> Store;
     vmime::shared_ptr<Ertebat::Mail::BlindCertificateVerifier> BlindCertificateVerifier;
 #endif // !defined ( Q_OS_ANDROID )
 
@@ -121,6 +123,11 @@ bool SmtpClient::Connect()
                                 );
         m_pimpl->Session = vmime::make_shared<vmime::net::session>();
         m_pimpl->Transport = m_pimpl->Session->getTransport(url);
+        m_pimpl->Store = m_pimpl->Session->getStore(url);
+        if(!m_pimpl->Store) {
+            int u = 0;
+            u = 1;
+        }
         m_pimpl->BlindCertificateVerifier = vmime::make_shared<Ertebat::Mail::BlindCertificateVerifier>();
 
         if (m_pimpl->SecurityType == Mail::SecurityType::STARTTLS) {
@@ -177,6 +184,38 @@ void SmtpClient::Disconnect()
     }
 }
 
+
+std::vector<Message> SmtpClient::Fetch() {
+    std::vector<Message> ret;
+
+    try {
+
+        vmime::shared_ptr<vmime::net::folder> f = m_pimpl->Store->getDefaultFolder();
+        f->open(vmime::net::folder::MODE_READ_WRITE);
+
+        int count = f->getMessageCount();
+        for(int i = 1; i <= count; ++i) {
+            vmime::shared_ptr<vmime::net::message> msg = f->getMessage(i);
+
+        }
+
+
+        return ret;
+    }
+#if !defined ( Q_OS_ANDROID )
+    catch (vmime::exception &ex) {
+        LOG_ERROR(ex.what());
+    }
+#endif // !defined ( Q_OS_ANDROID )
+    catch (std::exception &ex) {
+        LOG_ERROR(ex.what());
+    } catch(...) {
+        LOG_ERROR(UNKNOWN_ERROR);
+    }
+
+    return std::vector<Message>();
+}
+
 bool SmtpClient::Send(const Message &message)
 {
     try {
@@ -196,22 +235,22 @@ bool SmtpClient::Send(const Message &message)
                 case RecipientType::To:
                     mb.getRecipients().appendAddress(
                                 vmime::make_shared<vmime::mailbox>(
-                                    vmime::text(r.Mailbox.GetName().toStdString()),
-                                    vmime::emailAddress(r.Mailbox.GetAddress().toStdString()))
+                                    vmime::text(r.Mailbox.get().GetName().toStdString()),
+                                    vmime::emailAddress(r.Mailbox.get().GetAddress().toStdString()))
                                 );
                     break;
                 case RecipientType::Cc:
                     mb.getCopyRecipients().appendAddress(
                                 vmime::make_shared<vmime::mailbox>(
-                                    vmime::text(r.Mailbox.GetName().toStdString()),
-                                    vmime::emailAddress(r.Mailbox.GetAddress().toStdString()))
+                                    vmime::text(r.Mailbox.get().GetName().toStdString()),
+                                    vmime::emailAddress(r.Mailbox.get().GetAddress().toStdString()))
                                 );
                     break;
                 case RecipientType::Bcc:
                     mb.getBlindCopyRecipients().appendAddress(
                                 vmime::make_shared<vmime::mailbox>(
-                                    vmime::text(r.Mailbox.GetName().toStdString()),
-                                    vmime::emailAddress(r.Mailbox.GetAddress().toStdString()))
+                                    vmime::text(r.Mailbox.get().GetName().toStdString()),
+                                    vmime::emailAddress(r.Mailbox.get().GetAddress().toStdString()))
                                 );
                     break;
                 default:
