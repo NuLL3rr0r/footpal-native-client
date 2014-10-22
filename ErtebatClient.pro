@@ -90,7 +90,8 @@ HEADERS += \
     Mail/Client.hpp \
     Mail/MailDatabase.hpp \
     Mail/MailFolder.hpp \
-    Mail/MailView.hpp
+    Mail/MailView.hpp \
+    Mail/Android/MailProfile.hpp
 SOURCES += \
     main.cpp \
     Mail/BlindCertificateVerifier.cpp \
@@ -235,4 +236,11 @@ QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
+
+OTHER_FILES += \
+    deployment/android/src/top/social/mailapplication/MailProfile.java \
+    deployment/android/src/top/social/mailapplication/MailProtocol.java \
+    deployment/android/src/top/social/mailapplication/MainActivity.java \
+    deployment/android/src/top/social/mailapplication/MessageAdapter.java \
+    deployment/android/src/top/social/mailapplication/SettingsActivity.java
 

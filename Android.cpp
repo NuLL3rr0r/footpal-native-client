@@ -14,6 +14,7 @@
 #include "Android.hpp"
 
 #define     JAVA_CLASS      "com/ertebat/client/Android"
+#define     MAIL_CLASS      "top/social/mailapplication/MailProfile"
 
 using namespace Ertebat;
 
@@ -31,6 +32,12 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *)
     jclass clazz = env->FindClass(JAVA_CLASS);
     if (!clazz) {
         qCritical() << "  * Could not find the Android interface class !!";
+        return -1;
+    }
+
+    clazz = env->FindClass(MAIL_CLASS);
+    if (!clazz) {
+        qCritical() << "  * Could not find the Android Mail interface class !!";
         return -1;
     }
 

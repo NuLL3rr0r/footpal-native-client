@@ -43,7 +43,8 @@ namespace Ertebat { namespace Mail {
         virtual bool Send(const Message &message) = 0;
         virtual bool Connect() = 0;
         virtual void Disconnect() = 0;
-        virtual std::vector<Message> Fetch() = 0;
+        virtual std::size_t GetMessageCount() = 0;
+        virtual std::vector<Message> Fetch(std::size_t i, std::size_t count) = 0;
 
     protected:
 

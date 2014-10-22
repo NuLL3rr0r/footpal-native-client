@@ -41,6 +41,10 @@ Pop3Client::~Pop3Client()
 
 }
 
+std::size_t Pop3Client::GetMessageCount() {
+    return 0;
+}
+
 const Ertebat::Mail::SecurityType &Pop3Client::GetSecurityType() const
 {
     return m_pimpl->SecurityType;

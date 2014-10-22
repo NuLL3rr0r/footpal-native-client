@@ -2,6 +2,7 @@
 #include "make_unique.hpp"
 #include "Message.hpp"
 #include "Mailbox.hpp"
+#include <QDateTime>
 
 using namespace Ertebat;
 using namespace Ertebat::Mail;
@@ -15,12 +16,20 @@ struct Message::Impl
     QString Subject;
     QString PlainBody;
     QString HtmlBody;
+    QDateTime Time;
 
     std::vector<QString> Attachments;
+
+    QString MessageId;
 };
 
 Message::Message() :
-    m_pimpl(std::make_unique<Message::Impl>())
+    m_pimpl(new Message::Impl)
+{
+
+}
+
+Message::Message(Message const& x) : m_pimpl(x.m_pimpl)
 {
 
 }
@@ -109,6 +118,18 @@ void Message::AddAttachment(const QString &filePath)
 void Message::ClearAttachments()
 {
     m_pimpl->Attachments.clear();
+}
+
+void Message::SetTime(QDateTime t) {
+    m_pimpl->Time = t;
+}
+
+QString const& Message::GetMessageId() const {
+    return m_pimpl->MessageId;
+}
+
+void Message::SetMessageId(QString const& msg) {
+    m_pimpl->MessageId = msg;
 }
 
 void Message::Clear()

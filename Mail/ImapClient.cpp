@@ -10,6 +10,7 @@
 #include "Message.hpp"
 #include "Mailbox.hpp"
 #include <boost/filesystem.hpp>
+#include <QDebug>
 
 #define         UNKNOWN_ERROR               "  ** ImapClient ->  Unknown Error!"
 
@@ -34,8 +35,14 @@ struct ImapClient::Impl
     Impl();
 };
 
+std::size_t ImapClient::GetMessageCount() {
+    vmime::shared_ptr<vmime::net::folder> f = m_pimpl->Store->getDefaultFolder();
+    f->open(vmime::net::folder::MODE_READ_WRITE);
+    return ((std::size_t) f->getMessageCount());
+}
 
-std::vector<Message> ImapClient::Fetch() {
+
+std::vector<Message> ImapClient::Fetch(std::size_t from, std::size_t count) {
     std::vector<Message> ret;
 
     try {
@@ -43,13 +50,14 @@ std::vector<Message> ImapClient::Fetch() {
         vmime::shared_ptr<vmime::net::folder> f = m_pimpl->Store->getDefaultFolder();
         f->open(vmime::net::folder::MODE_READ_WRITE);
 
-        int count = f->getMessageCount();
-        for(int i = count; i >= 1; --i) {
+        int c = f->getMessageCount();
+        for(int i = c - ((int)from); i > c - ((int)(from + count)); --i) {
             vmime::shared_ptr<vmime::net::message> msg = f->getMessage(i);
 
             f->fetchMessage(msg, vmime::net::fetchAttributes::FULL_HEADER);
             Message out;
-             ExtractMessage(out, msg);
+            ExtractMessage(out, msg);
+            ret.push_back(out);
         }
 
 

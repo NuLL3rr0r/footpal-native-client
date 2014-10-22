@@ -124,10 +124,6 @@ bool SmtpClient::Connect()
         m_pimpl->Session = vmime::make_shared<vmime::net::session>();
         m_pimpl->Transport = m_pimpl->Session->getTransport(url);
         m_pimpl->Store = m_pimpl->Session->getStore(url);
-        if(!m_pimpl->Store) {
-            int u = 0;
-            u = 1;
-        }
         m_pimpl->BlindCertificateVerifier = vmime::make_shared<Ertebat::Mail::BlindCertificateVerifier>();
 
         if (m_pimpl->SecurityType == Mail::SecurityType::STARTTLS) {
@@ -185,7 +181,12 @@ void SmtpClient::Disconnect()
 }
 
 
-std::vector<Message> SmtpClient::Fetch() {
+std::size_t SmtpClient::GetMessageCount() {
+    return 0;
+}
+
+
+std::vector<Message> SmtpClient::Fetch(std::size_t from, std::size_t count) {
     std::vector<Message> ret;
 
     try {
@@ -195,11 +196,9 @@ std::vector<Message> SmtpClient::Fetch() {
 
         int count = f->getMessageCount();
         for(int i = 1; i <= count; ++i) {
-            vmime::shared_ptr<vmime::net::message> msg = f->getMessage(i);
+            //vmime::shared_ptr<vmime::net::message> msg = f->getMessage(i);
 
         }
-
-
         return ret;
     }
 #if !defined ( Q_OS_ANDROID )

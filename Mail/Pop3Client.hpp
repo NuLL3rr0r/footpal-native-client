@@ -48,7 +48,9 @@ public:
 public:
     Q_INVOKABLE bool Connect();
     Q_INVOKABLE void Disconnect();
-    Q_INVOKABLE bool Fetch();
+
+    Q_INVOKABLE std::size_t GetMessageCount();
+    Q_INVOKABLE bool Fetch(std::size_t i, std::size_t count);
 };
 
 

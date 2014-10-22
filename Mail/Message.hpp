@@ -28,10 +28,11 @@ class Ertebat::Mail::Message
 {
 private:
     struct Impl;
-    std::unique_ptr<Impl> m_pimpl;
+    std::shared_ptr<Impl> m_pimpl;
 
 public:
     Q_INVOKABLE Message();
+    Q_INVOKABLE Message(Message const& x);
     ~Message();
 
 public:
@@ -60,6 +61,10 @@ public:
 
     Q_INVOKABLE QDateTime GetTime() const;
     Q_INVOKABLE void SetTime(QDateTime t);
+
+    Q_INVOKABLE QString const& GetMessageId() const;
+    Q_INVOKABLE void SetMessageId(QString const& msg);
+
 
     Q_INVOKABLE void Clear();
 };

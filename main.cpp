@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
             //} else {
             //    qDebug() << "SEND SUCCESSFUL";
             //}
-            auto v = c.Fetch();
+            auto v = c.Fetch(0, 50);
 
         }
 
