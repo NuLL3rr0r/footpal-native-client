@@ -115,17 +115,17 @@
 <context>
     <name>Chat</name>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="86"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="81"/>
         <source>CHAT</source>
         <translation>گفتگو با</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="242"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="237"/>
         <source>TYPE_HERE</source>
         <translation>بنویس</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="253"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="248"/>
         <source>SUBMIT</source>
         <translation>ارسال</translation>
     </message>
@@ -395,22 +395,12 @@
         <translation>ورود</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="86"/>
-        <source>INVALID_PHONE_NUMBER</source>
-        <translation type="unfinished">شماره موبایل نامعتبر</translation>
-    </message>
-    <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="92"/>
-        <source>INVALID_PASSWORD_LENGTH</source>
-        <translation type="unfinished">لطفاً کلمه عبور را وارد کنید</translation>
-    </message>
-    <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="106"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="108"/>
         <source>FORGOT_PASSWORD</source>
         <translation>بازیابی کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="127"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="129"/>
         <source>SIGN_UP</source>
         <translation>ثبت نام</translation>
     </message>
@@ -476,12 +466,12 @@
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../deployment/resources/ui/UserProfile.qml" line="60"/>
+        <location filename="../deployment/resources/ui/UserProfile.qml" line="54"/>
         <source>MY_PROFILE</source>
         <translation>مشخصات من</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/UserProfile.qml" line="151"/>
+        <location filename="../deployment/resources/ui/UserProfile.qml" line="126"/>
         <source>CHANGE_PASSWORD</source>
         <translation>تغییر کلمه عبور</translation>
     </message>
