@@ -99,7 +99,7 @@ std::vector<Message> ImapClient::Fetch(std::size_t from, std::size_t count) {
 ImapClient::ImapClient() :
     m_pimpl(std::make_unique<ImapClient::Impl>())
 {
-
+    m_pimpl->profile.init();
 }
 
 ImapClient::~ImapClient()
@@ -202,8 +202,25 @@ bool ImapClient::Connect()
         }
 
         m_pimpl->Store->connect();
-#endif // !defined ( Q_OS_ANDROID )
 
+#elif defined(Q_OS_ANDROID)
+
+        qDebug("E1");
+        m_pimpl->profile.init();
+        m_pimpl->profile.setImapHost(m_pimpl->Host);
+        qDebug("E2");
+        m_pimpl->profile.setImapPort(m_pimpl->Port);
+        qDebug("E3");
+        m_pimpl->profile.setImapUsername(m_pimpl->Username);
+        qDebug("E4");
+        m_pimpl->profile.setImapPassword(m_pimpl->Password);
+        qDebug("E5");
+        m_pimpl->profile.setImapSecurity(m_pimpl->SecurityType);
+        qDebug("E6");
+        m_pimpl->profile.connect("imap");
+        qDebug("E7");
+
+#endif // !defined ( Q_OS_ANDROID )
         return true;
     }
 #if !defined ( Q_OS_ANDROID )
@@ -296,6 +313,10 @@ bool ImapClient::Send(const Message &message)
 
             return true;
         }
+#elif defined(Q_OS_ANDROID)
+
+        m_pimpl->profile.send(message);
+
 #else
         (void)message;
 
@@ -324,6 +345,8 @@ void ImapClient::Disconnect()
         if (m_pimpl->Store != nullptr) {
             m_pimpl->Store->disconnect();
         }
+#elif defined(Q_OS_ANDROID)
+        m_pimpl->profile.disconnect("imap");
 #endif // !defined ( Q_OS_ANDROID )
     }
 #if !defined ( Q_OS_ANDROID )

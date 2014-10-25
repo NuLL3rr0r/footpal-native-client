@@ -1,3 +1,8 @@
+/**
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
+ */
+
+
 #include "MailDatabase.hpp"
 #include <map>
 #include <algorithm>

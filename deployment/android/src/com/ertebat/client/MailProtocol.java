@@ -1,4 +1,4 @@
-package top.social.mailapplication;
+package com.ertebat.client;
 
 import java.security.InvalidParameterException;
 

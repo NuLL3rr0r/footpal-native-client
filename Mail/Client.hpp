@@ -1,7 +1,6 @@
 /**
- * @author  M. Kharatizadeh <info@babaei.net>
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
  */
-
 
 
 #ifndef ERTEBAT_MAIL_CLIENT_HPP

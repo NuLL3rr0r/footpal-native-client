@@ -1,4 +1,4 @@
-package top.social.mailapplication;
+package com.ertebat.client;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
-        private static final String TAG = "MailProfile";
+        private static final String TAG = "[Android Mail Interface / top.social.mailApplication.MailProfile]";
         public static String Title = "GMail";
         public static String SMTPHost = "smtp.gmail.com";
         public static String Host = "imap.gmail.com";
@@ -49,6 +49,7 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
          * Prepares MailProfile for setup. Must be called before other methods
          */
         public static void init() {
+                Log.v(TAG, "INIT IS HERE!");
                 sMonthIndices = new HashMap<String, String>();
                 sMonthIndices.put("Jan", "01");
                 sMonthIndices.put("Feb", "02");
@@ -64,6 +65,12 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
                 sMonthIndices.put("Dec", "12");
 
                 sMailProperties = System.getProperties();
+
+                Log.v(TAG, "INIT IS FINISHED!");
+                if(System.getProperties() == null) {
+                    Log.v(TAG, "NOOOOOOOOOOOOOOOOOOO!");
+                }
+
         }
 
         /**
@@ -72,6 +79,8 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
          * @param protocol the protocol for which the host address is set. Accepted values are 'smtp', 'imap', 'pop3'
          */
         public static void setHost(String host, String protocol) {
+                Log.v(TAG, "setHost(host = " + host + ", protocol = " + protocol);
+
                 if (sMailProperties == null) {
                         System.out.println("Invalid method call. Must first call init()");
                         return;
@@ -102,6 +111,8 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
          * @param host Address of the IMAP host e.g. 'imap.gmail.com' for GMail
          */
         public static void setImapHost(String host) {
+                Log.v(TAG,"SetImapHost " + host);
+
                 if (sMailProperties == null) {
                         System.out.println("Invalid method call. Must first call init()");
                         return;
@@ -146,6 +157,7 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
          * @param port port number on IMAP host to connect to
          */
         public static void setImapPort(short port) {
+                Log.v(TAG,"SetImapPort " + port);
                 if (sMailProperties == null) {
                         System.out.println("Invalid method call. Must first call init()");
                         return;
@@ -207,6 +219,7 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
          * @param username e.g. someone@somewhere.com
          */
         public static void setImapUsername(String username) {
+                Log.v(TAG,"setImapUsername " + username);
                 if (sMailProperties == null) {
                         System.out.println("Invalid method call. Must first call init()");
                         return;
@@ -270,6 +283,7 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
          * @param password
          */
         public static void setImapPassword(String password) {
+                Log.v(TAG,"setImapPassword " + password);
                 if (sMailProperties == null) {
                         System.out.println("Invalid method call. Must first call init()");
                         return;
@@ -365,6 +379,7 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
          * @param securityTypeIndex index of the preferred security method. 0=PLAIN, 1=SSL/TLS, 2=STARTTLS
          */
         public static void setImapSecurity(int securityTypeIndex) {
+                Log.v(TAG,"setImapSecurity " + securityTypeIndex);
                 if (sMailProperties == null) {
                         System.out.println("Invalid method call. Must first call init()");
                         return;
@@ -390,7 +405,8 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
          * @param protocol the protocol by which to connect to the host. Accepted values are 'smtp', 'imap' and 'pop3'.
          * Use SMTP for send and IMAP/POP3 for fetch operations
          */
-        public static void connect(String protocol) {
+         public static void connect(String protocol) {
+                Log.v(TAG,"connect " + protocol);
                 if (sMailProperties == null) {
                         System.out.println("Invalid method call. Must first call init()");
 
@@ -541,11 +557,15 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
                      System.out.println(ex.getMessage());
              }
 
+             return 0;
          }
 
 
-        public static String[] fetchMessages(final int startIndex, final int count) {
+        public static String fetchMessages(int startIndex, int count) {
 
+            System.out.println("fetchMessage called! :P");
+            Log.v(TAG, "++ fetchMessage(" + startIndex + ", count = " + count + ")");
+            String ret = "{\"DATA\": [";
 
             try {
                     // get inbox folder
@@ -560,12 +580,19 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
                             // get messages
                             int messageCount = folder.getMessageCount();
                             Message[] messages = folder.getMessages(messageCount - 2, messageCount);
-                            String[] ret = new String[messageCount];
+                            //String[] temp = new String[messageCount];
 
                             for (int i = messages.length - 1; i >= 0; i--) {
-                                   ret[i] = getJsonMessage(messages[i]);
+                                   System.out.println("i");
+                                   String temp = getJsonMessage(messages[i]);
+                                   if(i == messages.length - 1) {
+                                        ret = ret + ",";
+                                   }
+                                   ret = ret + "{\"ORIG\": " + temp;
+                                   System.out.println("i - " + temp);
                             }
 
+                            ret = ret + "] }";
                             folder.close(true);
                             sMailStore.close();
 
@@ -579,13 +606,13 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
                     //folder.close();
                     sMailStore.close();
 
-
-                    String[] ret = new String[0];
-                    return ret;
             } catch (Exception ex) {
                     System.out.println(ex.getMessage());
             }
 
+            ret = "[DEVIL]";
+            System.out.println("--- END");
+            return ret;
         }
 
         private static String getJsonMessage(Message message) {

@@ -1,5 +1,13 @@
+/**
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
+ */
+
+
 #ifndef ERTEBAT_MAIL_ANDROID_MAILPROFILE_HPP
 #define ERTEBAT_MAIL_ANDROID_MAILPROFILE_HPP
+
+#include <qsystemdetection.h>
+#if defined(Q_OS_ANDROID)
 
 #include <QObject>
 #include <jni.h>
@@ -61,5 +69,6 @@ namespace Ertebat { namespace Mail { namespace Android {
 
 } } }
 
+#endif
 
 #endif // MAILPROFILE_H

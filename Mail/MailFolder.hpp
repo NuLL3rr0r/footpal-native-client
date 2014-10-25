@@ -1,5 +1,5 @@
 /**
- * @author M. Kharatizadeh  <m_kharatizadeh@yahoo.com>
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
  */
 
 /*

@@ -1,8 +1,6 @@
 /**
- * @author  M. Kharatiadeh <m_kharatizadeh@yahoo.com>
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
  */
-
-
 
 #ifndef ERTEBAT_MAIL_MAILDATABASE_HPP
 #define ERTEBAT_MAIL_MAILDATABASE_HPP

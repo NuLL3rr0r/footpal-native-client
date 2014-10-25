@@ -1,3 +1,8 @@
+/**
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
+ */
+
+
 #include "Client.hpp"
 #include "Message.hpp"
 #include "Crypto.hpp"
