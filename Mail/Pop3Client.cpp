@@ -1,3 +1,7 @@
+#include "qsystemdetection.h"
+
+#if !defined(Q_OS_ANDROID)
+
 #include <cassert>
 #include <QString>
 #if !defined ( Q_OS_ANDROID )
@@ -185,3 +189,4 @@ Pop3Client::Impl::Impl()
     Port = 110;
 }
 
+#endif

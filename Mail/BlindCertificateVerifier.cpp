@@ -1,3 +1,7 @@
+#include <qsystemdetection.h>
+
+#if !defined(Q_OS_ANDROID)
+
 #include "BlindCertificateVerifier.hpp"
 
 using namespace Ertebat;
@@ -11,3 +15,4 @@ void BlindCertificateVerifier::verify(
     (void)hostname;
 }
 
+#endif

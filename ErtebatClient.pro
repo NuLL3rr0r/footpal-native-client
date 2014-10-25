@@ -112,7 +112,8 @@ SOURCES += \
     UiEngine.cpp \
     Mail/MailDatabase.cpp \
     Mail/MailView.cpp \
-    Mail/Client.cpp
+    Mail/Client.cpp \
+    Mail/Android/MailProfile.cpp
 android {
     HEADERS += \
         Android.hpp
@@ -242,7 +243,5 @@ include(deployment.pri)
 OTHER_FILES += \
     deployment/android/src/top/social/mailapplication/MailProfile.java \
     deployment/android/src/top/social/mailapplication/MailProtocol.java \
-    deployment/android/src/top/social/mailapplication/MainActivity.java \
-    deployment/android/src/top/social/mailapplication/MessageAdapter.java \
-    deployment/android/src/top/social/mailapplication/SettingsActivity.java
+    deployment/android/src/top/social/mailapplication/MessageAdapter.java
 

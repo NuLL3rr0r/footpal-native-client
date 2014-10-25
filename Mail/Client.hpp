@@ -9,9 +9,9 @@
 
 
 #include <QObject>
+#include <qsystemdetection.h>
 #include "Mail.hpp"
 #include <memory>
-#include <vmime/types.hpp>
 
 class QString;
 
@@ -48,7 +48,9 @@ namespace Ertebat { namespace Mail {
 
     protected:
 
-        static Message& ExtractMessage(Message& out, vmime::shared_ptr<vmime::net::message>& msg);
+#if !defined(Q_OS_ANDROID)
+        static Message& ExtractMessage(Message& out, std::shared_ptr<vmime::net::message>& msg);
+#endif
 
     };
 

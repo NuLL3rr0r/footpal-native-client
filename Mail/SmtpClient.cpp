@@ -1,3 +1,7 @@
+#include <qsystemdetection.h>
+
+#if !defined(Q_OS_ANDROID)
+
 #include <cassert>
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem.hpp>
@@ -317,3 +321,4 @@ SmtpClient::Impl::Impl()
     Port = 25;
 }
 
+#endif

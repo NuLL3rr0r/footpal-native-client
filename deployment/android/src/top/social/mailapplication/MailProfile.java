@@ -527,14 +527,14 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
 
                              int messageCount = folder.getMessageCount();
 
-                             folder.close();
+                             //folder.close();
                              sMailStore.close();
                              return messageCount;
                      } else {
                              System.out.println("Folder isn't open");
                      }
 
-                     folder.close();
+                     //folder.close();
                      sMailStore.close();
                      return 0;
              } catch (Exception ex) {
@@ -576,7 +576,7 @@ public class MailProfile extends org.qtproject.qt5.android.bindings.QtActivity {
                             System.out.println("Folder isn't open");
                     }
 
-                    folder.close();
+                    //folder.close();
                     sMailStore.close();
 
 

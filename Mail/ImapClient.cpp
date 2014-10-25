@@ -1,11 +1,15 @@
 #include <cassert>
 #include <QString>
+
 #if !defined ( Q_OS_ANDROID )
-#include <vmime/vmime.hpp>
-#endif // !defined ( Q_OS_ANDROID )
+#   include <vmime/vmime.hpp>
+#   include "BlindCertificateVerifier.hpp"
+#elif defined(Q_OS_ANDROID)
+#   include "Android/MailProfile.hpp"
+#endif // !defined ( Q_OS_ANDROID )]
+
 #include "make_unique.hpp"
 #include "ImapClient.hpp"
-#include "BlindCertificateVerifier.hpp"
 #include "Log.hpp"
 #include "Message.hpp"
 #include "Mailbox.hpp"
@@ -30,15 +34,26 @@ struct ImapClient::Impl
     vmime::shared_ptr<vmime::net::store> Store;
     vmime::shared_ptr<vmime::net::transport> Transport;
     vmime::shared_ptr<Ertebat::Mail::BlindCertificateVerifier> BlindCertificateVerifier;
+
+#elif defined( Q_OS_ANDROID )
+
+    Android::MailProfile profile;
+
 #endif // !defined ( Q_OS_ANDROID )
 
     Impl();
 };
 
 std::size_t ImapClient::GetMessageCount() {
+
+#if !defined(Q_OS_ANDROID)
     vmime::shared_ptr<vmime::net::folder> f = m_pimpl->Store->getDefaultFolder();
     f->open(vmime::net::folder::MODE_READ_WRITE);
     return ((std::size_t) f->getMessageCount());
+#elif defined(Q_OS_ANDROID)
+    return m_pimpl->profile.getMessageCount();
+#endif
+
 }
 
 
@@ -47,6 +62,7 @@ std::vector<Message> ImapClient::Fetch(std::size_t from, std::size_t count) {
 
     try {
 
+#if !defined(Q_OS_ANDROID)
         vmime::shared_ptr<vmime::net::folder> f = m_pimpl->Store->getDefaultFolder();
         f->open(vmime::net::folder::MODE_READ_WRITE);
 
@@ -62,6 +78,9 @@ std::vector<Message> ImapClient::Fetch(std::size_t from, std::size_t count) {
 
 
         return ret;
+#elif defined(Q_OS_ANDROID)
+        return m_pimpl->profile.fetchMessage((int) from, (int) count);
+#endif
     }
 #if !defined ( Q_OS_ANDROID )
     catch (vmime::exception &ex) {

@@ -7,6 +7,12 @@
 #include <memory>
 #include "Mail/Mail.hpp"
 
+namespace Ertebat { namespace Mail {
+
+    class Message;
+
+} }
+
 namespace Ertebat { namespace Mail { namespace Android {
 
     class MailProfile : public QAndroidJniObject {
@@ -48,9 +54,9 @@ namespace Ertebat { namespace Mail { namespace Android {
         void connectSmtp();
         void disconnect(QString const& protocol);
         void disconnectSmtp();
-        void send(QString const& jsonMessage);
-        std::vector<QString> fetchMessage(int from, int count);
-
+        void send(Message const& jsonMessage);
+        std::vector<Message> fetchMessage(int from, int count);
+        std::size_t getMessageCount();
     };
 
 } } }

@@ -21,6 +21,8 @@ struct Field {
     std::vector<std::pair<QString,QString> > List;
 };
 
+#if !defined(Q_OS_ANDROID)
+
 Message& Client::ExtractMessage(Message& out, vmime::shared_ptr<vmime::net::message>& msg) {
 
     auto h = msg->getHeader();
@@ -219,6 +221,8 @@ Message& Client::ExtractMessage(Message& out, vmime::shared_ptr<vmime::net::mess
 
     return out;
 }
+
+#endif
 
 } }
 
