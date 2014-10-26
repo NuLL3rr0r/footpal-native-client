@@ -19,19 +19,10 @@
 #include "Exception.hpp"
 #include "Log.hpp"
 
-#include "Mail/SmtpClient.hpp"
-#include "Mail/ImapClient.hpp"
-#include "Mail/Message.hpp"
-#include "Mail/Mailbox.hpp"
-
-#include <QDebug>
-
 void Terminate [[noreturn]] (int signo);
 
 int main(int argc, char *argv[])
 {
-    qDebug() << "Heelo!!";
-
     try {
         /*! Gracefully handling SIGTERM */
         void (*prev_fn)(int);
@@ -55,45 +46,6 @@ int main(int argc, char *argv[])
                 std::make_unique<Ertebat::Application>(argc, argv);
         app->InitializeDatabase();
         app->SetupUi();
-
-
-        Ertebat::Mail::Mailbox from_box("arcananemous@gmail.com","mehdi_gmail");
-        Ertebat::Mail::Mailbox to_box("m_kharatizadeh@yahoo.com","mehdi_yahoo");
-
-        Ertebat::Mail::ImapClient c;
-        c.SetHost("imap.gmail.com");
-        c.SetPort(993);
-        //c.SetUsername("morteza.sabetraftar@gmail.com");
-        //c.SetPassword("zjwdmoszjtinyogs");
-        c.SetUsername("arcananemous@gmail.com");
-        c.SetPassword("konohanosennin1x");
-        c.SetSecurityType(Ertebat::Mail::SecurityType::SSL_TLS);
-        if(!c.Connect()) {
-            qDebug() << "[CAN NOT CONNECT]";
-        }
-        else {
-            qDebug() << "CONNECTED!";
-        }
-
-        {
-            Ertebat::Mail::Message toSend;
-            toSend.SetFrom(from_box);
-            toSend.SetReplyTo(from_box);
-            toSend.SetHtmlBody("<HTML><BODY><b>This</b> Is Just A Test</BODY></HTML>");
-            toSend.SetSubject("This is Just a Test");
-            toSend.AddRecipient(Ertebat::Mail::RecipientType::To, to_box);
-            //if(!c.Send(toSend)) {
-            //    qDebug() << "[CAN NOT SEND]";
-            //} else {
-            //    qDebug() << "SEND SUCCESSFUL";
-            //}
-            auto v = c.Fetch(0, 50);
-
-        }
-
-        c.Disconnect();
-        return 0;
-
 
         return app->exec();
     }
