@@ -38,6 +38,12 @@ public:
     Http_t HttpCreateIndividualRoom;
     Http_t HttpGetIndividualContacts;
 
+    Http_t Http_FS_CreateDirectory;
+    Http_t Http_FS_GetListOfEntity;
+    Http_t Http_FS_GetAccessType;
+    Http_t Http_FS_GetParentId;
+    Http_t Http_FS_MoveEntity;
+
 public:
     Impl(RestApi *parent);
 
@@ -70,6 +76,21 @@ public slots:
     void OnGetIndividualContactsRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
                                                 const QString &data);
 
+    void On_FS_CreateDirectoryRequestFailed(const Http::Error &error);
+    void On_FS_CreateDirectoryRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                              const QString &data);
+    void On_FS_GetListOfEntityRequestFailed(const Http::Error &error);
+    void On_FS_GetListOfEntityRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                              const QString &data);
+    void On_FS_GetAccessTypeRequestFailed(const Http::Error &error);
+    void On_FS_GetAccessTypeRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                            const QString &data);
+    void On_FS_GetParentIdRequestFailed(const Http::Error &error);
+    void On_FS_GetParentIdRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                          const QString &data);
+    void On_FS_MoveEntityRequestFailed(const Http::Error &error);
+    void On_FS_MoveEntityRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                         const QString &data);
 public:
     void SetupEvents();
 };
@@ -198,6 +219,80 @@ void RestApi::getIndividualContacts(const QString &token)
     m_pimpl->HttpGetIndividualContacts->Post(QString("%1/chat/getIndividualContacts").arg(REST_BASE_URL), data, headers);
 }
 
+void RestApi::fs_CreateDirectory(const QString &token, const QString &dirName, const QString &access, const QString &parentId)
+{
+    std::wstringstream stream;
+    boost::property_tree::wptree tree;
+
+    tree.put(L"dirName", dirName.toStdWString());
+    tree.put(L"access", access.toStdWString());
+    tree.put(L"parentId", parentId.toStdWString());
+
+    boost::property_tree::write_json(stream, tree);
+
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    QByteArray data;
+    data.append(QString::fromStdWString(stream.str()));
+
+    m_pimpl->Http_FS_CreateDirectory->Post(QString("%1/document/createDirectory").arg(REST_BASE_URL), data, headers);
+}
+
+void RestApi::fs_GetListOfEntity(const QString &token)
+{
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    m_pimpl->Http_FS_GetListOfEntity->Get(QString("%1/document/getListOfEntity").arg(REST_BASE_URL), headers);
+}
+
+void RestApi::fs_GetListOfEntity(const QString &token, const QString &entityId)
+{
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    m_pimpl->Http_FS_GetListOfEntity->Get(QString("%1/document/getListOfEntity/%2").arg(REST_BASE_URL).arg(entityId),
+                                          headers);
+}
+
+void RestApi::fs_GetAccessType(const QString &token, const QString &entityId)
+{
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    m_pimpl->Http_FS_GetAccessType->Get(QString("%1/document/getAccessType/%2").arg(REST_BASE_URL).arg(entityId),
+                                        headers);
+}
+
+void RestApi::fs_GetParentId(const QString &token, const QString &entityId)
+{
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    m_pimpl->Http_FS_GetParentId->Get(QString("%1/document/getParentId/%2").arg(REST_BASE_URL).arg(entityId),
+                                      headers);
+}
+
+void RestApi::fs_MoveEntity(const QString &token, const QString &entityId, const QString &newParentId)
+{
+    std::wstringstream stream;
+    boost::property_tree::wptree tree;
+
+    tree.put(L"entityId", entityId.toStdWString());
+    tree.put(L"newParentId", newParentId.toStdWString());
+
+    boost::property_tree::write_json(stream, tree);
+
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    QByteArray data;
+    data.append(QString::fromStdWString(stream.str()));
+
+    m_pimpl->Http_FS_MoveEntity->Post(QString("%1/document/moveEntity").arg(REST_BASE_URL), data, headers);
+}
+
 RestApi::Impl::Impl(RestApi *parent) :
     m_parent(parent),
     HttpSignUp(std::make_unique<Http>()),
@@ -205,7 +300,13 @@ RestApi::Impl::Impl(RestApi *parent) :
     HttpSignOut(std::make_unique<Http>()),
     HttpGetCurrentProfile(std::make_unique<Http>()),
     HttpUsersList(std::make_unique<Http>()),
-    HttpCreateIndividualRoom(std::make_unique<Http>())
+    HttpCreateIndividualRoom(std::make_unique<Http>()),
+    HttpGetIndividualContacts(std::make_unique<Http>()),
+    Http_FS_CreateDirectory(std::make_unique<Http>()),
+    Http_FS_GetListOfEntity(std::make_unique<Http>()),
+    Http_FS_GetAccessType(std::make_unique<Http>()),
+    Http_FS_GetParentId(std::make_unique<Http>()),
+    Http_FS_MoveEntity(std::make_unique<Http>())
 {
     SetupEvents();
 }
@@ -322,6 +423,86 @@ void RestApi::Impl::OnGetIndividualContactsRequestCallback(const Ertebat::HttpSt
                                                 data);
 }
 
+void RestApi::Impl::On_FS_CreateDirectoryRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_CreateDirectory(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_CreateDirectoryStatus::FS_CreateDirectory_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_CreateDirectoryRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                         const QString &data)
+{
+    emit m_parent->signal_FS_CreateDirectory(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                             static_cast<Ertebat::RestStatusCodes::FS_CreateDirectoryStatus>(statusCode),
+                                             data);
+}
+
+void RestApi::Impl::On_FS_GetListOfEntityRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_CreateDirectory(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_CreateDirectoryStatus::FS_CreateDirectory_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_GetListOfEntityRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                         const QString &data)
+{
+    emit m_parent->signal_FS_CreateDirectory(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                             static_cast<Ertebat::RestStatusCodes::FS_CreateDirectoryStatus>(statusCode),
+                                             data);
+}
+
+void RestApi::Impl::On_FS_GetAccessTypeRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_CreateDirectory(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_CreateDirectoryStatus::FS_CreateDirectory_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_GetAccessTypeRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                       const QString &data)
+{
+    emit m_parent->signal_FS_GetAccessType(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                           static_cast<Ertebat::RestStatusCodes::FS_GetAccessTypeStatus>(statusCode),
+                                           data);
+}
+
+void RestApi::Impl::On_FS_GetParentIdRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_GetParentId(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_GetParentIdStatus::FS_GetParentId_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_GetParentIdRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                     const QString &data)
+{
+    emit m_parent->signal_FS_GetParentId(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                         static_cast<Ertebat::RestStatusCodes::FS_GetParentIdStatus>(statusCode),
+                                         data);
+}
+
+void RestApi::Impl::On_FS_MoveEntityRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_MoveEntity(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_MoveEntityStatus::FS_MoveEntity_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_MoveEntityRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                    const QString &data)
+{
+    emit m_parent->signal_FS_MoveEntity(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                        static_cast<Ertebat::RestStatusCodes::FS_MoveEntityStatus>(statusCode),
+                                        data);
+}
+
 void RestApi::Impl::SetupEvents()
 {
     connect(HttpSignUp.get(), SIGNAL(Signal_Failed(const Http::Error &)),
@@ -354,9 +535,34 @@ void RestApi::Impl::SetupEvents()
     connect(HttpCreateIndividualRoom.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
             this, SLOT(OnCreateIndividualRoomRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
 
-    connect(HttpGetIndividualContacts.get(), SIGNAL(Signal_Failed(const Http::Error &)),
-            this, SLOT(OnGetIndividualContactsRequestFailed(const Http::Error &)));
-    connect(HttpGetIndividualContacts.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
-            this, SLOT(OnGetIndividualContactsRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+//    connect(HttpGetIndividualContacts.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+//            this, SLOT(OnGetIndividualContactsRequestFailed(const Http::Error &)));
+//    connect(HttpGetIndividualContacts.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+//            this, SLOT(OnGetIndividualContactsRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_FS_CreateDirectory.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_CreateDirectoryRequestFailed(const Http::Error &)));
+    connect(Http_FS_CreateDirectory.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_CreateDirectoryRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_FS_GetListOfEntity.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_GetListOfEntityRequestFailed(const Http::Error &)));
+    connect(Http_FS_GetListOfEntity.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_GetListOfEntityRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_FS_GetAccessType.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_GetAccessTypeRequestFailed(const Http::Error &)));
+    connect(Http_FS_GetAccessType.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_GetAccessTypeRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_FS_GetParentId.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_GetParentIdRequestFailed(const Http::Error &)));
+    connect(Http_FS_GetParentId.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_GetParentIdRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_FS_MoveEntity.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_MoveEntityRequestFailed(const Http::Error &)));
+    connect(Http_FS_MoveEntity.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_MoveEntityRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
 }
 

@@ -27,6 +27,13 @@ class Ertebat::RestStatusCodes : public QObject {
     Q_ENUMS( UsersListStatus )
     Q_ENUMS( CreateIndividualRoomStatus )
 
+    Q_ENUMS( FS_CreateDirectoryStatus )
+    Q_ENUMS( FS_GetListOfEntityStatus )
+    Q_ENUMS( FS_GetListOfEntityStatus )
+    Q_ENUMS( FS_GetAccessTypeStatus )
+    Q_ENUMS( FS_GetParentIdStatus )
+    Q_ENUMS( FS_MoveEntityStatus )
+
 public:
     enum ConnectionStatus {
         Connection_OK = 0,
@@ -89,6 +96,47 @@ public:
         GetIndividualContacts_Unauthorized = 401,
         GetIndividualContacts_NotFound = 404
     };
+
+    enum FS_CreateDirectoryStatus {
+        FS_CreateDirectory_None = 0,
+        FS_CreateDirectory_Created = 201,
+        FS_CreateDirectory_BadRequest = 400,
+        FS_CreateDirectory_NotFound = 404
+    };
+
+    enum FS_GetListOfEntityStatus {
+        FS_GetListOfEntity_None = 0,
+        FS_GetListOfEntity_OK = 200,
+        FS_GetListOfEntity_Forbidden = 403,
+        FS_GetListOfEntity_NotFound = 404,
+        FS_GetListOfEntity_InternalServerError = 500
+    };
+
+    enum FS_GetAccessTypeStatus {
+        FS_GetAccessType_None = 0,
+        FS_GetAccessType_OK = 200,
+        FS_GetAccessType_BadRequest = 400,
+        FS_GetAccessType_Forbidden = 403,
+        FS_GetAccessType_InternalServerError = 500
+    };
+
+    enum FS_GetParentIdStatus {
+        FS_GetParentId_None = 0,
+        FS_GetParentId_OK = 200,
+        FS_GetParentId_BadRequest = 400,
+        FS_GetParentId_Forbidden = 403,
+        FS_GetParentId_NotFound = 404,
+        FS_GetParentId_InternalServerError = 500,
+    };
+
+    enum FS_MoveEntityStatus {
+        FS_MoveEntity_None = 0,
+        FS_MoveEntity_OK = 200,
+        FS_MoveEntity_BadRequest = 400,
+        FS_MoveEntity_Forbidden = 403,
+        FS_MoveEntity_NotFound = 404,
+        FS_MoveEntity_InternalServerError = 500,
+    };
 };
 
 class Ertebat::RestApi : public QObject
@@ -129,6 +177,23 @@ signals:
                                       Ertebat::RestStatusCodes::GetIndividualContactsStatus,
                                       const QString &);
 
+
+    void signal_FS_CreateDirectory(Ertebat::RestStatusCodes::ConnectionStatus,
+                                   Ertebat::RestStatusCodes::FS_CreateDirectoryStatus,
+                                   const QString &);
+    void signal_FS_GetListOfEntity(Ertebat::RestStatusCodes::ConnectionStatus,
+                                   Ertebat::RestStatusCodes::FS_GetListOfEntityStatus,
+                                   const QString &);
+    void signal_FS_GetAccessType(Ertebat::RestStatusCodes::ConnectionStatus,
+                                 Ertebat::RestStatusCodes::FS_GetAccessTypeStatus,
+                                 const QString &);
+    void signal_FS_GetParentId(Ertebat::RestStatusCodes::ConnectionStatus,
+                               Ertebat::RestStatusCodes::FS_GetParentIdStatus,
+                               const QString &);
+    void signal_FS_MoveEntity(Ertebat::RestStatusCodes::ConnectionStatus,
+                              Ertebat::RestStatusCodes::FS_MoveEntityStatus,
+                              const QString &);
+
 public:
     Q_INVOKABLE bool isOnline();
 
@@ -142,6 +207,14 @@ public:
     Q_INVOKABLE void createIndividualRoom(const QString &token, const QString &otherParty);
 
     Q_INVOKABLE void getIndividualContacts(const QString &token);
+
+
+    Q_INVOKABLE void fs_CreateDirectory(const QString &token, const QString &dirName, const QString &access, const QString &parentId);
+    Q_INVOKABLE void fs_GetListOfEntity(const QString &token);
+    Q_INVOKABLE void fs_GetListOfEntity(const QString &token, const QString &entityId);
+    Q_INVOKABLE void fs_GetAccessType(const QString &token, const QString &entityId);
+    Q_INVOKABLE void fs_GetParentId(const QString &token, const QString &entityId);
+    Q_INVOKABLE void fs_MoveEntity(const QString &token, const QString &entityId, const QString &newParentId);
 };
 
 
