@@ -11,6 +11,7 @@
 #include <QObject>
 #include "Mail.hpp"
 #include "Client.hpp"
+#include "Message.hpp"
 
 namespace Ertebat {
 namespace Mail {
@@ -20,6 +21,8 @@ class ImapClient;
 
 class Ertebat::Mail::ImapClient : public Client
 {
+    Q_OBJECT
+
 private:
     struct Impl;
     std::unique_ptr<Impl> m_pimpl;
@@ -36,7 +39,6 @@ public:
     Q_INVOKABLE void SetHost(const QString &host);
 
     Q_INVOKABLE const Mail::Port_t &GetPort() const;
-    Q_INVOKABLE void SetPort(const Mail::Port_t &port);
 
     Q_INVOKABLE const QString &GetUsername() const;
     Q_INVOKABLE void SetUsername(const QString &username);
@@ -45,6 +47,8 @@ public:
     Q_INVOKABLE void SetPassword(const QString &password);
 
     Q_INVOKABLE bool Send(const Message &message);
+
+    Q_INVOKABLE void SetPort(Mail::Port_t const& port);
 
 public:
     Q_INVOKABLE bool Connect();

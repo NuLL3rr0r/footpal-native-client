@@ -14,6 +14,7 @@
 #include <QTime>
 #include <QTimeZone>
 #include "Mailbox.hpp"
+#include "Json.hpp"
 
 namespace Ertebat { namespace Mail {
 
@@ -26,9 +27,79 @@ struct Field {
     std::vector<std::pair<QString,QString> > List;
 };
 
+QString const&  Client::GetHost() const {
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+void Client::SetHost(QString const& host) {
+    ((void)host);
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+Mail::Port_t const& Client::GetPort() const {
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+void Client::SetPort(Mail::Port_t const& port) {
+    ((void)port);
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+QString const& Client::GetUsername() const {
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+void Client::SetUsername(QString const& x) {
+    ((void)x);
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+QString const& Client::GetPassword() const {
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+void Client::SetPassword(QString const& x) {
+    ((void)x);
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+bool Client::Send(const Message &message) {
+    ((void)message);
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+bool Client::Connect() {
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+void Client::Disconnect() {
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+std::size_t Client::GetMessageCount() {
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+std::vector<Message> Client::Fetch(std::size_t i, std::size_t count) {
+    ((void)i);
+    ((void)count);
+    throw std::runtime_error("NOT IMPLEMENTED");
+}
+
+QString Client::FetchAsJson(std::size_t i, std::size_t j) {
+    return Json::EncodeMessage(Fetch(i, j));
+}
+
+} }
+
 #if !defined(Q_OS_ANDROID)
 
-Message& Client::ExtractMessage(Message& out, vmime::shared_ptr<vmime::net::message>& msg) {
+
+#include <vmime/vmime.hpp>
+
+namespace Ertebat { namespace Mail {
+
+Message& Client::ExtractMessage(Message& out, std::shared_ptr<vmime::net::message>& msg) {
 
     auto h = msg->getHeader();
 
@@ -227,8 +298,10 @@ Message& Client::ExtractMessage(Message& out, vmime::shared_ptr<vmime::net::mess
     return out;
 }
 
+} }
+
 #endif
 
-} }
+
 
 

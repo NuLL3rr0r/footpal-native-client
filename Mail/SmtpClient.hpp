@@ -1,7 +1,7 @@
 /**
  * @author  Mohammad S. Babaei <info@babaei.net>
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
  */
-
 
 #ifndef ERTEBAT_MAIL_SMTP_CLIENT_HPP
 #define ERTEBAT_MAIL_SMTP_CLIENT_HPP
@@ -11,6 +11,7 @@
 #include <QObject>
 #include "Mail.hpp"
 #include "Client.hpp"
+#include "Message.hpp"
 
 class QString;
 
@@ -23,6 +24,8 @@ class SmtpClient;
 
 class Ertebat::Mail::SmtpClient : public Client
 {
+    Q_OBJECT
+
 private:
     struct Impl;
     std::unique_ptr<Impl> m_pimpl;

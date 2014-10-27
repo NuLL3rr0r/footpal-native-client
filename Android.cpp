@@ -1,5 +1,6 @@
 /**
  * @author  Mohammad S. Babaei <info@babaei.net>
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
  */
 
 
@@ -141,7 +142,6 @@ bool Android::ShowToast(const QString &text, const int duration)
 void Android::MailProfile_SetHost(QString const& host, QString const& protocol)
 {
     ExceptionClear();
-    qDebug() << __FUNCTION__;
 
     QAndroidJniObject::callStaticMethod<void>(
                 JAVA_CLASS,
@@ -152,6 +152,8 @@ void Android::MailProfile_SetHost(QString const& host, QString const& protocol)
 }
 
 void Android::MailProfile_init() {
+    ExceptionClear();
+
     QAndroidJniObject::callStaticMethod<void>(
                 JAVA_CLASS,
                 "mailProfile_init",
@@ -159,25 +161,10 @@ void Android::MailProfile_init() {
                 );
 }
 
-void Android::MailProfile_setSmtpHost(QString const& host) {
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setSmtpHost",
-                "(Ljava/lang/CharSequence;)V",
-                QAndroidJniObject::fromString(host).object<jstring>()
-                );
-}
-
-void Android::MailProfile_setImapHost(QString const& host) {
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setImapHost",
-                "(Ljava/lang/CharSequence;)V",
-                QAndroidJniObject::fromString(host).object<jstring>()
-                );
-}
 
 void Android::MailProfile_setPort(short port, QString const& protocol) {
+    ExceptionClear();
+
     QAndroidJniObject::callStaticMethod<void>(
                 JAVA_CLASS,
                 "mailProfile_setPort",
@@ -187,34 +174,9 @@ void Android::MailProfile_setPort(short port, QString const& protocol) {
                 );
 }
 
-void Android::MailProfile_setSmtpPort(short port) {
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setSmtpPort",
-                "(S)V",
-                port
-                );
-}
-
-void Android::MailProfile_setImapPort(short port) {
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setImapPort",
-                "(S)V",
-                port
-                );
-}
-
-void Android::MailProfile_setUsername(QString const& username) {
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setUsername",
-                "(Ljava/lang/CharSequence;)V",
-                QAndroidJniObject::fromString(username).object<jstring>()
-                );
-}
-
 void Android::MailProfile_setUsername(QString const& username, QString const& protocol) {
+    ExceptionClear();
+
     QAndroidJniObject::callStaticMethod<void>(
                 JAVA_CLASS,
                 "mailProfile_setUsername",
@@ -224,34 +186,9 @@ void Android::MailProfile_setUsername(QString const& username, QString const& pr
                 );
 }
 
-void Android::MailProfile_setSmtpUsername(QString const& username) {
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setSmtpUsername",
-                "(Ljava/lang/CharSequence;)V",
-                QAndroidJniObject::fromString(username).object<jstring>()
-                );
-}
-
-void Android::MailProfile_setImapUsername(QString const& username) {
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setImapUsername",
-                "(Ljava/lang/CharSequence;)V",
-                QAndroidJniObject::fromString(username).object<jstring>()
-                );
-}
-
-void Android::MailProfile_setPassword(QString const& password) {
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setPassword",
-                "(Ljava/lang/CharSequence;)V",
-                QAndroidJniObject::fromString(password).object<jstring>()
-                );
-}
-
 void Android::MailProfile_setPassword(QString const& password, QString const& protocol) {
+    ExceptionClear();
+
     QAndroidJniObject::callStaticMethod<void>(
                 JAVA_CLASS,
                 "mailProfile_setPassword",
@@ -261,48 +198,9 @@ void Android::MailProfile_setPassword(QString const& password, QString const& pr
                 );
 }
 
-void Android::MailProfile_setSmtpPassword(QString const& password) {
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setSmtpPassword",
-                "(Ljava/lang/CharSequence;)V",
-                QAndroidJniObject::fromString(password).object<jstring>()
-                );
-}
-
-void Android::MailProfile_setImapPassword(QString const& password) {
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setImapPassword",
-                "(Ljava/lang/CharSequence;)V",
-                QAndroidJniObject::fromString(password).object<jstring>()
-                );
-}
-
-void Android::MailProfile_setSecurity(Mail::SecurityType securityType) {
-    int sec;
-    switch(securityType) {
-        case Mail::SecurityType::None:
-            sec = 0;
-            break;
-        case Mail::SecurityType::SSL_TLS:
-            sec = 1;
-            break;
-        case Mail::SecurityType::STARTTLS:
-            sec = 2;
-            break;
-        default:
-            sec = -1;
-    }
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setSecurity",
-                "(I)V",
-                sec
-                );
-}
-
 void Android::MailProfile_setSecurity(Mail::SecurityType securityType, QString const& protocol) {
+    ExceptionClear();
+
     int sec;
     switch(securityType) {
         case Mail::SecurityType::None:
@@ -320,60 +218,16 @@ void Android::MailProfile_setSecurity(Mail::SecurityType securityType, QString c
     QAndroidJniObject::callStaticMethod<void>(
                 JAVA_CLASS,
                 "mailProfile_setSecurity",
-                "(ILjava/lang/CharSequence)V",
+                "(ILjava/lang/CharSequence;)V",
                 sec,
                 QAndroidJniObject::fromString(protocol).object<jstring>()
                 );
 }
 
-void Android::MailProfile_setSmtpSecurity(Mail::SecurityType securityType) {
-    int sec;
-    switch(securityType) {
-        case Mail::SecurityType::None:
-            sec = 0;
-            break;
-        case Mail::SecurityType::SSL_TLS:
-            sec = 1;
-            break;
-        case Mail::SecurityType::STARTTLS:
-            sec = 2;
-            break;
-        default:
-            sec = -1;
-    }
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setSmtpSecurity",
-                "(I)V",
-                sec
-                );
-}
-
-void Android::MailProfile_setImapSecurity(Mail::SecurityType securityType) {
-    int sec;
-    switch(securityType) {
-        case Mail::SecurityType::None:
-            sec = 0;
-            break;
-        case Mail::SecurityType::SSL_TLS:
-            sec = 1;
-            break;
-        case Mail::SecurityType::STARTTLS:
-            sec = 2;
-            break;
-        default:
-            sec = -1;
-    }
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setImapSecurity",
-                "(I)V",
-                sec
-                );
-}
 
 void Android::MailProfile_connect(QString const& protocol) {
-    qDebug() << "MAILPROFILE CONNECCTTTTTTT";
+    ExceptionClear();
+
     QAndroidJniObject::callStaticMethod<void>(
                 JAVA_CLASS,
                 "mailProfile_connect",
@@ -382,15 +236,10 @@ void Android::MailProfile_connect(QString const& protocol) {
                 );
 }
 
-void Android::MailProfile_connectSmtp() {
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_connectSmtp",
-                "()V"
-                );
-}
 
 void Android::MailProfile_disconnect(QString const& protocol) {
+    ExceptionClear();
+
     QAndroidJniObject::callStaticMethod<void>(
                 JAVA_CLASS,
                 "mailProfile_disconnect",
@@ -399,55 +248,33 @@ void Android::MailProfile_disconnect(QString const& protocol) {
                 );
 }
 
-void Android::MailProfile_disconnectSmtp() {
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_disconnectSmtp",
-                "()V"
-                );
-}
-
 void Android::MailProfile_send(QString const& jsonMessage) {
+    ExceptionClear();
+
 
     QAndroidJniObject::callStaticMethod<void>(
                 JAVA_CLASS,
-                "send",
+                "mailProfile_send",
                 "(Ljava/lang/CharSequence;)V",
                 QAndroidJniObject::fromString(jsonMessage).object<jstring>()
                 );
 }
 
 QString Android::MailProfile_fetchMessage(int from, int count) {
+    ExceptionClear();
 
-    qDebug() << "T1";
-
-    jstring  ar = QAndroidJniObject::callStaticObjectMethod(
+    return QAndroidJniObject::callStaticObjectMethod(
                 JAVA_CLASS,
                 "mailProfile_fetchMessages",
                 "(II)Ljava/lang/CharSequence;",
                 from,
                 count
-                ).object<jstring>();
-
-
-   qDebug() << "T1.5";
-
-   const char* str = m_pimpl->AndroidJniEnvironment->GetStringUTFChars(ar, 0);
-   qDebug() << "T2";
-   QString s = QString::fromUtf8(str);
-   qDebug() << "T3";
-   m_pimpl->AndroidJniEnvironment->ReleaseStringUTFChars(ar, str);
-   qDebug() << "T4";
-
-   qDebug() << s;
-
-   qDebug() << "T5";
-
-   return s;
+                ).toString();
 }
 
 std::size_t Android::MailProfile_getMessageCount() {
-    //mailProfile_getMessageCount
+    ExceptionClear();
+
     return QAndroidJniObject::callStaticMethod<int>(
                 JAVA_CLASS,
                 "mailProfile_getMessageCount",

@@ -1,7 +1,8 @@
 /**
  * @author  Mohammad S. Babaei <info@babaei.net>
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
+ *
  */
-
 
 #ifndef ERTEBAT_MAIL_POP3_CLIENT_HPP
 #define ERTEBAT_MAIL_POP3_CLIENT_HPP
@@ -10,17 +11,22 @@
 #include <memory>
 #include <QObject>
 #include "Mail.hpp"
+#include "Client.hpp"
+#include "Message.hpp"
 
 class QString;
 
 namespace Ertebat {
 namespace Mail {
 class Pop3Client;
+class Message;
 }
 }
 
-class Ertebat::Mail::Pop3Client
+class Ertebat::Mail::Pop3Client : public Ertebat::Mail::Client
 {
+    Q_OBJECT
+
 private:
     struct Impl;
     std::unique_ptr<Impl> m_pimpl;
@@ -50,7 +56,8 @@ public:
     Q_INVOKABLE void Disconnect();
 
     Q_INVOKABLE std::size_t GetMessageCount();
-    Q_INVOKABLE bool Fetch(std::size_t i, std::size_t count);
+    Q_INVOKABLE std::vector<Message> Fetch(std::size_t i, std::size_t count);
+    Q_INVOKABLE bool Send(Message const& msg);
 };
 
 

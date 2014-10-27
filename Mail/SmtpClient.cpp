@@ -1,17 +1,23 @@
-#include <qsystemdetection.h>
+/**
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
+ */
 
-#if !defined(Q_OS_ANDROID)
 
+#include <QObject>
 #include <cassert>
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem.hpp>
 #include <QString>
+
 #if !defined ( Q_OS_ANDROID )
 #include <vmime/vmime.hpp>
+#include "BlindCertificateVerifier.hpp"
+#elif defined ( Q_OS_ANDROID )
+#include "Android/MailProfile.hpp"
 #endif // !defined ( Q_OS_ANDROID )
+
 #include "make_unique.hpp"
 #include "SmtpClient.hpp"
-#include "BlindCertificateVerifier.hpp"
 #include "Log.hpp"
 #include "Message.hpp"
 #include "Mailbox.hpp"
@@ -34,6 +40,8 @@ struct SmtpClient::Impl
     vmime::shared_ptr<vmime::net::transport> Transport;
     vmime::shared_ptr<vmime::net::store> Store;
     vmime::shared_ptr<Ertebat::Mail::BlindCertificateVerifier> BlindCertificateVerifier;
+#elif defined ( Q_OS_ANDROID )
+    Ertebat::Mail::Android::MailProfile profile;
 #endif // !defined ( Q_OS_ANDROID )
 
     Impl();
@@ -42,7 +50,9 @@ struct SmtpClient::Impl
 SmtpClient::SmtpClient() :
     m_pimpl(std::make_unique<SmtpClient::Impl>())
 {
-
+#if defined(Q_OS_ANDROID)
+    m_pimpl->profile.init();
+#endif
 }
 
 SmtpClient::~SmtpClient()
@@ -145,6 +155,17 @@ bool SmtpClient::Connect()
         }
 
         m_pimpl->Transport->connect();
+
+#elif defined ( Q_OS_ANDROID )
+
+        m_pimpl->profile.init();
+        m_pimpl->profile.setHost(m_pimpl->Host, "smtp");
+        m_pimpl->profile.setPort(m_pimpl->Port, "smtp");
+        m_pimpl->profile.setUsername(m_pimpl->Username, "smtp");
+        m_pimpl->profile.setPassword(m_pimpl->Password, "smtp");
+        m_pimpl->profile.setSecurity(m_pimpl->SecurityType, "smtp");
+        m_pimpl->profile.connect("smtp");
+
 #endif // !defined ( Q_OS_ANDROID )
 
         return true;
@@ -170,6 +191,8 @@ void SmtpClient::Disconnect()
         if (m_pimpl->Transport != nullptr) {
             m_pimpl->Transport->disconnect();
         }
+#elif defined ( Q_OS_ANDROID )
+        m_pimpl->profile.disconnect("smtp");
 #endif // !defined ( Q_OS_ANDROID )
     }
 #if !defined ( Q_OS_ANDROID )
@@ -186,7 +209,13 @@ void SmtpClient::Disconnect()
 
 
 std::size_t SmtpClient::GetMessageCount() {
-    return 0;
+#if !defined(Q_OS_ANDROID)
+    vmime::shared_ptr<vmime::net::folder> f = m_pimpl->Store->getDefaultFolder();
+    f->open(vmime::net::folder::MODE_READ_WRITE);
+    return ((std::size_t) f->getMessageCount());
+#elif defined(Q_OS_ANDROID)
+    return m_pimpl->profile.getMessageCount();
+#endif
 }
 
 
@@ -195,15 +224,27 @@ std::vector<Message> SmtpClient::Fetch(std::size_t from, std::size_t count) {
 
     try {
 
+#if !defined(Q_OS_ANDROID)
         vmime::shared_ptr<vmime::net::folder> f = m_pimpl->Store->getDefaultFolder();
         f->open(vmime::net::folder::MODE_READ_WRITE);
 
-        int count = f->getMessageCount();
-        for(int i = 1; i <= count; ++i) {
-            //vmime::shared_ptr<vmime::net::message> msg = f->getMessage(i);
+        int c = f->getMessageCount();
+        int to = std::max(0, c - ((int)(from + count)));
 
+        for(int i = c - ((int)from); i > to; --i) {
+            vmime::shared_ptr<vmime::net::message> msg = f->getMessage(i);
+
+            f->fetchMessage(msg, vmime::net::fetchAttributes::FULL_HEADER);
+            Message out;
+            ExtractMessage(out, msg);
+            ret.push_back(out);
         }
+
+
         return ret;
+#elif defined(Q_OS_ANDROID)
+        return m_pimpl->profile.fetchMessage((int) from, (int) count);
+#endif
     }
 #if !defined ( Q_OS_ANDROID )
     catch (vmime::exception &ex) {
@@ -238,22 +279,22 @@ bool SmtpClient::Send(const Message &message)
                 case RecipientType::To:
                     mb.getRecipients().appendAddress(
                                 vmime::make_shared<vmime::mailbox>(
-                                    vmime::text(r.Mailbox.get().GetName().toStdString()),
-                                    vmime::emailAddress(r.Mailbox.get().GetAddress().toStdString()))
+                                    vmime::text(r.Mailbox.GetName().toStdString()),
+                                    vmime::emailAddress(r.Mailbox.GetAddress().toStdString()))
                                 );
                     break;
                 case RecipientType::Cc:
                     mb.getCopyRecipients().appendAddress(
                                 vmime::make_shared<vmime::mailbox>(
-                                    vmime::text(r.Mailbox.get().GetName().toStdString()),
-                                    vmime::emailAddress(r.Mailbox.get().GetAddress().toStdString()))
+                                    vmime::text(r.Mailbox.GetName().toStdString()),
+                                    vmime::emailAddress(r.Mailbox.GetAddress().toStdString()))
                                 );
                     break;
                 case RecipientType::Bcc:
                     mb.getBlindCopyRecipients().appendAddress(
                                 vmime::make_shared<vmime::mailbox>(
-                                    vmime::text(r.Mailbox.get().GetName().toStdString()),
-                                    vmime::emailAddress(r.Mailbox.get().GetAddress().toStdString()))
+                                    vmime::text(r.Mailbox.GetName().toStdString()),
+                                    vmime::emailAddress(r.Mailbox.GetAddress().toStdString()))
                                 );
                     break;
                 default:
@@ -294,9 +335,9 @@ bool SmtpClient::Send(const Message &message)
 
             return true;
         }
-#else
-        (void)message;
+#elif defined ( Q_OS_ANDROID )
 
+        m_pimpl->profile.send(message);
         return true;
 #endif // !defined ( Q_OS_ANDROID )
     }
@@ -321,4 +362,3 @@ SmtpClient::Impl::Impl()
     Port = 25;
 }
 
-#endif

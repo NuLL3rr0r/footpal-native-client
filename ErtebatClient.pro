@@ -91,7 +91,8 @@ HEADERS += \
     Mail/MailDatabase.hpp \
     Mail/MailFolder.hpp \
     Mail/MailView.hpp \
-    Mail/Android/MailProfile.hpp
+    Mail/Android/MailProfile.hpp \
+    Mail/Json.hpp
 SOURCES += \
     main.cpp \
     Mail/BlindCertificateVerifier.cpp \
@@ -113,7 +114,8 @@ SOURCES += \
     Mail/MailDatabase.cpp \
     Mail/MailView.cpp \
     Mail/Client.cpp \
-    Mail/Android/MailProfile.cpp
+    Mail/Android/MailProfile.cpp \
+    Mail/Json.cpp
 android {
     HEADERS += \
         Android.hpp
@@ -245,5 +247,7 @@ include(deployment.pri)
 OTHER_FILES += \
     deployment/android/src/top/social/mailapplication/MailProfile.java \
     deployment/android/src/top/social/mailapplication/MailProtocol.java \
-    deployment/android/src/top/social/mailapplication/MessageAdapter.java
+    deployment/android/src/top/social/mailapplication/MessageAdapter.java \
+    deployment/android/src/com/ertebat/client/MailProfile.java \
+    deployment/android/src/com/ertebat/client/MailProtocol.java
 

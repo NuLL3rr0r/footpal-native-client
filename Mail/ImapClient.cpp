@@ -1,3 +1,8 @@
+/**
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
+ */
+
+
 #include <cassert>
 #include <QString>
 
@@ -67,7 +72,8 @@ std::vector<Message> ImapClient::Fetch(std::size_t from, std::size_t count) {
         f->open(vmime::net::folder::MODE_READ_WRITE);
 
         int c = f->getMessageCount();
-        for(int i = c - ((int)from); i > c - ((int)(from + count)); --i) {
+        int to = std::max(0, c - ((int)(from + count)));
+        for(int i = c - ((int)from); i > to; --i) {
             vmime::shared_ptr<vmime::net::message> msg = f->getMessage(i);
 
             f->fetchMessage(msg, vmime::net::fetchAttributes::FULL_HEADER);
@@ -99,7 +105,9 @@ std::vector<Message> ImapClient::Fetch(std::size_t from, std::size_t count) {
 ImapClient::ImapClient() :
     m_pimpl(std::make_unique<ImapClient::Impl>())
 {
+#if defined(Q_OS_ANDROID)
     m_pimpl->profile.init();
+#endif
 }
 
 ImapClient::~ImapClient()
@@ -205,20 +213,13 @@ bool ImapClient::Connect()
 
 #elif defined(Q_OS_ANDROID)
 
-        qDebug("E1");
         m_pimpl->profile.init();
-        m_pimpl->profile.setImapHost(m_pimpl->Host);
-        qDebug("E2");
-        m_pimpl->profile.setImapPort(m_pimpl->Port);
-        qDebug("E3");
-        m_pimpl->profile.setImapUsername(m_pimpl->Username);
-        qDebug("E4");
-        m_pimpl->profile.setImapPassword(m_pimpl->Password);
-        qDebug("E5");
-        m_pimpl->profile.setImapSecurity(m_pimpl->SecurityType);
-        qDebug("E6");
+        m_pimpl->profile.setHost(m_pimpl->Host, "imap");
+        m_pimpl->profile.setPort(m_pimpl->Port, "imap");
+        m_pimpl->profile.setUsername(m_pimpl->Username, "imap");
+        m_pimpl->profile.setPassword(m_pimpl->Password, "imap");
+        m_pimpl->profile.setSecurity(m_pimpl->SecurityType, "imap");
         m_pimpl->profile.connect("imap");
-        qDebug("E7");
 
 #endif // !defined ( Q_OS_ANDROID )
         return true;
@@ -257,22 +258,22 @@ bool ImapClient::Send(const Message &message)
                 case RecipientType::To:
                     mb.getRecipients().appendAddress(
                                 vmime::make_shared<vmime::mailbox>(
-                                    vmime::text(r.Mailbox.get().GetName().toStdString()),
-                                    vmime::emailAddress(r.Mailbox.get().GetAddress().toStdString()))
+                                    vmime::text(r.Mailbox.GetName().toStdString()),
+                                    vmime::emailAddress(r.Mailbox.GetAddress().toStdString()))
                                 );
                     break;
                 case RecipientType::Cc:
                     mb.getCopyRecipients().appendAddress(
                                 vmime::make_shared<vmime::mailbox>(
-                                    vmime::text(r.Mailbox.get().GetName().toStdString()),
-                                    vmime::emailAddress(r.Mailbox.get().GetAddress().toStdString()))
+                                    vmime::text(r.Mailbox.GetName().toStdString()),
+                                    vmime::emailAddress(r.Mailbox.GetAddress().toStdString()))
                                 );
                     break;
                 case RecipientType::Bcc:
                     mb.getBlindCopyRecipients().appendAddress(
                                 vmime::make_shared<vmime::mailbox>(
-                                    vmime::text(r.Mailbox.get().GetName().toStdString()),
-                                    vmime::emailAddress(r.Mailbox.get().GetAddress().toStdString()))
+                                    vmime::text(r.Mailbox.GetName().toStdString()),
+                                    vmime::emailAddress(r.Mailbox.GetAddress().toStdString()))
                                 );
                     break;
                 default:

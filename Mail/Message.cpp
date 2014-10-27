@@ -1,3 +1,8 @@
+/**
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
+ */
+
+
 #include <QString>
 #include "make_unique.hpp"
 #include "Message.hpp"

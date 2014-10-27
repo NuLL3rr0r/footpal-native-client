@@ -8,11 +8,13 @@
 
 
 #include <QObject>
-#include <qsystemdetection.h>
 #include "Mail.hpp"
+#include "Message.hpp"
 #include <memory>
 
 class QString;
+
+#undef SetPort
 
 namespace vmime { namespace net {
     class message;
@@ -25,25 +27,29 @@ namespace Ertebat { namespace Mail {
     class Message;
 
 
-    struct Client {
+    class Client : public QObject {
+
+    public:
+
         virtual ~Client() { }
 
         //virtual Mailbox& GetMailbox() = 0;
         //virtual Mailbox const& GetMailbox() const = 0;
 
-        virtual QString const&  GetHost() const = 0;
-        virtual void SetHost(QString const& host) = 0;
-        virtual Mail::Port_t const& GetPort() const = 0;
-        virtual void SetPort(Mail::Port_t const& port) = 0;
-        virtual QString const& GetUsername() const = 0;
-        virtual void SetUsername(QString const& x) = 0;
-        virtual QString const& GetPassword() const = 0;
-        virtual void SetPassword(QString const& x) = 0;
-        virtual bool Send(const Message &message) = 0;
-        virtual bool Connect() = 0;
-        virtual void Disconnect() = 0;
-        virtual std::size_t GetMessageCount() = 0;
-        virtual std::vector<Message> Fetch(std::size_t i, std::size_t count) = 0;
+        virtual QString const&  GetHost() const;
+        virtual void SetHost(QString const& host);
+        virtual Mail::Port_t const& GetPort() const;
+        virtual void SetPort(Mail::Port_t const& port);
+        virtual QString const& GetUsername() const;
+        virtual void SetUsername(QString const& x);
+        virtual QString const& GetPassword() const;
+        virtual void SetPassword(QString const& x);
+        virtual bool Send(const Message &message);
+        virtual bool Connect();
+        virtual void Disconnect();
+        virtual std::size_t GetMessageCount() ;
+        virtual std::vector<Message> Fetch(std::size_t i, std::size_t count);
+        virtual QString FetchAsJson(std::size_t i, std::size_t count);
 
     protected:
 

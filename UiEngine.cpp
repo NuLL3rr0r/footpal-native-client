@@ -1,7 +1,7 @@
 /**
  * @author  Mohammad S. Babaei <info@babaei.net>
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
  */
-
 
 #include <QtCore/QDebug>
 #include <QtCore/QVariant>
@@ -24,6 +24,14 @@
 #endif // defined ( Q_OS_ANDROID )
 #include "Pool.hpp"
 #include "RestApi.hpp"
+#include "Mail/Mail.hpp"
+#include "Mail/Client.hpp"
+#include "Mail/SmtpClient.hpp"
+#include "Mail/Pop3Client.hpp"
+#include "Mail/ImapClient.hpp"
+#include "Mail/Message.hpp"
+
+
 
 using namespace Ertebat;
 
@@ -163,13 +171,26 @@ void UiEngine::Impl::Initialize()
     qRegisterMetaType<Ertebat::RestStatusCodes::UsersListStatus>("Ertebat::RestStatusCodes::UsersListStatus");
     qRegisterMetaType<Ertebat::RestStatusCodes::CreateIndividualRoomStatus>("Ertebat::RestStatusCodes::CreateIndividualRoomStatus");
 
+    qRegisterMetaType<Ertebat::Mail::Port_t>("Ertebat::Mail::Port_t");
+    qRegisterMetaType<Ertebat::Mail::MailEnums::SecurityType>("Ertebat::Mail::MailEnums::SecurityType");
+    qRegisterMetaType<Ertebat::Mail::MailEnums::SortType>("Ertebat::Mail::MailEnums::SortType");
+    qRegisterMetaType<Ertebat::Mail::MailEnums::RecipientType>("Ertebat::Mail::MailEnums::RecipientType");
+
     qmlRegisterType<Ertebat::RestStatusCodes>("RestStatusCodes", 1, 0, "RestStatusCode");
     qmlRegisterType<Ertebat::Screen>("ScreenTypes", 1, 0, "ScreenType");
+
+    qmlRegisterType<Ertebat::Mail::ImapClient>("ImapClient", 1, 0, "ImapClient");
+    qmlRegisterType<Ertebat::Mail::Pop3Client>("Pop3Client", 1, 0, "Pop3Client");
+    qmlRegisterType<Ertebat::Mail::SmtpClient>("SmtpClient", 1, 0, "SmtpClient");
 
     QQmlContext *context = m_parent->rootContext();
     context->setContextProperty("UiEngine", m_parent);
     context->setContextProperty("RestApi", Pool::RestApi());
     context->setContextProperty("FontPath", "qrc:///fnt/main.ttf");
+
+    context->setContextProperty("ImapClient", Pool::ImapClient());
+    context->setContextProperty("Pop3Client", Pool::Pop3Client());
+    context->setContextProperty("SmtpClient", Pool::SmtpClient());
 
     InitializeEvents();
 }

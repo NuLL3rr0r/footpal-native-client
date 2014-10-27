@@ -1,5 +1,6 @@
 /**
  * @author  Mohammad S. Babaei <info@babaei.net>
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
  */
 
 
@@ -9,9 +10,6 @@
 
 #include <memory>
 #include <QObject>
-#if !defined ( Q_OS_ANDROID )
-#include <vmime/vmime.hpp>
-#endif // !defined ( Q_OS_ANDROID )
 #include "Mail.hpp"
 
 class QString;

@@ -1,5 +1,6 @@
 /**
  * @author  Mohammad S. Babaei <info@babaei.net>
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
  */
 
 
@@ -47,7 +48,9 @@ struct Pool::Impl
     typedef std::unique_ptr<Ertebat::Database> Database_t;
     typedef std::unique_ptr<Ertebat::RestApi> RestApi_t;
     typedef std::unique_ptr<QTranslator> Translator_t;
-    typedef std::unique_ptr<Ertebat::Mail::Mailbox> Mailbox_t;
+    typedef std::unique_ptr<Ertebat::Mail::SmtpClient> SmtpClient_t;
+    typedef std::unique_ptr<Ertebat::Mail::Pop3Client> Pop3Client_t;
+    typedef std::unique_ptr<Ertebat::Mail::ImapClient> ImapClient_t;
 
     static std::mutex StorageMutex;
     static Storage_t StorageInstance;
@@ -69,8 +72,14 @@ struct Pool::Impl
     static std::mutex TranslatorMutex;
     static Translator_t TranslatorInstance;
 
-    static std::mutex MailboxMutex;
-    static Mailbox_t MailboxInstance;
+    static std::mutex SmtpClientMutex;
+    static SmtpClient_t SmtpClientInstance;
+
+    static std::mutex Pop3ClientMutex;
+    static Pop3Client_t Pop3ClientInstance;
+
+    static std::mutex ImapClientMutex;
+    static ImapClient_t ImapClientInstance;
 };
 
 std::mutex Pool::Impl::StorageMutex;
@@ -93,8 +102,14 @@ Pool::Impl::RestApi_t Pool::Impl::RestApiInstance = nullptr;
 std::mutex Pool::Impl::TranslatorMutex;
 Pool::Impl::Translator_t Pool::Impl::TranslatorInstance = nullptr;
 
-std::mutex Pool::Impl::MailboxMutex;
-Pool::Impl::Mailbox_t Pool::Impl::MailboxInstance = nullptr;
+std::mutex Pool::Impl::SmtpClientMutex;
+Pool::Impl::SmtpClient_t Pool::Impl::SmtpClientInstance = nullptr;
+
+std::mutex Pool::Impl::Pop3ClientMutex;
+Pool::Impl::Pop3Client_t Pool::Impl::Pop3ClientInstance = nullptr;
+
+std::mutex Pool::Impl::ImapClientMutex;
+Pool::Impl::ImapClient_t Pool::Impl::ImapClientInstance = nullptr;
 
 Pool::StorageStruct *Pool::Storage()
 {
@@ -214,15 +229,38 @@ QTranslator *Pool::Translator()
     return Impl::TranslatorInstance.get();
 }
 
+Ertebat::Mail::SmtpClient* Pool::SmtpClient() {
+    lock_guard<mutex> lock(Impl::SmtpClientMutex);
+    (void)lock;
 
-Ertebat::Mail::Mailbox* Pool::Mailbox() {
-    lock_guard<mutex> lock(Impl::MailboxMutex);
-    ((void) lock);
-
-    if(Impl::MailboxInstance == nullptr) {
-        Impl::MailboxInstance =
-                Impl::Mailbox_t(new Ertebat::Mail::Mailbox("my-name", "my-value~"));
+    if(Impl::SmtpClientInstance == nullptr) {
+        Impl::SmtpClientInstance =
+                std::make_unique<Ertebat::Mail::SmtpClient>();
     }
 
-    return Impl::MailboxInstance.get();
+    return Impl::SmtpClientInstance.get();
+}
+
+Ertebat::Mail::Pop3Client* Pool::Pop3Client() {
+    lock_guard<mutex> lock(Impl::Pop3ClientMutex);
+    (void)lock;
+
+    if(Impl::Pop3ClientInstance == nullptr) {
+        Impl::Pop3ClientInstance =
+                std::make_unique<Ertebat::Mail::Pop3Client>();
+    }
+
+    return Impl::Pop3ClientInstance.get();
+}
+
+Ertebat::Mail::ImapClient* Pool::ImapClient() {
+    lock_guard<mutex> lock(Impl::ImapClientMutex);
+    (void)lock;
+
+    if(Impl::ImapClientInstance == nullptr) {
+        Impl::ImapClientInstance =
+                std::make_unique<Ertebat::Mail::ImapClient>();
+    }
+
+    return Impl::ImapClientInstance.get();
 }
