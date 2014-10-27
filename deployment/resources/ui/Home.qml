@@ -61,6 +61,15 @@ Rectangle {
                 pageLoader.setSource("qrc:///ui/MailServers.qml")
             }
         }
+        Button {
+            height: root.height * privates.buttonHeightCoef;
+            width: Math.min(height * privates.buttonWHRatio, root.width * privates.buttonMaxWidthCoef);
+            style: buttonStyle;
+            text: qsTr("FILES") + UiEngine.EmptyLangString;
+            onClicked: {
+                pageLoader.setSource("qrc:///ui/Files.qml")
+            }
+        }
     }
 
     ExtButton {

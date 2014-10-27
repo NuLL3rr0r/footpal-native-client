@@ -16,6 +16,8 @@
         <file>ui/ContactProfile.qml</file>
         <file>ui/ContactSelection.qml</file>
         <file>ui/CreateRoom.qml</file>
+        <file>ui/Files.qml</file>
+        <file>ui/FileSharing.qml</file>
         <file>ui/ForgotPassword.qml</file>
         <file>ui/Home.qml</file>
         <file>ui/Mailbox.qml</file>

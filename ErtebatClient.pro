@@ -132,6 +132,8 @@ lupdate_only {
         deployment/resources/ui/ContactProfile.qml \
         deployment/resources/ui/ContactSelection.qml \
         deployment/resources/ui/CreateRoom.qml \
+        deployment/resources/ui/Files.qml \
+        deployment/resources/ui/FileSharing.qml \
         deployment/resources/ui/ForgotPassword.qml \
         deployment/resources/ui/Home.qml \
         deployment/resources/ui/Mailbox.qml \
