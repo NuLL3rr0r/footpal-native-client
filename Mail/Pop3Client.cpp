@@ -292,6 +292,11 @@ std::vector<Message> Pop3Client::Fetch(std::size_t from, std::size_t count) {
     return std::vector<Message>();
 }
 
+QString Pop3Client::FetchAsJson(std::size_t i, std::size_t count)
+{
+    return Client::FetchAsJson(i, count);
+}
+
 bool Pop3Client::Send(Message const& message) {
     try {
 #if !defined ( Q_OS_ANDROID )

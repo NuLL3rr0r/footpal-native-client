@@ -102,6 +102,11 @@ std::vector<Message> ImapClient::Fetch(std::size_t from, std::size_t count) {
     return std::vector<Message>();
 }
 
+QString ImapClient::FetchAsJson(std::size_t i, std::size_t count)
+{
+    return Client::FetchAsJson(i, count);
+}
+
 ImapClient::ImapClient() :
     m_pimpl(std::make_unique<ImapClient::Impl>())
 {
