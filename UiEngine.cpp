@@ -171,6 +171,16 @@ void UiEngine::Impl::Initialize()
     qRegisterMetaType<Ertebat::RestStatusCodes::UsersListStatus>("Ertebat::RestStatusCodes::UsersListStatus");
     qRegisterMetaType<Ertebat::RestStatusCodes::CreateIndividualRoomStatus>("Ertebat::RestStatusCodes::CreateIndividualRoomStatus");
 
+    qRegisterMetaType<Ertebat::RestStatusCodes::FS_CreateDirectoryStatus>("Ertebat::RestStatusCodes::FS_CreateDirectoryStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::FS_GetListOfEntityStatus>("Ertebat::RestStatusCodes::FS_GetListOfEntityStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::FS_GetListOfEntityStatus>("Ertebat::RestStatusCodes::FS_GetListOfEntityStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::FS_GetAccessTypeStatus>("Ertebat::RestStatusCodes::FS_GetAccessTypeStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::FS_GetParentIdStatus>("Ertebat::RestStatusCodes::FS_GetParentIdStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::FS_MoveEntityStatus>("Ertebat::RestStatusCodes::FS_MoveEntityStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::FS_DeleteEntityStatus>("Ertebat::RestStatusCodes::FS_DeleteEntityStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::FS_DownloadStatus>("Ertebat::RestStatusCodes::FS_DownloadStatus");
+    qRegisterMetaType<Ertebat::RestStatusCodes::FS_UploadStatus>("Ertebat::RestStatusCodes::FS_UploadStatus");
+
     qmlRegisterType<Ertebat::RestStatusCodes>("RestStatusCodes", 1, 0, "RestStatusCode");
     qmlRegisterType<Ertebat::Screen>("ScreenTypes", 1, 0, "ScreenType");
 

@@ -33,6 +33,9 @@ class Ertebat::RestStatusCodes : public QObject {
     Q_ENUMS( FS_GetAccessTypeStatus )
     Q_ENUMS( FS_GetParentIdStatus )
     Q_ENUMS( FS_MoveEntityStatus )
+    Q_ENUMS( FS_DeleteEntityStatus )
+    Q_ENUMS( FS_DownloadStatus )
+    Q_ENUMS( FS_UploadStatus )
 
 public:
     enum ConnectionStatus {
@@ -137,6 +140,33 @@ public:
         FS_MoveEntity_NotFound = 404,
         FS_MoveEntity_InternalServerError = 500,
     };
+
+    enum FS_DeleteEntityStatus {
+        FS_DeleteEntity_None = 0,
+        FS_DeleteEntity_OK = 200,
+        FS_DeleteEntity_BadRequest = 400,
+        FS_DeleteEntity_Forbidden = 403,
+        FS_DeleteEntity_NotFound = 404,
+        FS_DeleteEntity_InternalServerError = 500
+    };
+
+    enum FS_DownloadStatus {
+        FS_Download_None = 0,
+        FS_Download_OK = 200,
+        FS_Download_BadRequest = 400,
+        FS_Download_Forbidden = 403,
+        FS_Download_NotFound = 404,
+        FS_Download_InternalServerError = 500,
+    };
+
+    enum FS_UploadStatus {
+        FS_Upload_None = 0,
+        FS_Upload_Created = 201,
+        FS_Upload_BadRequest = 400,
+        FS_Upload_Forbidden = 403,
+        FS_Upload_NotFound = 404,
+        FS_Upload_InternalServerError = 500,
+    };
 };
 
 class Ertebat::RestApi : public QObject
@@ -193,7 +223,15 @@ signals:
     void signal_FS_MoveEntity(Ertebat::RestStatusCodes::ConnectionStatus,
                               Ertebat::RestStatusCodes::FS_MoveEntityStatus,
                               const QString &);
-
+    void signal_FS_DeleteEntity(Ertebat::RestStatusCodes::ConnectionStatus,
+                                Ertebat::RestStatusCodes::FS_DeleteEntityStatus,
+                                const QString &);
+    void signal_FS_Download(Ertebat::RestStatusCodes::ConnectionStatus,
+                            Ertebat::RestStatusCodes::FS_DownloadStatus,
+                            const QString &);
+    void signal_FS_Upload(Ertebat::RestStatusCodes::ConnectionStatus,
+                          Ertebat::RestStatusCodes::FS_UploadStatus,
+                          const QString &);
 public:
     Q_INVOKABLE bool isOnline();
 
@@ -215,6 +253,9 @@ public:
     Q_INVOKABLE void fs_GetAccessType(const QString &token, const QString &entityId);
     Q_INVOKABLE void fs_GetParentId(const QString &token, const QString &entityId);
     Q_INVOKABLE void fs_MoveEntity(const QString &token, const QString &entityId, const QString &newParentId);
+    Q_INVOKABLE void fs_DeleteEntity(const QString &token, const QString &entityId);
+    Q_INVOKABLE void fs_Download(const QString &token, const QString &entityId);
+    Q_INVOKABLE void fs_Upload(const QString &token, const QString &parentId, const QString &access);
 };
 
 

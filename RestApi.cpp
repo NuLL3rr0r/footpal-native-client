@@ -43,6 +43,9 @@ public:
     Http_t Http_FS_GetAccessType;
     Http_t Http_FS_GetParentId;
     Http_t Http_FS_MoveEntity;
+    Http_t Http_FS_DeleteEntity;
+    Http_t Http_FS_Download;
+    Http_t Http_FS_Upload;
 
 public:
     Impl(RestApi *parent);
@@ -91,6 +94,16 @@ public slots:
     void On_FS_MoveEntityRequestFailed(const Http::Error &error);
     void On_FS_MoveEntityRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
                                          const QString &data);
+    void On_FS_DeleteEntityRequestFailed(const Http::Error &error);
+    void On_FS_DeleteEntityRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                           const QString &data);
+    void On_FS_DownloadRequestFailed(const Http::Error &error);
+    void On_FS_DownloadRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                       const QString &data);
+    void On_FS_UploadRequestFailed(const Http::Error &error);
+    void On_FS_UploadRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                     const QString &data);
+
 public:
     void SetupEvents();
 };
@@ -293,6 +306,50 @@ void RestApi::fs_MoveEntity(const QString &token, const QString &entityId, const
     m_pimpl->Http_FS_MoveEntity->Post(QString("%1/document/moveEntity").arg(REST_BASE_URL), data, headers);
 }
 
+void RestApi::fs_DeleteEntity(const QString &token, const QString &entityId)
+{
+    std::wstringstream stream;
+    boost::property_tree::wptree tree;
+
+    tree.put(L"entityId", entityId.toStdWString());
+
+    boost::property_tree::write_json(stream, tree);
+
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    QByteArray data;
+    data.append(QString::fromStdWString(stream.str()));
+
+    m_pimpl->Http_FS_DeleteEntity->Post(QString("%1/document/deleteEntity").arg(REST_BASE_URL), data, headers);
+}
+
+void RestApi::fs_Download(const QString &token, const QString &entityId)
+{
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    m_pimpl->Http_FS_DeleteEntity->Get(QString("%1/document/download/%2").arg(REST_BASE_URL).arg(entityId),
+                                       headers);
+}
+
+void RestApi::fs_Upload(const QString &token, const QString &parentId, const QString &access)
+{
+    std::wstringstream stream;
+    boost::property_tree::wptree tree;
+
+    boost::property_tree::write_json(stream, tree);
+
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    QByteArray data;
+    data.append(QString::fromStdWString(stream.str()));
+
+    m_pimpl->Http_FS_Upload->Post(QString("%1/document/%2/%3").arg(REST_BASE_URL).arg(parentId).arg(access),
+                                  data, headers);
+}
+
 RestApi::Impl::Impl(RestApi *parent) :
     m_parent(parent),
     HttpSignUp(std::make_unique<Http>()),
@@ -306,7 +363,10 @@ RestApi::Impl::Impl(RestApi *parent) :
     Http_FS_GetListOfEntity(std::make_unique<Http>()),
     Http_FS_GetAccessType(std::make_unique<Http>()),
     Http_FS_GetParentId(std::make_unique<Http>()),
-    Http_FS_MoveEntity(std::make_unique<Http>())
+    Http_FS_MoveEntity(std::make_unique<Http>()),
+    Http_FS_DeleteEntity(std::make_unique<Http>()),
+    Http_FS_Download(std::make_unique<Http>()),
+    Http_FS_Upload(std::make_unique<Http>())
 {
     SetupEvents();
 }
@@ -503,6 +563,54 @@ void RestApi::Impl::On_FS_MoveEntityRequestCallback(const Ertebat::HttpStatus::H
                                         data);
 }
 
+void RestApi::Impl::On_FS_DeleteEntityRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_DeleteEntity(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_DeleteEntityStatus::FS_DeleteEntity_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_DeleteEntityRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                      const QString &data)
+{
+    emit m_parent->signal_FS_DeleteEntity(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                          static_cast<Ertebat::RestStatusCodes::FS_DeleteEntityStatus>(statusCode),
+                                          data);
+}
+
+void RestApi::Impl::On_FS_DownloadRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_Download(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_DownloadStatus::FS_Download_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_DownloadRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                  const QString &data)
+{
+    emit m_parent->signal_FS_Download(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                      static_cast<Ertebat::RestStatusCodes::FS_DownloadStatus>(statusCode),
+                                      data);
+}
+
+void RestApi::Impl::On_FS_UploadRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_Upload(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_UploadStatus::FS_Upload_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_UploadRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                const QString &data)
+{
+    emit m_parent->signal_FS_Upload(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                    static_cast<Ertebat::RestStatusCodes::FS_UploadStatus>(statusCode),
+                                    data);
+}
+
 void RestApi::Impl::SetupEvents()
 {
     connect(HttpSignUp.get(), SIGNAL(Signal_Failed(const Http::Error &)),
@@ -535,10 +643,10 @@ void RestApi::Impl::SetupEvents()
     connect(HttpCreateIndividualRoom.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
             this, SLOT(OnCreateIndividualRoomRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
 
-//    connect(HttpGetIndividualContacts.get(), SIGNAL(Signal_Failed(const Http::Error &)),
-//            this, SLOT(OnGetIndividualContactsRequestFailed(const Http::Error &)));
-//    connect(HttpGetIndividualContacts.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
-//            this, SLOT(OnGetIndividualContactsRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+    connect(HttpGetIndividualContacts.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(OnGetIndividualContactsRequestFailed(const Http::Error &)));
+    connect(HttpGetIndividualContacts.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(OnGetIndividualContactsRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
 
     connect(Http_FS_CreateDirectory.get(), SIGNAL(Signal_Failed(const Http::Error &)),
             this, SLOT(On_FS_CreateDirectoryRequestFailed(const Http::Error &)));
@@ -564,5 +672,20 @@ void RestApi::Impl::SetupEvents()
             this, SLOT(On_FS_MoveEntityRequestFailed(const Http::Error &)));
     connect(Http_FS_MoveEntity.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
             this, SLOT(On_FS_MoveEntityRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_FS_DeleteEntity.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_DeleteEntityRequestFailed(const Http::Error &)));
+    connect(Http_FS_DeleteEntity.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_DeleteEntityRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_FS_Download.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_DownloadRequestFailed(const Http::Error &)));
+    connect(Http_FS_Download.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_DownloadRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_FS_Upload.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_UploadRequestFailed(const Http::Error &)));
+    connect(Http_FS_Upload.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_UploadRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
 }
 
