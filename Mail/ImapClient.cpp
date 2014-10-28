@@ -107,6 +107,11 @@ QString ImapClient::FetchAsJson(std::size_t i, std::size_t count)
     return Client::FetchAsJson(i, count);
 }
 
+int ImapClient::getMessageCount()
+{
+    return (int)GetMessageCount();
+}
+
 ImapClient::ImapClient() :
     m_pimpl(std::make_unique<ImapClient::Impl>())
 {

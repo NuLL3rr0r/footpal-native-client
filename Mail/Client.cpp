@@ -90,6 +90,11 @@ QString Client::FetchAsJson(std::size_t i, std::size_t j) {
     return Json::EncodeMessage(Fetch(i, j));
 }
 
+int Client::getMessageCount()
+{
+    return (int)GetMessageCount();
+}
+
 } }
 
 #if !defined(Q_OS_ANDROID)

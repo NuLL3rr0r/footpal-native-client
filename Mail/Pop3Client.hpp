@@ -65,6 +65,9 @@ public:
     Q_INVOKABLE bool Send(Message const& msg);
 
     Q_INVOKABLE QString FetchAsJson(std::size_t i, std::size_t count);
+
+    // QML Hack
+    Q_INVOKABLE int getMessageCount();
 };
 
 

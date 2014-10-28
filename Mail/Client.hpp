@@ -47,9 +47,11 @@ namespace Ertebat { namespace Mail {
         virtual bool Send(const Message &message);
         virtual bool Connect();
         virtual void Disconnect();
-        virtual std::size_t GetMessageCount() ;
+        virtual std::size_t GetMessageCount();
         virtual std::vector<Message> Fetch(std::size_t i, std::size_t count);
         virtual QString FetchAsJson(std::size_t i, std::size_t count);
+
+        virtual int getMessageCount();
 
     protected:
 

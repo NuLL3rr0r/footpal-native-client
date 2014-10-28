@@ -62,6 +62,9 @@ public:
     Q_INVOKABLE std::vector<Message> Fetch(std::size_t i, std::size_t count);
 
     Q_INVOKABLE QString FetchAsJson(std::size_t i, std::size_t count);
+
+    // QML Hack
+    Q_INVOKABLE int getMessageCount();
 };
 
 
