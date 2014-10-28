@@ -50,6 +50,11 @@ public:
 
     Q_INVOKABLE void SetPort(Mail::Port_t const& port);
 
+
+    // QML Hack
+    Q_INVOKABLE void setSecurityType(const int securityType);
+    Q_INVOKABLE void setPort(const int &port);
+
 public:
     Q_INVOKABLE bool Connect();
     Q_INVOKABLE void Disconnect();

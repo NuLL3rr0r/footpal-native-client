@@ -17,44 +17,28 @@ namespace Mail {
 
 class Mailbox;
 
-class MailEnums : public QObject {
-
-    Q_OBJECT
-
-    Q_ENUMS( SecurityType )
-    Q_ENUMS( RecipientType )
-    Q_ENUMS( SortType )
-
-public:
-
-    enum class SecurityType : unsigned char {
-        None,
-        STARTTLS,
-        SSL_TLS
-    };
-
-    enum class RecipientType : unsigned char {
-        To,
-        Cc,
-        Bcc
-    };
-
-    enum class SortType : unsigned char {
-        Time_Ascending,
-        Time_Descneding,
-        Default
-    };
-
+enum class SecurityType : unsigned char {
+    None = 0,
+    STARTTLS = 1,
+    SSL_TLS = 2
 };
 
+enum class RecipientType : unsigned char {
+    To = 0,
+    Cc = 1,
+    Bcc = 2
+};
 
-typedef MailEnums::SecurityType SecurityType;
-typedef MailEnums::RecipientType RecipientType;
-typedef MailEnums::SortType SortType;
+enum class SortType : unsigned char {
+    Time_Ascending = 0,
+    Time_Descneding = 1,
+    Default = 2
+};
 
 struct Recipient {
     Mail::RecipientType Type;
     Mail::Mailbox Mailbox;
+
     Recipient(Mail::RecipientType type, Mail::Mailbox const& mailbox)
         : Type(type), Mailbox(mailbox)
     {

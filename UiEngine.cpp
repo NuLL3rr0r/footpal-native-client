@@ -171,11 +171,6 @@ void UiEngine::Impl::Initialize()
     qRegisterMetaType<Ertebat::RestStatusCodes::UsersListStatus>("Ertebat::RestStatusCodes::UsersListStatus");
     qRegisterMetaType<Ertebat::RestStatusCodes::CreateIndividualRoomStatus>("Ertebat::RestStatusCodes::CreateIndividualRoomStatus");
 
-    qRegisterMetaType<Ertebat::Mail::Port_t>("Ertebat::Mail::Port_t");
-    qRegisterMetaType<Ertebat::Mail::MailEnums::SecurityType>("Ertebat::Mail::MailEnums::SecurityType");
-    qRegisterMetaType<Ertebat::Mail::MailEnums::SortType>("Ertebat::Mail::MailEnums::SortType");
-    qRegisterMetaType<Ertebat::Mail::MailEnums::RecipientType>("Ertebat::Mail::MailEnums::RecipientType");
-
     qmlRegisterType<Ertebat::RestStatusCodes>("RestStatusCodes", 1, 0, "RestStatusCode");
     qmlRegisterType<Ertebat::Screen>("ScreenTypes", 1, 0, "ScreenType");
 

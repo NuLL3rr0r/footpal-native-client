@@ -50,6 +50,11 @@ public:
     Q_INVOKABLE const QString &GetPassword() const;
     Q_INVOKABLE void SetPassword(const QString &password);
 
+
+    // QML Hack
+    Q_INVOKABLE void setSecurityType(const int securityType);
+    Q_INVOKABLE void setPort(const int &port);
+
 public:
     Q_INVOKABLE bool Connect();
     Q_INVOKABLE void Disconnect();
