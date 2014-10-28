@@ -219,59 +219,6 @@ void SmtpClient::Disconnect()
     }
 }
 
-
-std::size_t SmtpClient::GetMessageCount() {
-#if !defined(Q_OS_ANDROID)
-    vmime::shared_ptr<vmime::net::folder> f = m_pimpl->Store->getDefaultFolder();
-    f->open(vmime::net::folder::MODE_READ_WRITE);
-    return ((std::size_t) f->getMessageCount());
-#elif defined(Q_OS_ANDROID)
-    return m_pimpl->profile.getMessageCount();
-#endif
-}
-
-
-std::vector<Message> SmtpClient::Fetch(std::size_t from, std::size_t count) {
-    std::vector<Message> ret;
-
-    try {
-
-#if !defined(Q_OS_ANDROID)
-        vmime::shared_ptr<vmime::net::folder> f = m_pimpl->Store->getDefaultFolder();
-        f->open(vmime::net::folder::MODE_READ_WRITE);
-
-        int c = f->getMessageCount();
-        int to = std::max(0, c - ((int)(from + count)));
-
-        for(int i = c - ((int)from); i > to; --i) {
-            vmime::shared_ptr<vmime::net::message> msg = f->getMessage(i);
-
-            f->fetchMessage(msg, vmime::net::fetchAttributes::FULL_HEADER);
-            Message out;
-            ExtractMessage(out, msg);
-            ret.push_back(out);
-        }
-
-
-        return ret;
-#elif defined(Q_OS_ANDROID)
-        return m_pimpl->profile.fetchMessage((int) from, (int) count);
-#endif
-    }
-#if !defined ( Q_OS_ANDROID )
-    catch (vmime::exception &ex) {
-        LOG_ERROR(ex.what());
-    }
-#endif // !defined ( Q_OS_ANDROID )
-    catch (std::exception &ex) {
-        LOG_ERROR(ex.what());
-    } catch(...) {
-        LOG_ERROR(UNKNOWN_ERROR);
-    }
-
-    return std::vector<Message>();
-}
-
 bool SmtpClient::Send(const Message &message)
 {
     try {

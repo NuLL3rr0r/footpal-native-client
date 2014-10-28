@@ -64,7 +64,7 @@ public:
     Q_INVOKABLE std::vector<Message> Fetch(std::size_t i, std::size_t count);
     Q_INVOKABLE bool Send(Message const& msg);
 
-    Q_INVOKABLE virtual QString FetchAsJson(std::size_t i, std::size_t count);
+    Q_INVOKABLE QString FetchAsJson(std::size_t i, std::size_t count);
 };
 
 
