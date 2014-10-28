@@ -302,6 +302,11 @@ int Pop3Client::getMessageCount()
     return (int)GetMessageCount();
 }
 
+QString Pop3Client::fetchAsJson(int i, int count)
+{
+    return FetchAsJson((size_t)i, (size_t)count);
+}
+
 bool Pop3Client::Send(Message const& message) {
     try {
 #if !defined ( Q_OS_ANDROID )

@@ -65,6 +65,7 @@ public:
 
     // QML Hack
     Q_INVOKABLE int getMessageCount();
+    Q_INVOKABLE QString fetchAsJson(int i, int count);
 };
 
 

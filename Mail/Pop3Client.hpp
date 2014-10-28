@@ -52,7 +52,7 @@ public:
     Q_INVOKABLE void SetPassword(const QString &password);
 
 
-    // QML Hack
+    // QML Hacks
     Q_INVOKABLE void setSecurityType(const int securityType);
     Q_INVOKABLE void setPort(const int &port);
 
@@ -66,8 +66,9 @@ public:
 
     Q_INVOKABLE QString FetchAsJson(std::size_t i, std::size_t count);
 
-    // QML Hack
+    // QML Hacks
     Q_INVOKABLE int getMessageCount();
+    Q_INVOKABLE QString fetchAsJson(int i, int count);
 };
 
 

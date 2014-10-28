@@ -95,6 +95,11 @@ int Client::getMessageCount()
     return (int)GetMessageCount();
 }
 
+QString Client::fetchAsJson(int i, int count)
+{
+    return FetchAsJson((size_t)i, (size_t)count);
+}
+
 } }
 
 #if !defined(Q_OS_ANDROID)

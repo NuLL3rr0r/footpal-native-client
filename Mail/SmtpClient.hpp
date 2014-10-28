@@ -51,7 +51,7 @@ public:
     Q_INVOKABLE void SetPassword(const QString &password);
 
 
-    // QML Hack
+    // QML Hacks
     Q_INVOKABLE void setSecurityType(const int securityType);
     Q_INVOKABLE void setPort(const int &port);
 

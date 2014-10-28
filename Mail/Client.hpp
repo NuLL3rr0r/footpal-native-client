@@ -51,7 +51,9 @@ namespace Ertebat { namespace Mail {
         virtual std::vector<Message> Fetch(std::size_t i, std::size_t count);
         virtual QString FetchAsJson(std::size_t i, std::size_t count);
 
+        // QML Hacks
         virtual int getMessageCount();
+        virtual QString fetchAsJson(int i, int count);
 
     protected:
 
