@@ -166,13 +166,13 @@ void ImapClient::SetPassword(const QString &password)
 }
 
 // QML Hack
-void SmtpClient::setSecurityType(const int securityType)
+void ImapClient::setSecurityType(const int securityType)
 {
     SetSecurityType(static_cast<Mail::SecurityType>(securityType));
 }
 
 // QML Hack
-void SmtpClient::setPort(const int &port)
+void ImapClient::setPort(const int &port)
 {
     SetPort(static_cast<Mail::Port_t>(port));
 }

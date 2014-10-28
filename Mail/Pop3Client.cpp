@@ -120,13 +120,13 @@ void Pop3Client::SetPassword(const QString &password)
 }
 
 // QML Hack
-void SmtpClient::setSecurityType(const int securityType)
+void Pop3Client::setSecurityType(const int securityType)
 {
     SetSecurityType(static_cast<Mail::SecurityType>(securityType));
 }
 
 // QML Hack
-void SmtpClient::setPort(const int &port)
+void Pop3Client::setPort(const int &port)
 {
     SetPort(static_cast<Mail::Port_t>(port));
 }
