@@ -12,13 +12,14 @@ import ScreenTypes 1.0;
 import "custom"
 import "utils"
 import "scripts/ws.js" as WS;
+import "scripts/settings.js" as Settings
 
 
 Rectangle {
     id: root
     anchors.fill: parent;
     anchors.centerIn: parent;
-    color: "#203070";
+    color: Settings.globalBgColor;
 
     QtObject {
         id: privates
@@ -42,7 +43,7 @@ Rectangle {
         RestApi.onSignal_CreateIndividualRoom.disconnect(onCreatedRoom);
     }
 
-    function onCreatedRoom(connectionStatus, status, response){
+    function onCreatedRoom(connectionStatus, status, response) {
         console.log(connectionStatus + " : " + status + " : " + response)
         var result = JSON.parse(response);
         console.log("room id is : " + result.roomId);
@@ -50,7 +51,7 @@ Rectangle {
         pageLoader.setSource("qrc:///ui/Chat.qml")
     }
 
-    function loadContacts(){
+    function loadContacts() {
         var friends = WS.Context.friends;
         for(var i = 0 ; i < friends.length ; i++){
             var newContact = {"Id" : friends[i].friendId, "name" : friends[i].friendUsername , "picture" : "qrc:///img/ic_contact.png" };

@@ -8,11 +8,12 @@ import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
+import "scripts/settings.js" as Settings
 
 Rectangle {
     anchors.fill: parent;
     anchors.centerIn: parent;
-    color: "#203070";
+    color: Settings.globalBgColor;
 
     Component.onCompleted: {
     }

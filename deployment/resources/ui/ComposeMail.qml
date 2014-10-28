@@ -9,13 +9,14 @@ import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
 import "custom"
+import "scripts/settings.js" as Settings
 
 
 Rectangle {
     id: root
     anchors.fill: parent;
     anchors.centerIn: parent;
-    color: "#203070";
+    color: Settings.globalBgColor;
 
     Component.onCompleted: {
     }
@@ -27,7 +28,8 @@ Rectangle {
         id: privates
 
         property int textFieldHeight: root.height * 0.05
-        property int textFieldPixelSize: root.height * 0.025
+        property int textFieldMaxPixelSize: root.height * 0.04
+        property int textFieldMinPixelSize: root.height * 0.02
     }
 
     Bar {
@@ -66,7 +68,7 @@ Rectangle {
             style: textFieldStyle;
             width: parent.width;
             height: privates.textFieldHeight;
-            font.pixelSize: privates.textFieldPixelSize
+            font.pixelSize: privates.textFieldMaxPixelSize
             placeholderText: qsTr("TO") + UiEngine.EmptyLangString;
             focus: true;
         }
@@ -76,7 +78,7 @@ Rectangle {
             style: textFieldStyle;
             width: parent.width;
             height: privates.textFieldHeight;
-            font.pixelSize: privates.textFieldPixelSize
+            font.pixelSize: privates.textFieldMaxPixelSize
             placeholderText: qsTr("SUBJECT") + UiEngine.EmptyLangString;
         }
 
@@ -85,7 +87,7 @@ Rectangle {
             style: textFieldStyle;
             width: parent.width;
             height: privates.textFieldHeight;
-            font.pixelSize: privates.textFieldPixelSize
+            font.pixelSize: privates.textFieldMaxPixelSize
             placeholderText: qsTr("CC") + UiEngine.EmptyLangString;
         }
 
@@ -94,13 +96,13 @@ Rectangle {
             style: textFieldStyle;
             width: parent.width;
             height: privates.textFieldHeight;
-            font.pixelSize: privates.textFieldPixelSize
+            font.pixelSize: privates.textFieldMaxPixelSize
             placeholderText: qsTr("BCC") + UiEngine.EmptyLangString;
         }
 
         Text {
             text: qsTr("CONTENT") + UiEngine.EmptyLangString + ":";
-            font.pixelSize: privates.textFieldPixelSize;
+            font.pixelSize: privates.textFieldMaxPixelSize;
             color: "white"
         }
     }
@@ -113,10 +115,11 @@ Rectangle {
         anchors.bottom: bottomBar.top
         anchors.margins: 5
 
-        property int lineChars: (width / font.pixelSize);
+        property int lineChars: (width / (font.pixelSize * 0.8));
         property bool firstLine: true;
         property int charCount: 0
-        font.pixelSize: Math.min(height / lineCount, privates.textFieldPixelSize);
+        font.pixelSize: Math.max(Math.min(height / lineCount, privates.textFieldMaxPixelSize),
+                                 privates.textFieldMinPixelSize);
         onTextChanged: {
 //            var len = text.length
 //            var a = lineCount > 2 ? 2 : 0;
@@ -148,10 +151,38 @@ Rectangle {
                 defaultImage: "qrc:///img/btn_bar_send.png"
                 pressedImage: "qrc:///img/btn_bar_send_pressed.png"
                 onSignal_clicked: {
-                    //  TODO: Send the email
+                    createJsonMessage();
                 }
             }
         }
+    }
+
+    function createJsonMessage() {
+        var subject = subjectTextField.text;
+        var text = contentTextField.text;
+        var recipients = [];
+        var tos = toTextField.text.split(",");
+        var ccs = ccTextField.text.split(",");
+        var bccs = bccTextField.text.split(",");
+
+        tos.forEach(function(target){
+            recipients.push({ email: target, type: "TO" });
+        });
+        ccs.forEach(function(target){
+            recipients.push({ email: target, type: "CC" });
+        });
+        bccs.forEach(function(target){
+            recipients.push({ email: target, type: "BCC" });
+        });
+
+        var result = { subject: subject,
+            text: text,
+            to: recipients
+        }
+
+        var res = JSON.stringify(result);
+        console.log(res);
+        return res;
     }
 }
 

@@ -9,6 +9,7 @@ import QtQuick 2.3;
 import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
+import QtQuick.LocalStorage 2.0 as Sql;
 import Qt.WebSockets 1.0
 import RestStatusCodes 1.0;
 import ScreenTypes 1.0;
@@ -16,6 +17,7 @@ import "custom";
 import "scripts/ws.js" as WS
 
 ApplicationWindow {
+    id: applicationWindow;
     visible: true;
     width: 800;
     height: 600;
@@ -154,5 +156,84 @@ ApplicationWindow {
         anchors.fill: parent;
         anchors.centerIn: parent;
         fontPath: FontPath;
+    }
+
+    /**********************************************************************************************
+                                           DATABASE FUNCTIONS
+     **********************************************************************************************/
+
+    function db_getDatabase() {
+        return Sql.LocalStorage.openDatabaseSync("SettingsDB", "1.0", "StorageDatabase", 100000);
+    }
+
+    function db_initialize() {
+        var db = db_getDatabase();
+        db.transaction(
+                    function(tx) {
+                        // Mail Accounts Table
+                        tx.executeSql('CREATE TABLE IF NOT EXISTS MailServers(name TEXT PRIMARY KEY,' +
+                                      'protocol TEXT, username TEXT, password TEXT, readHost TEXT, readPort INTEGER,' +
+                                      'readSecurity TEXT, sendHost TEXT, sendPort INTEGER, sendScurity TEXT)');
+                    });
+    }
+
+    function db_addMailAccount(name, protocol, username, password, readHost, readPort, readSecurity,
+                            sendHost, sendPort, sendSecurity) {
+        var db = db_getDatabase();
+        var res = "";
+        db.transaction(function(tx) {
+            var rs = tx.executeSql('INSERT OR REPLACE INTO MailServers VALUES (?,?,?,?,?,?,?,?,?,?);',
+                                   [name, protocol, username, password, readHost, readPort, readSecurity,
+                                    sendHost, sendPort, sendSecurity]);
+            if (rs.rowsAffected > 0) {
+                res = "OK";
+            } else {
+                res = "Error";
+            }
+        });
+        return res;
+    }
+
+    function db_getMailAccount(name) {
+        var db = db_getDatabase();
+        var res = "";
+        db.transaction(function(tx) {
+            var rs = tx.executeSql('SELECT * FROM MailServers WHERE name=?;', [name]);
+            if (rs.rows.length > 0) {
+                var result = { name: rs.rows.item(0).name,
+                    protocol: rs.rows.item(0).protocol,
+                    username: rs.rows.item(0).username,
+                    password: rs.rows.item(0).password,
+                    readHost: rs.rows.item(0).readHost,
+                    readPort: rs.rows.item(0).readPort,
+                    readSecurity: rs.rows.item(0).readSecurity,
+                    sendHost: rs.rows.item(0).sendHost,
+                    sendPort: rs.rows.item(0).sendPort,
+                    sendSecurity: rs.rows.item(0).sendSecurity
+                }
+                res = result;// JSON.stringify(result);
+            } else {
+                res = "Unknown";
+            }
+        });
+        return res
+    }
+
+    function db_getMailAccounts() {
+        var db = db_getDatabase();
+        var res = "";
+        db.transaction(function(tx) {
+            var rs = tx.executeSql('SELECT name, username FROM MailServers;');
+
+            if (rs.rows.length > 0) {
+                var servers = [];
+                for (var i = 0; i < rs.rows.length; i++) {
+                    servers.push({ name: rs.rows.item(i).name, username: rs.rows.item(i).username });
+                }
+                var jsonRoot = { server: servers };
+                res = JSON.stringify(jsonRoot);
+            }
+        });
+        return res;
     }
 }

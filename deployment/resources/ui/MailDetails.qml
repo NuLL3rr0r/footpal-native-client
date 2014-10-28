@@ -7,17 +7,23 @@ import QtQuick 2.3;
 import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
+import QtWebKit 3.0;
 import ScreenTypes 1.0;
 import "custom"
+import "scripts/settings.js" as Settings
+import "scripts/mail.js" as Mail
 
 
 Rectangle {
     id: root
     anchors.fill: parent;
     anchors.centerIn: parent;
-    color: "#203070";
+    color: Settings.globalBgColor;
 
     Component.onCompleted: {
+        // TODO: load the selected message into the page
+        contentView.loadHtml("<div dir=\"ltr\">Hi! Howyadoin?<br></div>");
+        privates.isInitialized = true;
     }
 
     Component.onDestruction: {
@@ -26,7 +32,8 @@ Rectangle {
     QtObject {
         id: privates
 
-        property int nameWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.6 : root.width * 0.4
+        property bool isInitialized: false;
+        property int nameWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.6 : root.width * 0.4;
     }
 
     Bar {
@@ -111,37 +118,46 @@ Rectangle {
         }
     }
 
-    Rectangle {
-        id: contentRectangle;
-        gradient: Gradient {
-            GradientStop { color: "#66ffffff"; position: 0.0 }
-            GradientStop { color: "#aaffffff"; position: 0.4 }
-            GradientStop { color: "#aaffffff"; position: 0.6 }
-            GradientStop { color: "#66ffffff"; position: 1.0 }
-        }
-        border.color: "white";
-        border.width: 1;
-        radius: root.height * 0.015;
+    WebView {
+        id: contentView;
         anchors.top: headerRectangle.bottom;
         anchors.bottom: bottomBar.top;
         anchors.left: parent.left;
         anchors.right: parent.right;
         anchors.margins: root.height * 0.01;
-
-        Item {
-            anchors.fill: parent;
-            anchors.margins: root.height * 0.02;
-
-            Text {
-                id: contentText
-                width: parent.width
-                wrapMode: Text.WrapAtWordBoundaryOrAnywhere;
-                font.pixelSize: Math.floor((parent.height / (lineCount + 1)) * 0.75);
-                text: "Hi! I've assembled a list of the devices we need to develop the project further. Please check it out and share " +
-                      "your thoughts with me.\n\nSincerely,\nMajid";
-            }
-        }
     }
+
+//    Rectangle {
+//        id: contentRectangle;
+//        gradient: Gradient {
+//            GradientStop { color: "#66ffffff"; position: 0.0 }
+//            GradientStop { color: "#aaffffff"; position: 0.4 }
+//            GradientStop { color: "#aaffffff"; position: 0.6 }
+//            GradientStop { color: "#66ffffff"; position: 1.0 }
+//        }
+//        border.color: "white";
+//        border.width: 1;
+//        radius: root.height * 0.015;
+//        anchors.top: headerRectangle.bottom;
+//        anchors.bottom: bottomBar.top;
+//        anchors.left: parent.left;
+//        anchors.right: parent.right;
+//        anchors.margins: root.height * 0.01;
+
+//        Item {
+//            anchors.fill: parent;
+//            anchors.margins: root.height * 0.02;
+
+//            Text {
+//                id: contentText
+//                width: parent.width
+//                wrapMode: Text.WrapAtWordBoundaryOrAnywhere;
+//                font.pixelSize: Math.floor((parent.height / (lineCount + 1)) * 0.75);
+//                text: "Hi! I've assembled a list of the devices we need to develop the project further. Please check it out and share " +
+//                      "your thoughts with me.\n\nSincerely,\nMajid";
+//            }
+//        }
+//    }
 
     Bar {
         id: bottomBar

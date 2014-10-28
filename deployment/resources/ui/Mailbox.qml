@@ -8,14 +8,17 @@ import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
+
 import "custom"
 import "utils"
+import "scripts/settings.js" as Settings
+import "scripts/mail.js" as Mail
 
 Rectangle {
     id: root
     anchors.fill: parent;
     anchors.centerIn: parent;
-    color: "#203070";
+    color: Settings.globalBgColor;
 
     QtObject {
         id: privates
@@ -23,17 +26,43 @@ Rectangle {
         property bool isInitialized: false;
         property int itemHeight: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.2 : 100;
         property int itemSpacing: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.01 : 5;
-        property string testJSON: "{ \"inbox\":" +
-                                  "{ \"email\": [" +
-                                  "{ \"picture\": \"qrc:///img/ic_contact.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
+        property int loadIndex: 0;
+        property int loadSize: 10;
+        property string testJSON: "{ \"data\": [" +
+                                  "{ \"id\":\"1\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
                                   "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
                                   "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
-                                  "{ \"picture\": \"qrc:///img/ic_contact.png\", \"sender\": \"Mohammad Sadegh Babaei\"," +
+                                  "{ \"id\":\"2\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
+                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
+                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
+                                  "{ \"id\":\"3\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
+                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
+                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
+                                  "{ \"id\":\"4\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
+                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
+                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
+                                  "{ \"id\":\"5\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
+                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
+                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
+                                  "{ \"id\":\"6\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
+                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
+                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
+                                  "{ \"id\":\"7\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
+                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
+                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
+                                  "{ \"id\":\"8\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
+                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
+                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
+                                  "{ \"id\":\"9\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
+                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
+                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
+                                  "{ \"id\":\"10\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Mohammad Sadegh Babaei\"," +
                                   "\"title\": \"Today's Meeting\", \"summary\": \"Hi! Any thoughts on \"," +
-                                  "\"date\": \"2014/09/23\", \"time\": \"09:54\" } ] } }";
+                                  "\"date\": \"2014/09/23\", \"time\": \"09:54\" } ] }";
     }
 
     Component.onCompleted: {
+//        loadInbox(0, privates.loadSize);
         privates.isInitialized = true;
     }
 
@@ -63,7 +92,7 @@ Rectangle {
     JSONListModel {
         id: jsonModel;
         json: privates.testJSON;
-        query: "$.inbox.email[*]";
+        query: "$.data[*]";
     }
 
     ListView {
@@ -71,8 +100,9 @@ Rectangle {
         anchors.bottom: bottomBar.top
         anchors.bottomMargin: 5
         width: parent.width
-        spacing: privates.itemSpacing
+//        spacing: privates.itemSpacing
         model: jsonModel.model;
+
         delegate: Component {
             Rectangle {
                 gradient: Gradient {
@@ -137,11 +167,16 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        // TODO: remeber contact's ID in order to retrieve it's information in the ContactProfile page
-
+                        Mail.selectedMessageId = model.id;
                         pageLoader.setSource("qrc:///ui/MailDetails.qml")
                     }
                 }
+            }
+        }
+        onMovementEnded: {
+            if (atYEnd) {
+                console.log("end of list!");
+                loadInbox(privates.loadIndex, privates.loadSize);
             }
         }
     }
@@ -168,6 +203,62 @@ Rectangle {
                 }
             }
         }
+    }
+
+    function loadInbox(start, size) {
+        var messages;
+        if (Mail.currentMailAccount.protocol === "imap") {
+            messages = loadImap(start, size);
+            privates.loadIndex += privates.loadSize;
+        } else {    //  protocol is pop3
+            messages = loadPop3(start, size);
+            privates.loadIndex += privates.loadSize;
+        }
+        // TODO:    1. read jsonModel.json into Temp
+        //          2. append new messages to Temp
+        //          3. assign Temp to jsonModel.json
+        //          4. set listview position to the item at privates.loadIndex
+    }
+
+    function loadImap(start, size) {
+        var account = Mail.currentMailAccount;
+        ImapClient.SetHost(account.readHost);
+        ImapClient.setPort(account.readPort);
+        ImapClient.setSecurityType(strToSecurityType(account.readSecurity));
+        ImapClient.SetUsername(account.username);
+        ImapClient.SetPassword(account.password);
+        ImapClient.Connect();
+        var count = ImapClient.getMessageCount();
+        console.log(count);
+        var messages = ImapClient.fetchAsJson(start, Math.min(count - start, size));
+        console.log(messages);
+        return messages;
+    }
+
+    function loadPop3(start, size) {
+        var account = Mail.currentMailAccount;
+        Pop3Client.SetHost(account.readHost);
+        Pop3Client.setPort(account.readPort);
+        Pop3Client.setSecurityType(strToSecurityType(account.readSecurity));
+        Pop3Client.SetUsername(account.username);
+        Pop3Client.SetPassword(account.password);
+        Pop3Client.Connect();
+        var count = Pop3Client.getMessageCount();
+        console.log(count);
+        var messages = Pop3Client.fetchAsJson(start, Math.min(count - start, size));
+        console.log(messages);
+        return messages;
+    }
+
+    function strToSecurityType(type) {
+        if (type == "plain")
+            return 0;
+        else if (type == "ssl")
+            return 2;
+        else if (type == "starttls")
+            return 1;
+        else
+            return -1;
     }
 }
 

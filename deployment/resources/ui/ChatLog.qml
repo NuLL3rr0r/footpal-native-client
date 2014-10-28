@@ -11,6 +11,7 @@ import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
 import "scripts/ws.js" as WS
+import "scripts/settings.js" as Settings
 import "custom"
 import "utils"
 
@@ -18,7 +19,7 @@ Rectangle {
     id: root
     anchors.fill: parent;
     anchors.centerIn: parent;
-    color: "#203070";
+    color: Settings.globalBgColor;
 
     QtObject {
         id: privates

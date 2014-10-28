@@ -5,11 +5,12 @@
 
 import QtQuick 2.3;
 import QtGraphicalEffects 1.0;
+import "scripts/settings.js" as Settings
 
 Rectangle {
     anchors.centerIn: parent;
     anchors.fill: parent;
-    color: "#203070";
+    color: Settings.globalBgColor;
 
     Component.onCompleted: {
         splashTimer.start();

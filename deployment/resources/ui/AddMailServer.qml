@@ -7,14 +7,16 @@ import QtQuick 2.3;
 import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
+import QtQuick.LocalStorage 2.0 as Sql;
 import ScreenTypes 1.0;
 import "custom"
+import "scripts/settings.js" as Settings
 
 Rectangle {
     id: root
     anchors.fill: parent;
     anchors.centerIn: parent;
-    color: "#203070";
+    color: Settings.globalBgColor;
     state: "page1"
 
     QtObject {
@@ -111,6 +113,7 @@ Rectangle {
             spacing: parent.width * 0.1
             ExclusiveGroup { id: mailProtocolGroup }
             RadioButton {
+                id: radioIMAP;
                 text: qsTr("IMAP") + UiEngine.EmptyLangString;
                 checked: true;
                 height: privates.textFieldHeight * 0.5;
@@ -118,11 +121,22 @@ Rectangle {
                 style: whiteRadioButtonStyle;
             }
             RadioButton {
+                id: radioPOP3;
                 text: qsTr("POP3") + UiEngine.EmptyLangString;
                 height: privates.textFieldHeight * 0.5;
                 exclusiveGroup: mailProtocolGroup;
                 style: whiteRadioButtonStyle;
             }
+        }
+
+        TextField {
+            id: titleTextField;
+            style: textFieldStyle;
+            width: parent.width;
+            height: width / 8;
+            font.pixelSize: height * 0.5;
+            placeholderText: qsTr("ACCOUNT_TITLE") + UiEngine.EmptyLangString;
+            focus: true;
         }
 
         TextField {
@@ -298,7 +312,17 @@ Rectangle {
                 return;
             }
 
-            //  TODO: use the information from all fields to create a new mail server account. Then move to any desired page.
+            //  TODO: use the information from all fields to create a new mail server account.
+            //  Then move to any desired page.
+            applicationWindow.db_initialize();
+            var protocol = radioIMAP.checked ? "imap" : "pop3";
+            var result = applicationWindow.db_addMailAccount(titleTextField.text, protocol, usernameTextField.text,
+                              passwordTextField.text, serverTextField.text, portTextField.text,
+                              getSecurityType(comboBoxSecurity.currentIndex),
+                              smtpServerTextField.text, smtpPortTextField.text,
+                              getSecurityType(comboBoxSMTPSecurity.currentIndex));
+            console.log(result);
+            console.log(applicationWindow.db_getMailAccount(titleTextField.text));
         }
     }
 
@@ -316,6 +340,21 @@ Rectangle {
 
         onClicked: {
             root.state = "page1"
+        }
+    }
+
+    function getSecurityType(type) {
+        switch (type) {
+        case 0:     //  PLAIN
+            return "plain";
+        case 1:     //  SSL/TLS
+        case 2:     //  SSL/TLS
+            return "ssl";
+        case 3:     //  STARTTLS
+        case 4:     //  STARTTLS
+            return "starttls";
+        default:
+            return "";
         }
     }
 }

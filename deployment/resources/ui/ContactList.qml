@@ -12,12 +12,13 @@ import ScreenTypes 1.0;
 import "custom"
 import "utils"
 import "scripts/ws.js" as WS
+import "scripts/settings.js" as Settings
 
 Rectangle {
     id: root
     anchors.fill: parent;
     anchors.centerIn: parent;
-    color: "#203070";
+    color: Settings.globalBgColor;
 
     RegExpValidator {
         id: mobilePhoneRegExpValidator;
