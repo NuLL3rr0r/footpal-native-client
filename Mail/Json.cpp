@@ -15,6 +15,14 @@ namespace Ertebat { namespace Mail {
 
 namespace detail { namespace Json {
 
+    QString ToString(boost::property_tree::ptree const& pt) {
+        std::stringstream ss;
+        boost::property_tree::write_json(ss, pt);
+        std::string _ss = ss.str();
+
+        return QString::fromUtf8(_ss.c_str());
+    }
+
     boost::property_tree::ptree EncodeMessage(Message const& message) {
         boost::property_tree::ptree pt;
         boost::property_tree::ptree from, to, headers;
@@ -43,16 +51,12 @@ namespace detail { namespace Json {
         pt.add_child("headers", headers);
         pt.put("text", message.GetHtmlBody().toStdString());
 
+        //qDebug() << "-------------" << ToString(pt);
+
         return pt;
     }
 
-    QString ToString(boost::property_tree::ptree const& pt) {
-        std::stringstream ss;
-        boost::property_tree::write_json(ss, pt);
-        std::string _ss = ss.str();
 
-        return QString::fromUtf8(_ss.c_str());
-    }
 
 } }
 
@@ -66,13 +70,88 @@ QString Json::EncodeMessage(std::vector<Message> const& message) {
     boost::property_tree::ptree pt;
     boost::property_tree::ptree from, to, headers;
 
-    root.add_child("data", data);
-
     for(auto i=message.begin(),_i=message.end(); i!=_i; ++i) {
         data.push_back(std::make_pair("", detail::Json::EncodeMessage((*i))));
     }
 
+    root.add_child("data", data);
+
     return detail::Json::ToString(root);
+}
+
+Message Json::DecodeSingleMessage(QString const& json) {
+    std::stringstream ss;
+    ss << json.toStdString();
+    boost::property_tree::ptree v;
+    boost::property_tree::read_json(ss, v);
+    auto _message_id = v.get<std::string>("message_id");
+    auto _date = v.get<std::string>("date");
+
+    std::string _from_email;
+    std::string _from_name;
+
+    BOOST_FOREACH(boost::property_tree::ptree::value_type &vv, v.get_child("from")) {
+        _from_email = vv.second.get<std::string>("email");
+        _from_name = vv.second.get<std::string>("name");
+        break;
+    }
+
+    auto _subject = v.get<std::string>("subject");
+    auto _replyto = v.get<std::string>("headers.Reply-To");
+    auto _text = v.get<std::string>("text");
+
+    QString message_id = QString::fromUtf8(_message_id.c_str());
+    auto v_date = QString::fromUtf8(_date.c_str()).split(":");
+    QDateTime date;
+    date.setDate(QDate(v_date[3].toInt(), v_date[2].toInt(), v_date[1].toInt()));
+    date.setTime(QTime(v_date[4].toInt(), v_date[5].toInt(), v_date[6].toInt()));
+    QString from_email = QString::fromUtf8(_from_email.c_str());
+    QString from_name = QString::fromUtf8(_from_name.c_str());
+    QString subject = QString::fromUtf8(_subject.c_str());
+    QString text = QString::fromUtf8(_text.c_str());
+
+    Ertebat::Mail::Message msg;
+    msg.SetMessageId(message_id);
+    msg.SetTime(date);
+    msg.SetFrom(Mail::Mailbox(from_email, from_name));
+    msg.SetSubject(subject);
+    msg.SetHtmlBody(text);
+
+
+    std::vector<QString> to_name,
+            to_email, cc_name, cc_email, bcc_name, bcc_email;
+
+    BOOST_FOREACH(boost::property_tree::ptree::value_type &v2, v.get_child("to"))
+    {
+        auto _email = v2.second.get<std::string>("email");
+        auto _name = v2.second.get<std::string>("name");
+        auto _type = v2.second.get<std::string>("type");
+        QString email = QString::fromUtf8(_email.c_str());
+        QString name = QString::fromUtf8(_name.c_str());
+        QString type = QString::fromUtf8(_type.c_str());
+        if(type.toLower() == "to") {
+            to_email.push_back(email);
+            to_name.push_back(name);
+        } else if(type.toLower() == "cc") {
+            cc_email.push_back(email);
+            cc_name.push_back(name);
+        } else if(type.toLower() == "bcc") {
+            bcc_email.push_back(email);
+            bcc_name.push_back(name);
+        }
+    }
+
+    for(std::size_t i=0,_i=to_name.size();i<_i;++i) {
+        msg.AddRecipient(Mail::RecipientType::To, Mail::Mailbox(to_email[i], to_name[i]));
+    }
+    for(std::size_t i=0,_i=cc_name.size();i<_i;++i) {
+        msg.AddRecipient(Mail::RecipientType::Cc, Mail::Mailbox(cc_email[i], cc_name[i]));
+    }
+    for(std::size_t i=0,_i=bcc_name.size();i<_i;++i) {
+        msg.AddRecipient(Mail::RecipientType::Bcc, Mail::Mailbox(bcc_email[i], bcc_name[i]));
+    }
+
+    return msg;
 }
 
 std::vector<Message> Json::DecodeMessage(QString const& raw) {

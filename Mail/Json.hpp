@@ -21,6 +21,7 @@ namespace Ertebat { namespace Mail {
         static QString EncodeMessage(Message const& message);
         static QString EncodeMessage(std::vector<Message> const& message);
         static std::vector<Message> DecodeMessage(QString const& json);
+        static Message DecodeSingleMessage(QString const& json);
     };
 
 } }

@@ -36,24 +36,25 @@ namespace Ertebat { namespace Mail {
         //virtual Mailbox& GetMailbox() = 0;
         //virtual Mailbox const& GetMailbox() const = 0;
 
-        virtual QString const&  GetHost() const;
-        virtual void SetHost(QString const& host);
-        virtual Mail::Port_t const& GetPort() const;
-        virtual void SetPort(Mail::Port_t const& port);
-        virtual QString const& GetUsername() const;
-        virtual void SetUsername(QString const& x);
-        virtual QString const& GetPassword() const;
-        virtual void SetPassword(QString const& x);
-        virtual bool Send(const Message &message);
-        virtual bool Connect();
-        virtual void Disconnect();
-        virtual std::size_t GetMessageCount();
-        virtual std::vector<Message> Fetch(std::size_t i, std::size_t count);
-        virtual QString FetchAsJson(std::size_t i, std::size_t count);
+        virtual Q_INVOKABLE QString const&  GetHost() const;
+        virtual Q_INVOKABLE void SetHost(QString const& host);
+        virtual Q_INVOKABLE Mail::Port_t const& GetPort() const;
+        virtual Q_INVOKABLE void SetPort(Mail::Port_t const& port);
+        virtual Q_INVOKABLE QString const& GetUsername() const;
+        virtual Q_INVOKABLE void SetUsername(QString const& x);
+        virtual Q_INVOKABLE QString const& GetPassword() const;
+        virtual Q_INVOKABLE void SetPassword(QString const& x);
+        virtual Q_INVOKABLE bool Send(const Message &message);
+        virtual Q_INVOKABLE bool Connect();
+        virtual Q_INVOKABLE void Disconnect();
+        virtual Q_INVOKABLE std::size_t GetMessageCount();
+        virtual Q_INVOKABLE std::vector<Message> Fetch(std::size_t i, std::size_t count);
+        virtual Q_INVOKABLE QString FetchAsJson(std::size_t i, std::size_t count);
 
         // QML Hacks
-        virtual int getMessageCount();
-        virtual QString fetchAsJson(int i, int count);
+        virtual Q_INVOKABLE int getMessageCount();
+        virtual Q_INVOKABLE QString fetchAsJson(int i, int count);
+        virtual Q_INVOKABLE bool sendAsJson(QString const& msg);
 
     protected:
 

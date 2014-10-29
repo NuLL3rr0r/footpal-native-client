@@ -100,6 +100,10 @@ QString Client::fetchAsJson(int i, int count)
     return FetchAsJson((size_t)i, (size_t)count);
 }
 
+bool Client::sendAsJson(QString const& msg) {
+    return Send(Json::DecodeSingleMessage(msg));
+}
+
 } }
 
 #if !defined(Q_OS_ANDROID)
