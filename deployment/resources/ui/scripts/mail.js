@@ -19,3 +19,14 @@ function strToSecurityType(type) {
     else
         return -1;
 }
+
+function strToSecurityComboIndex(type) {
+    if (type == "plain")
+        return 0;
+    else if (type == "ssl")
+        return 2;
+    else if (type == "starttls")
+        return 4;
+    else
+        return -1;
+}

@@ -194,6 +194,25 @@ ApplicationWindow {
         return res;
     }
 
+    function db_editMailAccount(name, protocol, username, password, readHost, readPort, readSecurity,
+                                sendHost, sendPort, sendSecurity) {
+        var db = db_getDatabase();
+        var res = "";
+        db.transaction(function(tx) {
+            var rs = tx.executeSql('UPDATE MailServers SET protocol=?, username=?, password=?, ' +
+                                   'readHost=?, readPort=?, readSecurity=?, sendHost=?, sendPort=?, ' +
+                                   'sendSecurity=? WHERE name=?',
+                                   [protocol, username, password, readHost, readPort, readSecurity,
+                                    sendHost, sendPort, sendSecurity, name]);
+            if (rs.rowsAffected > 0) {
+                res = "OK";
+            } else {
+                res = "Error";
+            }
+        });
+        return res;
+    }
+
     function db_getMailAccount(name) {
         var db = db_getDatabase();
         var res = "";

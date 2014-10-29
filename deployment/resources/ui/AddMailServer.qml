@@ -11,6 +11,7 @@ import QtQuick.LocalStorage 2.0 as Sql;
 import ScreenTypes 1.0;
 import "custom"
 import "scripts/settings.js" as Settings
+import "scripts/mail.js" as Mail
 
 Rectangle {
     id: root
@@ -22,12 +23,29 @@ Rectangle {
     QtObject {
         id: privates
 
-        property int columnWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.8 : root.width * 0.5;
-        property int textFieldHeight: columnWidth / 8;
+        property int columnWidth: textFieldHeight * 8;// UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.8 : root.width * 0.5;
+        property int textFieldHeight: root.height * 0.075;// columnWidth / 8;
         property int buttonWidth: columnWidth / 2;
     }
 
     Component.onCompleted: {
+        if (Mail.newServerMode == "edit") {
+            var account = Mail.currentMailAccount;
+            if (account.protocol == "imap")
+                radioIMAP.checked = true;
+            else
+                radioPOP3.checked = true;
+            titleTextField.text = account.name;
+            titleTextField.enabled = false;
+            serverTextField.text = account.readHost;
+            portTextField.text = account.readPort;
+            comboBoxSecurity.currentIndex = Mail.strToSecurityComboIndex(account.readSecurity);
+            smtpServerTextField.text = account.sendHost;
+            smtpPortTextField.text = account.sendPort;
+            comboBoxSMTPSecurity.currentIndex = Mail.strToSecurityComboIndex(account.sendSecurity);
+            usernameTextField.text = account.username;
+            passwordTextField.text = account.password;
+        }
     }
 
     Component.onDestruction: {
@@ -49,7 +67,7 @@ Rectangle {
             PropertyChanges { target: buttonNext; x: -(privates.buttonWidth + (root.height * 0.025)) }
             PropertyChanges { target: buttonAccept; x: root.width - (privates.buttonWidth + (root.height * 0.025)) }
             PropertyChanges { target: buttonBack; x: root.height * 0.025 }
-       }
+        }
     ]
 
     ListModel {
@@ -207,6 +225,11 @@ Rectangle {
             NumberAnimation { duration: 200 }
         }
 
+        Text {
+            font.pixelSize: privates.textFieldHeight * 0.5;
+            text: "SMTP"
+        }
+
         TextField {
             id: smtpServerTextField;
             style: textFieldStyle;
@@ -247,7 +270,7 @@ Rectangle {
     Button {
         id: buttonNext;
         style: buttonStyle;
-        width: privates.columnWidth / 2;
+        width: privates.columnWidth / 3;
         height: width / 4;
         y: root.height - (height + (root.height * 0.025));
         text: qsTr("NEXT") + UiEngine.EmptyLangString;
@@ -289,7 +312,7 @@ Rectangle {
     Button {
         id: buttonAccept;
         style: buttonStyle;
-        width: privates.columnWidth / 2;
+        width: privates.columnWidth / 3;
         height: width / 4;
         y: root.height - (height + (root.height * 0.025));
         text: qsTr("ACCEPT") + UiEngine.EmptyLangString;
@@ -299,6 +322,36 @@ Rectangle {
         }
 
         onClicked: {
+            if (titleTextField.text == "") {
+                UiEngine.showToast(qsTr("INVALID_FIELD_LENGTH"));
+                titleTextField.focus = true;
+                titleTextField.selectAll();
+                return;
+            }
+            if (usernameTextField.text == "") {
+                UiEngine.showToast(qsTr("INVALID_FIELD_LENGTH"));
+                usernameTextField.focus = true;
+                usernameTextField.selectAll();
+                return;
+            }
+            if (passwordTextField.text == "") {
+                UiEngine.showToast(qsTr("INVALID_FIELD_LENGTH"));
+                passwordTextField.focus = true;
+                passwordTextField.selectAll();
+                return;
+            }
+            if (serverTextField.text == "") {
+                UiEngine.showToast(qsTr("INVALID_FIELD_LENGTH"));
+                serverTextField.focus = true;
+                serverTextField.selectAll();
+                return;
+            }
+            if (portTextField.text == "") {
+                UiEngine.showToast(qsTr("INVALID_FIELD_LENGTH"));
+                portTextField.focus = true;
+                portTextField.selectAll();
+                return;
+            }
             if (smtpServerTextField.text == "") {
                 UiEngine.showToast(qsTr("INVALID_FIELD_LENGTH"));
                 serverTextField.focus = true;
@@ -312,24 +365,37 @@ Rectangle {
                 return;
             }
 
-            //  TODO: use the information from all fields to create a new mail server account.
-            //  Then move to any desired page.
-            applicationWindow.db_initialize();
-            var protocol = radioIMAP.checked ? "imap" : "pop3";
-            var result = applicationWindow.db_addMailAccount(titleTextField.text, protocol, usernameTextField.text,
-                              passwordTextField.text, serverTextField.text, portTextField.text,
-                              getSecurityType(comboBoxSecurity.currentIndex),
-                              smtpServerTextField.text, smtpPortTextField.text,
-                              getSecurityType(comboBoxSMTPSecurity.currentIndex));
-            console.log(result);
-            console.log(applicationWindow.db_getMailAccount(titleTextField.text));
+            var result;
+            if (Mail.newServerMode == "edit") {
+                applicationWindow.db_initialize();
+                var protocol = radioIMAP.checked ? "imap" : "pop3";
+                result = applicationWindow.db_editMailAccount(titleTextField.text, protocol, usernameTextField.text,
+                                                                 passwordTextField.text, serverTextField.text, portTextField.text,
+                                                                 getSecurityType(comboBoxSecurity.currentIndex),
+                                                                 smtpServerTextField.text, smtpPortTextField.text,
+                                                                 getSecurityType(comboBoxSMTPSecurity.currentIndex));
+            } else {
+                applicationWindow.db_initialize();
+                var protocol = radioIMAP.checked ? "imap" : "pop3";
+                result = applicationWindow.db_addMailAccount(titleTextField.text, protocol, usernameTextField.text,
+                                                                 passwordTextField.text, serverTextField.text, portTextField.text,
+                                                                 getSecurityType(comboBoxSecurity.currentIndex),
+                                                                 smtpServerTextField.text, smtpPortTextField.text,
+                                                                 getSecurityType(comboBoxSMTPSecurity.currentIndex));
+            }
+
+            if (result == "OK") {
+                pageLoader.setSource("qrc:///ui/MailServers.qml");
+            } else {
+                UiEngine.showToast(qsTr("NOT_SUCCESSFUL") + UiEngine.EmptyLangString);
+            }
         }
     }
 
     Button {
         id: buttonBack;
         style: buttonStyle;
-        width: privates.columnWidth / 2;
+        width: privates.columnWidth / 3;
         height: width / 4;
         y: root.height - (height + (root.height * 0.025));
         text: qsTr("BACK") + UiEngine.EmptyLangString;

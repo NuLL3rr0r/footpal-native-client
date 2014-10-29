@@ -122,10 +122,6 @@ Rectangle {
         font.pixelSize: Math.max(Math.min(height / lineCount, privates.textFieldMaxPixelSize),
                                  privates.textFieldMinPixelSize);
         onTextChanged: {
-//            var len = text.length
-//            var a = lineCount > 2 ? 2 : 0;
-//            var b = (firstLine && lineCount > 1) ? 2 : 0;
-//            console.log(a + " " + b + " " + lineCount);
             charCount++;
             console.log(charCount);
             if (charCount > lineChars) {
@@ -154,16 +150,10 @@ Rectangle {
                 onSignal_clicked: {
                     var message = createJsonMessage();
                     SmtpClient.SetHost(Mail.currentMailAccount.sendHost);
-                    console.log("Host: " + Mail.currentMailAccount.sendHost);
                     SmtpClient.setPort(Mail.currentMailAccount.sendPort);
-                    console.log("Port: " + Mail.currentMailAccount.sendPort);
                     SmtpClient.setSecurityType(Mail.strToSecurityType(Mail.currentMailAccount.sendSecurity));
-                    console.log("Security: " + Mail.currentMailAccount.sendSecurity);
-                    console.log("Security: " + Mail.strToSecurityType(Mail.currentMailAccount.sendSecurity));
                     SmtpClient.SetUsername(Mail.currentMailAccount.username);
-                    console.log("Username: " + Mail.currentMailAccount.username);
                     SmtpClient.SetPassword(Mail.currentMailAccount.password);
-                    console.log("Password: " + Mail.currentMailAccount.password);
                     SmtpClient.Connect();
                     SmtpClient.sendAsJson(message);
                     SmtpClient.Disconnect();

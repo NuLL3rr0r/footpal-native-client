@@ -21,7 +21,7 @@ function registerTimer(ti){
 }
 
 function openSocket(){
-    console.log("try to open socket");
+//    console.log("try to open socket");
     socketJs.active = true;
 }
 
@@ -90,7 +90,7 @@ function getMyProfile(){
 }
 
 function TryToConnectToWS(){
-    console.log(socketJs.status);
+//    console.log(socketJs.status);
     if(socketJs.status != 0 || socketJs.status != 1)
     {
         socketJs.active = false;
@@ -110,13 +110,13 @@ function websocketOpened(){
 }
 
 function webSocketClosed(){
-    console.log("Socket has been closed");
-    console.log("try to open about 5 seconds later");
+//    console.log("Socket has been closed");
+//    console.log("try to open about 5 seconds later");
     timer.start();
 }
 
 function webSocketError(err){
-    console.log("Error: " + err);
+//    console.log("Error: " + err);
     timer.start();
 }
 
