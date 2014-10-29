@@ -84,36 +84,39 @@ Message Json::DecodeSingleMessage(QString const& json) {
     ss << json.toStdString();
     boost::property_tree::ptree v;
     boost::property_tree::read_json(ss, v);
-    auto _message_id = v.get<std::string>("message_id");
-    auto _date = v.get<std::string>("date");
 
-    std::string _from_email;
-    std::string _from_name;
+    Ertebat::Mail::Message msg;
 
-    BOOST_FOREACH(boost::property_tree::ptree::value_type &vv, v.get_child("from")) {
-        _from_email = vv.second.get<std::string>("email");
-        _from_name = vv.second.get<std::string>("name");
-        break;
+
+    if(v.find("from") != v.not_found()) {
+        std::string _from_email;
+        std::string _from_name;
+
+        BOOST_FOREACH(boost::property_tree::ptree::value_type &vv, v.get_child("from")) {
+            _from_email = vv.second.get<std::string>("email");
+            if(vv.second.find("name") != vv.second.not_found()) {
+                _from_name = vv.second.get<std::string>("name");
+            }
+            break;
+        }
+
+        QString from_email = QString::fromUtf8(_from_email.c_str());
+        QString from_name = QString::fromUtf8(_from_name.c_str());
+
+        msg.SetFrom(Mail::Mailbox(from_email, from_name));
     }
 
     auto _subject = v.get<std::string>("subject");
-    auto _replyto = v.get<std::string>("headers.Reply-To");
+    if(v.find("headers.Reply-To") != v.not_found()) {
+        auto _replyto = v.get<std::string>("headers.Reply-To");
+        QString ReplyTo = QString::fromUtf8(_replyto.c_str());
+        msg.SetReplyTo(Mail::Mailbox(ReplyTo));
+    }
     auto _text = v.get<std::string>("text");
 
-    QString message_id = QString::fromUtf8(_message_id.c_str());
-    auto v_date = QString::fromUtf8(_date.c_str()).split(":");
-    QDateTime date;
-    date.setDate(QDate(v_date[3].toInt(), v_date[2].toInt(), v_date[1].toInt()));
-    date.setTime(QTime(v_date[4].toInt(), v_date[5].toInt(), v_date[6].toInt()));
-    QString from_email = QString::fromUtf8(_from_email.c_str());
-    QString from_name = QString::fromUtf8(_from_name.c_str());
     QString subject = QString::fromUtf8(_subject.c_str());
     QString text = QString::fromUtf8(_text.c_str());
 
-    Ertebat::Mail::Message msg;
-    msg.SetMessageId(message_id);
-    msg.SetTime(date);
-    msg.SetFrom(Mail::Mailbox(from_email, from_name));
     msg.SetSubject(subject);
     msg.SetHtmlBody(text);
 
@@ -124,7 +127,10 @@ Message Json::DecodeSingleMessage(QString const& json) {
     BOOST_FOREACH(boost::property_tree::ptree::value_type &v2, v.get_child("to"))
     {
         auto _email = v2.second.get<std::string>("email");
-        auto _name = v2.second.get<std::string>("name");
+        std::string _name = "";
+        if(v2.second.find("name") != v2.second.not_found()) {
+            _name = v2.second.get<std::string>("name");
+        }
         auto _type = v2.second.get<std::string>("type");
         QString email = QString::fromUtf8(_email.c_str());
         QString name = QString::fromUtf8(_name.c_str());
