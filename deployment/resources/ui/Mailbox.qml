@@ -192,7 +192,7 @@ Rectangle {
             spacing: 5
 
             ExtButton {
-                id: buttonNewMailServer
+                id: buttonComposeMail
                 height: parent.height * 0.8;
                 width: height;
                 anchors.verticalCenter: parent.verticalCenter
@@ -200,6 +200,20 @@ Rectangle {
                 pressedImage: "qrc:///img/btn_bar_new_mail_pressed.png"
                 onSignal_clicked: {
                     pageLoader.setSource("qrc:///ui/ComposeMail.qml");
+                }
+            }
+
+            ExtButton {
+                id: buttonSettings
+                height: parent.height * 0.8;
+                width: height;
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                defaultImage: "qrc:///img/btn_bar_settings.png"
+                pressedImage: "qrc:///img/btn_bar_settings_pressed.png"
+                onSignal_clicked: {
+                    Mail.newServerMode = "edit";
+                    pageLoader.setSource("qrc:///ui/AddMailServer.qml");
                 }
             }
         }
@@ -224,7 +238,7 @@ Rectangle {
         var account = Mail.currentMailAccount;
         ImapClient.SetHost(account.readHost);
         ImapClient.setPort(account.readPort);
-        ImapClient.setSecurityType(strToSecurityType(account.readSecurity));
+        ImapClient.setSecurityType(Mail.strToSecurityType(account.readSecurity));
         ImapClient.SetUsername(account.username);
         ImapClient.SetPassword(account.password);
         ImapClient.Connect();
@@ -239,7 +253,7 @@ Rectangle {
         var account = Mail.currentMailAccount;
         Pop3Client.SetHost(account.readHost);
         Pop3Client.setPort(account.readPort);
-        Pop3Client.setSecurityType(strToSecurityType(account.readSecurity));
+        Pop3Client.setSecurityType(Mail.strToSecurityType(account.readSecurity));
         Pop3Client.SetUsername(account.username);
         Pop3Client.SetPassword(account.password);
         Pop3Client.Connect();
@@ -248,17 +262,6 @@ Rectangle {
         var messages = Pop3Client.fetchAsJson(start, Math.min(count - start, size));
         console.log(messages);
         return messages;
-    }
-
-    function strToSecurityType(type) {
-        if (type == "plain")
-            return 0;
-        else if (type == "ssl")
-            return 2;
-        else if (type == "starttls")
-            return 1;
-        else
-            return -1;
     }
 }
 

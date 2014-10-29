@@ -127,38 +127,6 @@ Rectangle {
         anchors.margins: root.height * 0.01;
     }
 
-//    Rectangle {
-//        id: contentRectangle;
-//        gradient: Gradient {
-//            GradientStop { color: "#66ffffff"; position: 0.0 }
-//            GradientStop { color: "#aaffffff"; position: 0.4 }
-//            GradientStop { color: "#aaffffff"; position: 0.6 }
-//            GradientStop { color: "#66ffffff"; position: 1.0 }
-//        }
-//        border.color: "white";
-//        border.width: 1;
-//        radius: root.height * 0.015;
-//        anchors.top: headerRectangle.bottom;
-//        anchors.bottom: bottomBar.top;
-//        anchors.left: parent.left;
-//        anchors.right: parent.right;
-//        anchors.margins: root.height * 0.01;
-
-//        Item {
-//            anchors.fill: parent;
-//            anchors.margins: root.height * 0.02;
-
-//            Text {
-//                id: contentText
-//                width: parent.width
-//                wrapMode: Text.WrapAtWordBoundaryOrAnywhere;
-//                font.pixelSize: Math.floor((parent.height / (lineCount + 1)) * 0.75);
-//                text: "Hi! I've assembled a list of the devices we need to develop the project further. Please check it out and share " +
-//                      "your thoughts with me.\n\nSincerely,\nMajid";
-//            }
-//        }
-//    }
-
     Bar {
         id: bottomBar
         anchors.bottom: parent.bottom
@@ -175,6 +143,7 @@ Rectangle {
                 defaultImage: "qrc:///img/btn_bar_reply.png"
                 pressedImage: "qrc:///img/btn_bar_reply_pressed.png"
                 onSignal_clicked: {
+                    Mail.composeMode = "reply";
                     pageLoader.setSource("qrc:///ui/ComposeMail.qml");
                 }
             }
@@ -188,6 +157,7 @@ Rectangle {
                 defaultImage: "qrc:///img/btn_bar_forward.png"
                 pressedImage: "qrc:///img/btn_bar_forward_pressed.png"
                 onSignal_clicked: {
+                    Mail.composeMode = "forward";
                     pageLoader.setSource("qrc:///ui/ComposeMail.qml");
                 }
             }

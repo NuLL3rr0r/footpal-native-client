@@ -173,7 +173,7 @@ ApplicationWindow {
                         // Mail Accounts Table
                         tx.executeSql('CREATE TABLE IF NOT EXISTS MailServers(name TEXT PRIMARY KEY,' +
                                       'protocol TEXT, username TEXT, password TEXT, readHost TEXT, readPort INTEGER,' +
-                                      'readSecurity TEXT, sendHost TEXT, sendPort INTEGER, sendScurity TEXT)');
+                                      'readSecurity TEXT, sendHost TEXT, sendPort INTEGER, sendSecurity TEXT)');
                     });
     }
 

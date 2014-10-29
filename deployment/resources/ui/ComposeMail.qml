@@ -10,6 +10,7 @@ import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
 import "custom"
 import "scripts/settings.js" as Settings
+import "scripts/mail.js" as Mail
 
 
 Rectangle {
@@ -144,14 +145,28 @@ Rectangle {
             anchors.margins: 5
 
             ExtButton {
-                id: buttonReply
+                id: buttonSend
                 height: parent.height;
                 width: height;
                 anchors.left: parent.left
                 defaultImage: "qrc:///img/btn_bar_send.png"
                 pressedImage: "qrc:///img/btn_bar_send_pressed.png"
                 onSignal_clicked: {
-                    createJsonMessage();
+                    var message = createJsonMessage();
+                    SmtpClient.SetHost(Mail.currentMailAccount.sendHost);
+                    console.log("Host: " + Mail.currentMailAccount.sendHost);
+                    SmtpClient.setPort(Mail.currentMailAccount.sendPort);
+                    console.log("Port: " + Mail.currentMailAccount.sendPort);
+                    SmtpClient.setSecurityType(Mail.strToSecurityType(Mail.currentMailAccount.sendSecurity));
+                    console.log("Security: " + Mail.currentMailAccount.sendSecurity);
+                    console.log("Security: " + Mail.strToSecurityType(Mail.currentMailAccount.sendSecurity));
+                    SmtpClient.SetUsername(Mail.currentMailAccount.username);
+                    console.log("Username: " + Mail.currentMailAccount.username);
+                    SmtpClient.SetPassword(Mail.currentMailAccount.password);
+                    console.log("Password: " + Mail.currentMailAccount.password);
+                    SmtpClient.Connect();
+                    SmtpClient.sendAsJson(message);
+                    SmtpClient.Disconnect();
                 }
             }
         }
@@ -160,6 +175,8 @@ Rectangle {
     function createJsonMessage() {
         var subject = subjectTextField.text;
         var text = contentTextField.text;
+        var from = []
+        from.push({ email: Mail.currentMailAccount.username, name: "" });
         var recipients = [];
         var tos = toTextField.text.split(",");
         var ccs = ccTextField.text.split(",");
@@ -168,17 +185,18 @@ Rectangle {
         tos.forEach(function(target){
             recipients.push({ email: target, type: "TO" });
         });
-        ccs.forEach(function(target){
-            recipients.push({ email: target, type: "CC" });
-        });
-        bccs.forEach(function(target){
-            recipients.push({ email: target, type: "BCC" });
-        });
-
-        var result = { subject: subject,
-            text: text,
-            to: recipients
+        if (ccTextField.text.length > 0) {
+            ccs.forEach(function(target){
+                recipients.push({ email: target, type: "CC" });
+            });
         }
+        if (bccTextField.text.length > 0) {
+            bccs.forEach(function(target){
+                recipients.push({ email: target, type: "BCC" });
+            });
+        }
+
+        var result = { from: from, subject: subject, text: text, to: recipients }
 
         var res = JSON.stringify(result);
         console.log(res);

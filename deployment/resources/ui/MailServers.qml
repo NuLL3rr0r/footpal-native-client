@@ -129,6 +129,11 @@ Rectangle {
                         Mail.currentMailAccount = applicationWindow.db_getMailAccount(model.name);
                         pageLoader.setSource("qrc:///ui/Mailbox.qml");
                     }
+                    onPressAndHold: {
+                        Mail.newServerMode = "edit";
+                        Mail.currentMailAccount = applicationWindow.db_getMailAccount(model.name);
+                        pageLoader.setSource("qrc:///ui/AddMailServer.qml");
+                    }
                 }
             }
         }
