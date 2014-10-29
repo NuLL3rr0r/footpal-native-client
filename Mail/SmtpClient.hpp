@@ -54,6 +54,7 @@ public:
     // QML Hacks
     Q_INVOKABLE void setSecurityType(const int securityType);
     Q_INVOKABLE void setPort(const int &port);
+    Q_INVOKABLE bool sendAsJson(QString const& msg);
 
 public:
     Q_INVOKABLE bool Connect();

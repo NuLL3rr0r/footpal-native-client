@@ -101,7 +101,9 @@ QString Client::fetchAsJson(int i, int count)
 }
 
 bool Client::sendAsJson(QString const& msg) {
+    qDebug() << "sendAsJson called " << msg;
     return Send(Json::DecodeSingleMessage(msg));
+    qDebug() << "! DONE";
 }
 
 } }

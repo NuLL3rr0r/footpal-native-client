@@ -93,7 +93,11 @@ Message Json::DecodeSingleMessage(QString const& json) {
         std::string _from_name;
 
         BOOST_FOREACH(boost::property_tree::ptree::value_type &vv, v.get_child("from")) {
-            _from_email = vv.second.get<std::string>("email");
+            if(vv.second.find("email") != vv.second.not_found()) {
+                _from_email = vv.second.get<std::string>("email");
+            } else {
+                qDebug() << "FROM EMAIL NOT FOUND";
+            }
             if(vv.second.find("name") != vv.second.not_found()) {
                 _from_name = vv.second.get<std::string>("name");
             }
@@ -126,7 +130,12 @@ Message Json::DecodeSingleMessage(QString const& json) {
 
     BOOST_FOREACH(boost::property_tree::ptree::value_type &v2, v.get_child("to"))
     {
-        auto _email = v2.second.get<std::string>("email");
+        std::string _email;
+        if(v2.second.find("email") != v2.second.not_found()) {
+            _email = v2.second.get<std::string>("email");
+        } else {
+            qDebug() << "EMAIL FIELD FOR RECEIPIENT NOT FOUND";
+        }
         std::string _name = "";
         if(v2.second.find("name") != v2.second.not_found()) {
             _name = v2.second.get<std::string>("name");

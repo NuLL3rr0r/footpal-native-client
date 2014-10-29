@@ -122,6 +122,11 @@ void SmtpClient::setPort(const int &port)
     SetPort(static_cast<Mail::Port_t>(port));
 }
 
+// QML Hack
+bool SmtpClient::sendAsJson(QString const& msg) {
+    return Client::sendAsJson(msg);
+}
+
 bool SmtpClient::Connect()
 {
     try {
