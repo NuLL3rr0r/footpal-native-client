@@ -21,6 +21,7 @@
 #include "Log.hpp"
 #include "Message.hpp"
 #include "Mailbox.hpp"
+#include "Json.hpp"
 
 #define         UNKNOWN_ERROR               "  ** SmtpClient ->  Unknown Error!"
 
@@ -198,7 +199,7 @@ void SmtpClient::ConnectAsync()
 
 #endif // !defined ( Q_OS_ANDROID )
 
-        ///return true;
+        emit signal_ConnectCompleted(true);
     }
 #if !defined ( Q_OS_ANDROID )
     catch (vmime::exception &ex) {
@@ -211,7 +212,7 @@ void SmtpClient::ConnectAsync()
         LOG_ERROR(UNKNOWN_ERROR);
     }
 
-    ///return false;
+    emit signal_ConnectCompleted(false);
 }
 
 void SmtpClient::DisconnectAsync()
@@ -220,6 +221,7 @@ void SmtpClient::DisconnectAsync()
 #if !defined ( Q_OS_ANDROID )
         if (m_pimpl->Transport != nullptr) {
             m_pimpl->Transport->disconnect();
+            emit signal_DisconnectCompleted();
         }
 #elif defined ( Q_OS_ANDROID )
         m_pimpl->profile.disconnect("smtp");
@@ -237,7 +239,7 @@ void SmtpClient::DisconnectAsync()
     }
 }
 
-void SmtpClient::Send(const Message &message)
+bool SmtpClient::Send(const Message &message)
 {
     try {
 #if !defined ( Q_OS_ANDROID )
@@ -310,7 +312,7 @@ void SmtpClient::Send(const Message &message)
 
             m_pimpl->Transport->send(mb.construct());
 
-            ///return true;
+            return true;
         }
 #elif defined ( Q_OS_ANDROID )
 
@@ -329,12 +331,16 @@ void SmtpClient::Send(const Message &message)
         LOG_ERROR(UNKNOWN_ERROR);
     }
 
-    ///return false;
+    return false;
 }
 
 // QML Hack
 void SmtpClient::sendAsJsonAsync(QString const& msg) {
-    return Client::sendAsJson(msg);
+    if (Send(Json::DecodeSingleMessage(msg))) {
+        emit signal_SendCompleted(true);
+    } else {
+        emit signal_SendCompleted(false);
+    }
 }
 
 SmtpClient::Impl::Impl()

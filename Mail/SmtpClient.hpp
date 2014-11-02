@@ -36,8 +36,8 @@ public:
 
 signals:
     void signal_ConnectCompleted(bool);
-    void signal_DisconnectCompleted(bool);
-    void signal_SendCompleted(const QString &);
+    void signal_DisconnectCompleted();
+    void signal_SendCompleted(bool);
 
 public:
     Q_INVOKABLE const Ertebat::Mail::SecurityType &GetSecurityType() const;
@@ -62,7 +62,7 @@ public:
 public:
     Q_INVOKABLE void Connect();
     Q_INVOKABLE void Disconnect();
-    Q_INVOKABLE void Send(const Message &message);
+    Q_INVOKABLE bool Send(const Message &message);
 
     // QML Hacks
     Q_INVOKABLE void sendAsJson(const QString &msg);

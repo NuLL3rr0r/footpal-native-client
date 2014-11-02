@@ -44,7 +44,6 @@ namespace Ertebat { namespace Mail {
         virtual Q_INVOKABLE void SetUsername(QString const& x);
         virtual Q_INVOKABLE QString const& GetPassword() const;
         virtual Q_INVOKABLE void SetPassword(QString const& x);
-        virtual Q_INVOKABLE void Send(const Message &message);
         virtual Q_INVOKABLE void Connect();
         virtual Q_INVOKABLE void Disconnect();
         virtual Q_INVOKABLE std::size_t GetMessageCount();
@@ -54,7 +53,6 @@ namespace Ertebat { namespace Mail {
         // QML Hacks
         virtual Q_INVOKABLE void getMessageCount();
         virtual Q_INVOKABLE void fetchAsJson(int i, int count);
-        virtual Q_INVOKABLE void sendAsJson(const QString &msg);
 
     protected:
 
