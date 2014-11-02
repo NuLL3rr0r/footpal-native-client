@@ -1,16 +1,18 @@
+/**
+ * @author  Mohammad S. Babaei <info@babaei.net>
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
+ */
 
 
 #include <cassert>
 #include <QString>
 #include "qsystemdetection.h"
-
 #if !defined ( Q_OS_ANDROID )
 #include <vmime/vmime.hpp>
 #include "BlindCertificateVerifier.hpp"
 #elif defined ( Q_OS_ANDROID )
 #include "Android/MailProfile.hpp"
 #endif // !defined ( Q_OS_ANDROID )
-
 #include "make_unique.hpp"
 #include "Pop3Client.hpp"
 #include "Log.hpp"

@@ -1,3 +1,7 @@
+/**
+ * @author  Mohammad S. Babaei <info@babaei.net>
+ */
+
 #include <qsystemdetection.h>
 
 #if !defined(Q_OS_ANDROID)
