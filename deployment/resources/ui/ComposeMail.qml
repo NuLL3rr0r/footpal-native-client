@@ -20,9 +20,42 @@ Rectangle {
     color: Settings.globalBgColor;
 
     Component.onCompleted: {
+        SmtpClient.onSignal_ConnectCompleted.connect(onConnectCallback);
+        SmtpClient.onSignal_DisconnectCompleted.connect(onDisconnectCallback);
+        SmtpClient.onSignal_SendCompleted.connect(onSendCallback);
     }
 
     Component.onDestruction: {
+        SmtpClient.onSignal_ConnectCompleted.disconnect(onConnectCallback);
+        SmtpClient.onSignal_DisconnectCompleted.disconnect(onDisconnectCallback);
+        SmtpClient.onSignal_SendCompleted.disconnect(onSendCallback);
+    }
+
+    function onConnectCallback(succeeded)
+    {
+        if (succeeded) {
+            console.log("Connected successfully. Sending now...");
+            var message = createJsonMessage();
+            SmtpClient.sendAsJson(message);
+        } else {
+            buttonSend.enabled = true;
+        }
+    }
+
+    function onDisconnectCallback()
+    {
+        console.log("Disconnected successfully.");
+        buttonSend.enabled = true;
+    }
+
+    function onSendCallback(succeeded)
+    {
+        if (succeeded) {
+            console.log("Message successfully sent. Disconnecting...");
+            SmtpClient.Disconnect();
+        } else {
+            buttonSend.enabled = true;
+        }
     }
 
     QtObject {
@@ -148,15 +181,13 @@ Rectangle {
                 defaultImage: "qrc:///img/btn_bar_send.png"
                 pressedImage: "qrc:///img/btn_bar_send_pressed.png"
                 onSignal_clicked: {
-                    var message = createJsonMessage();
+                    buttonSend.enabled = false;
                     SmtpClient.SetHost(Mail.currentMailAccount.sendHost);
                     SmtpClient.setPort(Mail.currentMailAccount.sendPort);
                     SmtpClient.setSecurityType(Mail.strToSecurityType(Mail.currentMailAccount.sendSecurity));
                     SmtpClient.SetUsername(Mail.currentMailAccount.username);
                     SmtpClient.SetPassword(Mail.currentMailAccount.password);
                     SmtpClient.Connect();
-                    SmtpClient.sendAsJson(message);
-                    SmtpClient.Disconnect();
                 }
             }
         }
