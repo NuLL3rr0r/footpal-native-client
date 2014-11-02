@@ -89,9 +89,6 @@ HEADERS += \
     RestApi.hpp \
     UiEngine.hpp \
     Mail/Client.hpp \
-    Mail/MailDatabase.hpp \
-    Mail/MailFolder.hpp \
-    Mail/MailView.hpp \
     Mail/Android/MailProfile.hpp \
     Mail/Json.hpp
 SOURCES += \
@@ -113,8 +110,6 @@ SOURCES += \
     Pool.cpp \
     RestApi.cpp \
     UiEngine.cpp \
-    Mail/MailDatabase.cpp \
-    Mail/MailView.cpp \
     Mail/Client.cpp \
     Mail/Android/MailProfile.cpp \
     Mail/Json.cpp
