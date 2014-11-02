@@ -34,6 +34,11 @@ public:
     Q_INVOKABLE SmtpClient();
     virtual ~SmtpClient();
 
+signals:
+    void signal_ConnectCompleted(bool);
+    void signal_DisconnectCompleted(bool);
+    void signal_SendCompleted(const QString &);
+
 public:
     Q_INVOKABLE const Ertebat::Mail::SecurityType &GetSecurityType() const;
     Q_INVOKABLE void SetSecurityType(const Ertebat::Mail::SecurityType &securityType);
@@ -50,16 +55,22 @@ public:
     Q_INVOKABLE const QString &GetPassword() const;
     Q_INVOKABLE void SetPassword(const QString &password);
 
-
     // QML Hacks
     Q_INVOKABLE void setSecurityType(const int securityType);
     Q_INVOKABLE void setPort(const int &port);
-    Q_INVOKABLE bool sendAsJson(QString const& msg);
 
 public:
-    Q_INVOKABLE bool Connect();
+    Q_INVOKABLE void Connect();
     Q_INVOKABLE void Disconnect();
-    Q_INVOKABLE bool Send(const Message &message);
+    Q_INVOKABLE void Send(const Message &message);
+
+    // QML Hacks
+    Q_INVOKABLE void sendAsJson(const QString &msg);
+
+private:
+    void ConnectAsync();
+    void DisconnectAsync();
+    void sendAsJsonAsync(const QString &msg);
 };
 
 

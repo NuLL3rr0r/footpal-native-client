@@ -8,15 +8,14 @@
 #include <cassert>
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/thread/thread.hpp>
 #include <QString>
-
 #if !defined ( Q_OS_ANDROID )
 #include <vmime/vmime.hpp>
 #include "BlindCertificateVerifier.hpp"
 #elif defined ( Q_OS_ANDROID )
-#include "Android/MailProfile.hpp"
+#include "Android.hpp"
 #endif // !defined ( Q_OS_ANDROID )
-
 #include "make_unique.hpp"
 #include "SmtpClient.hpp"
 #include "Log.hpp"
@@ -123,12 +122,25 @@ void SmtpClient::setPort(const int &port)
     SetPort(static_cast<Mail::Port_t>(port));
 }
 
-// QML Hack
-bool SmtpClient::sendAsJson(QString const& msg) {
-    return Client::sendAsJson(msg);
+void SmtpClient::Connect()
+{
+    boost::thread t(static_cast<void (SmtpClient::*)()>(&SmtpClient::ConnectAsync), this);
+    t.detach();
 }
 
-bool SmtpClient::Connect()
+void SmtpClient::Disconnect()
+{
+    boost::thread t(static_cast<void (SmtpClient::*)()>(&SmtpClient::DisconnectAsync), this);
+    t.detach();
+}
+
+void SmtpClient::sendAsJson(const QString &msg)
+{
+    boost::thread t(static_cast<void (SmtpClient::*)(const QString &)>(&SmtpClient::sendAsJsonAsync), this, msg);
+    t.detach();
+}
+
+void SmtpClient::ConnectAsync()
 {
     try {
 #if !defined ( Q_OS_ANDROID )
@@ -186,7 +198,7 @@ bool SmtpClient::Connect()
 
 #endif // !defined ( Q_OS_ANDROID )
 
-        return true;
+        ///return true;
     }
 #if !defined ( Q_OS_ANDROID )
     catch (vmime::exception &ex) {
@@ -199,10 +211,10 @@ bool SmtpClient::Connect()
         LOG_ERROR(UNKNOWN_ERROR);
     }
 
-    return false;
+    ///return false;
 }
 
-void SmtpClient::Disconnect()
+void SmtpClient::DisconnectAsync()
 {
     try {
 #if !defined ( Q_OS_ANDROID )
@@ -225,7 +237,7 @@ void SmtpClient::Disconnect()
     }
 }
 
-bool SmtpClient::Send(const Message &message)
+void SmtpClient::Send(const Message &message)
 {
     try {
 #if !defined ( Q_OS_ANDROID )
@@ -298,7 +310,7 @@ bool SmtpClient::Send(const Message &message)
 
             m_pimpl->Transport->send(mb.construct());
 
-            return true;
+            ///return true;
         }
 #elif defined ( Q_OS_ANDROID )
 
@@ -317,7 +329,12 @@ bool SmtpClient::Send(const Message &message)
         LOG_ERROR(UNKNOWN_ERROR);
     }
 
-    return false;
+    ///return false;
+}
+
+// QML Hack
+void SmtpClient::sendAsJsonAsync(QString const& msg) {
+    return Client::sendAsJson(msg);
 }
 
 SmtpClient::Impl::Impl()

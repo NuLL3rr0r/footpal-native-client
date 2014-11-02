@@ -39,6 +39,7 @@ public:
     Q_INVOKABLE void SetHost(const QString &host);
 
     Q_INVOKABLE const Mail::Port_t &GetPort() const;
+    Q_INVOKABLE void SetPort(Mail::Port_t const& port);
 
     Q_INVOKABLE const QString &GetUsername() const;
     Q_INVOKABLE void SetUsername(const QString &username);
@@ -46,17 +47,12 @@ public:
     Q_INVOKABLE const QString &GetPassword() const;
     Q_INVOKABLE void SetPassword(const QString &password);
 
-    Q_INVOKABLE bool Send(const Message &message);
-
-    Q_INVOKABLE void SetPort(Mail::Port_t const& port);
-
-
     // QML Hack
     Q_INVOKABLE void setSecurityType(const int securityType);
     Q_INVOKABLE void setPort(const int &port);
 
 public:
-    Q_INVOKABLE bool Connect();
+    Q_INVOKABLE void Connect();
     Q_INVOKABLE void Disconnect();
     Q_INVOKABLE std::size_t GetMessageCount();
     Q_INVOKABLE std::vector<Message> Fetch(std::size_t i, std::size_t count);
@@ -64,8 +60,8 @@ public:
     Q_INVOKABLE QString FetchAsJson(std::size_t i, std::size_t count);
 
     // QML Hack
-    Q_INVOKABLE int getMessageCount();
-    Q_INVOKABLE QString fetchAsJson(int i, int count);
+    Q_INVOKABLE void getMessageCount();
+    Q_INVOKABLE void fetchAsJson(int i, int count);
 };
 
 

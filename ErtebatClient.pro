@@ -62,7 +62,7 @@ win32 {
         LIBS += -L$$PWD/dependencies/lib/mingw482_32/release
     }
 }
-LIBS += -lb64 -lboost_date_time -lboost_filesystem -lboost_system -lcppdb -lcppdb_sqlite3 -lcryptopp -lsqlite3
+LIBS += -lb64 -lboost_date_time -lboost_filesystem -lboost_system -lboost_thread -lcppdb -lcppdb_sqlite3 -lcryptopp -lsqlite3
 win32 {
     LIBS += -lvmime
 }
@@ -89,7 +89,6 @@ HEADERS += \
     RestApi.hpp \
     UiEngine.hpp \
     Mail/Client.hpp \
-    Mail/Android/MailProfile.hpp \
     Mail/Json.hpp
 SOURCES += \
     main.cpp \
@@ -111,7 +110,6 @@ SOURCES += \
     RestApi.cpp \
     UiEngine.cpp \
     Mail/Client.cpp \
-    Mail/Android/MailProfile.cpp \
     Mail/Json.cpp
 android {
     HEADERS += \

@@ -56,8 +56,8 @@ public:
     bool Notify(const QString &title, const QString &text, const int id = 0);
     bool ShowToast(const QString &text, const int duration = 4000);
 
-    void MailProfile_SetHost(QString const& host, QString const& protocol);
     void MailProfile_init();
+    void MailProfile_setHost(QString const& host, QString const& protocol);
     void MailProfile_setSmtpHost(QString const& host);
     void MailProfile_setImapHost(QString const& host);
     void MailProfile_setPort(short port, QString const& protocol);

@@ -6,20 +6,17 @@
 
 #include <cassert>
 #include <QString>
-#include "qsystemdetection.h"
 #if !defined ( Q_OS_ANDROID )
 #include <vmime/vmime.hpp>
 #include "BlindCertificateVerifier.hpp"
 #elif defined ( Q_OS_ANDROID )
-#include "Android/MailProfile.hpp"
+#include "Android.hpp"
 #endif // !defined ( Q_OS_ANDROID )
 #include "make_unique.hpp"
 #include "Pop3Client.hpp"
 #include "Log.hpp"
 #include "Message.hpp"
 #include "Mailbox.hpp"
-#include <boost/filesystem.hpp>
-#include <QDebug>
 
 #define         UNKNOWN_ERROR               "  ** Pop3Client ->  Unknown Error!"
 
@@ -39,10 +36,6 @@ struct Pop3Client::Impl
     vmime::shared_ptr<vmime::net::store> Store;
     vmime::shared_ptr<Ertebat::Mail::BlindCertificateVerifier> BlindCertificateVerifier;
     vmime::shared_ptr<vmime::net::transport> Transport;
-#elif defined( Q_OS_ANDROID )
-
-    Ertebat::Mail::Android::MailProfile profile;
-
 #endif // !defined ( Q_OS_ANDROID )
 
     Impl();
@@ -51,9 +44,7 @@ struct Pop3Client::Impl
 Pop3Client::Pop3Client() :
     m_pimpl(std::make_unique<Pop3Client::Impl>())
 {
-#if defined ( Q_OS_ANDROID )
-    m_pimpl->profile.init();
-#endif
+
 }
 
 Pop3Client::~Pop3Client()
@@ -133,7 +124,7 @@ void Pop3Client::setPort(const int &port)
     SetPort(static_cast<Mail::Port_t>(port));
 }
 
-bool Pop3Client::Connect()
+void Pop3Client::Connect()
 {
     try {
 #if !defined ( Q_OS_ANDROID )
@@ -191,8 +182,7 @@ bool Pop3Client::Connect()
 
 #endif // !defined ( Q_OS_ANDROID )
 
-        return true;
-
+        ///return true;
     }
 #if !defined ( Q_OS_ANDROID )
     catch (vmime::exception &ex) {
@@ -205,7 +195,7 @@ bool Pop3Client::Connect()
         LOG_ERROR(UNKNOWN_ERROR);
     }
 
-    return false;
+    ///return false;
 }
 
 void Pop3Client::Disconnect()
@@ -299,112 +289,14 @@ QString Pop3Client::FetchAsJson(std::size_t i, std::size_t count)
     return Client::FetchAsJson(i, count);
 }
 
-int Pop3Client::getMessageCount()
+void Pop3Client::getMessageCount()
 {
-    return (int)GetMessageCount();
+    ///return (int)GetMessageCount();
 }
 
-QString Pop3Client::fetchAsJson(int i, int count)
+void Pop3Client::fetchAsJson(int i, int count)
 {
-    return FetchAsJson((size_t)i, (size_t)count);
-}
-
-bool Pop3Client::Send(Message const& message) {
-    try {
-#if !defined ( Q_OS_ANDROID )
-        if (m_pimpl->Transport != nullptr) {
-            vmime::messageBuilder mb;
-
-            if (!message.GetFrom().IsEmpty()) {
-                mb.setExpeditor(vmime::mailbox(
-                                    vmime::text(message.GetFrom().GetName().toStdString()),
-                                    vmime::emailAddress(message.GetFrom().GetAddress().toStdString()))
-                                );
-            }
-
-            for (const Mail::Recipient &r : message.GetRecipients()) {
-                switch (r.Type) {
-                case RecipientType::To:
-                    mb.getRecipients().appendAddress(
-                                vmime::make_shared<vmime::mailbox>(
-                                    vmime::text(r.Mailbox.GetName().toStdString()),
-                                    vmime::emailAddress(r.Mailbox.GetAddress().toStdString()))
-                                );
-                    break;
-                case RecipientType::Cc:
-                    mb.getCopyRecipients().appendAddress(
-                                vmime::make_shared<vmime::mailbox>(
-                                    vmime::text(r.Mailbox.GetName().toStdString()),
-                                    vmime::emailAddress(r.Mailbox.GetAddress().toStdString()))
-                                );
-                    break;
-                case RecipientType::Bcc:
-                    mb.getBlindCopyRecipients().appendAddress(
-                                vmime::make_shared<vmime::mailbox>(
-                                    vmime::text(r.Mailbox.GetName().toStdString()),
-                                    vmime::emailAddress(r.Mailbox.GetAddress().toStdString()))
-                                );
-                    break;
-                default:
-                    break;
-                }
-            }
-
-            if (message.GetSubject() != "") {
-                mb.setSubject(*vmime::text::newFromString(message.GetSubject().toStdString(),
-                                                          vmime::charsets::UTF_8));
-            }
-
-            mb.constructTextPart(vmime::mediaType(vmime::mediaTypes::TEXT, vmime::mediaTypes::TEXT_HTML));
-            mb.getTextPart()->setCharset(vmime::charsets::UTF_8);
-
-            vmime::htmlTextPart &textPart = *vmime::dynamicCast <vmime::htmlTextPart>(mb.getTextPart());
-
-            if (message.GetPlainBody() != "") {
-                textPart.setPlainText(
-                            vmime::make_shared<vmime::stringContentHandler>(message.GetPlainBody().toStdString()));
-            }
-
-            if (message.GetHtmlBody() != "") {
-                textPart.setText(
-                            vmime::make_shared<vmime::stringContentHandler>((message.GetHtmlBody().toStdString())));
-            }
-
-            if (message.GetAttachments().size() > 0) {
-                for (const QString &a : message.GetAttachments()) {
-                    vmime::shared_ptr<vmime::attachment> attachment = vmime::make_shared<vmime::fileAttachment>
-                            (a.toStdString(), vmime::mediaType("application/octet-stream"),
-                             vmime::text(boost::filesystem::path(a.toStdString()).stem().string()));
-                    mb.appendAttachment(attachment);
-                }
-            }
-
-            m_pimpl->Transport->send(mb.construct());
-
-            return true;
-        }
-#elif defined(Q_OS_ANDROID)
-
-        m_pimpl->profile.send(message);
-
-#else
-        (void)message;
-
-        return true;
-#endif // !defined ( Q_OS_ANDROID )
-    }
-#if !defined ( Q_OS_ANDROID )
-    catch (vmime::exception &ex) {
-        LOG_ERROR(ex.what());
-    }
-#endif // !defined ( Q_OS_ANDROID )
-    catch (std::exception &ex) {
-        LOG_ERROR(ex.what());
-    } catch(...) {
-        LOG_ERROR(UNKNOWN_ERROR);
-    }
-
-    return false;
+    ///return FetchAsJson((size_t)i, (size_t)count);
 }
 
 Pop3Client::Impl::Impl()

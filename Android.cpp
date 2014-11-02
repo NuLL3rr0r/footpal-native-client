@@ -205,18 +205,6 @@ bool Android::ShowToast(const QString &text, const int duration)
     return ret;
 }
 
-void Android::MailProfile_SetHost(QString const& host, QString const& protocol)
-{
-    ExceptionClear();
-
-    QAndroidJniObject::callStaticMethod<void>(
-                JAVA_CLASS,
-                "mailProfile_setHost",
-                "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)V",
-                QAndroidJniObject::fromString(host).object<jstring>(),
-                QAndroidJniObject::fromString(protocol).object<jstring>());
-}
-
 void Android::MailProfile_init() {
     ExceptionClear();
 
@@ -227,6 +215,17 @@ void Android::MailProfile_init() {
                 );
 }
 
+void Android::MailProfile_setHost(QString const& host, QString const& protocol)
+{
+    ExceptionClear();
+
+    QAndroidJniObject::callStaticMethod<void>(
+                JAVA_CLASS,
+                "mailProfile_setHost",
+                "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;)V",
+                QAndroidJniObject::fromString(host).object<jstring>(),
+                QAndroidJniObject::fromString(protocol).object<jstring>());
+}
 
 void Android::MailProfile_setPort(short port, QString const& protocol) {
     ExceptionClear();

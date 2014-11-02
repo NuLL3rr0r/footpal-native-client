@@ -44,17 +44,17 @@ namespace Ertebat { namespace Mail {
         virtual Q_INVOKABLE void SetUsername(QString const& x);
         virtual Q_INVOKABLE QString const& GetPassword() const;
         virtual Q_INVOKABLE void SetPassword(QString const& x);
-        virtual Q_INVOKABLE bool Send(const Message &message);
-        virtual Q_INVOKABLE bool Connect();
+        virtual Q_INVOKABLE void Send(const Message &message);
+        virtual Q_INVOKABLE void Connect();
         virtual Q_INVOKABLE void Disconnect();
         virtual Q_INVOKABLE std::size_t GetMessageCount();
         virtual Q_INVOKABLE std::vector<Message> Fetch(std::size_t i, std::size_t count);
         virtual Q_INVOKABLE QString FetchAsJson(std::size_t i, std::size_t count);
 
         // QML Hacks
-        virtual Q_INVOKABLE int getMessageCount();
-        virtual Q_INVOKABLE QString fetchAsJson(int i, int count);
-        virtual Q_INVOKABLE bool sendAsJson(QString const& msg);
+        virtual Q_INVOKABLE void getMessageCount();
+        virtual Q_INVOKABLE void fetchAsJson(int i, int count);
+        virtual Q_INVOKABLE void sendAsJson(const QString &msg);
 
     protected:
 

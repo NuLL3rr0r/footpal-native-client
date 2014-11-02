@@ -63,12 +63,12 @@ void Client::SetPassword(QString const& x) {
     throw std::runtime_error("NOT IMPLEMENTED");
 }
 
-bool Client::Send(const Message &message) {
+void Client::Send(const Message &message) {
     ((void)message);
     throw std::runtime_error("NOT IMPLEMENTED");
 }
 
-bool Client::Connect() {
+void Client::Connect() {
     throw std::runtime_error("NOT IMPLEMENTED");
 }
 
@@ -90,20 +90,18 @@ QString Client::FetchAsJson(std::size_t i, std::size_t j) {
     return Json::EncodeMessage(Fetch(i, j));
 }
 
-int Client::getMessageCount()
+void Client::getMessageCount()
 {
-    return (int)GetMessageCount();
+    ///return (int)GetMessageCount();
 }
 
-QString Client::fetchAsJson(int i, int count)
+void Client::fetchAsJson(int i, int count)
 {
-    return FetchAsJson((size_t)i, (size_t)count);
+    ///return FetchAsJson((size_t)i, (size_t)count);
 }
 
-bool Client::sendAsJson(QString const& msg) {
-    qDebug() << "sendAsJson called " << msg;
-    return Send(Json::DecodeSingleMessage(msg));
-    qDebug() << "! DONE";
+void Client::sendAsJson(const QString &msg) {
+    ///return Send(Json::DecodeSingleMessage(msg));
 }
 
 } }
