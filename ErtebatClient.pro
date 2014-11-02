@@ -82,6 +82,7 @@ HEADERS += \
     Database.hpp \
     Exception.hpp \
     Http.hpp \
+    HttpFileTransfer.hpp \
     HttpStatus.hpp \
     Log.hpp \
     Pool.hpp \
@@ -106,6 +107,7 @@ SOURCES += \
     Database.cpp \
     Exception.cpp \
     Http.cpp \
+    HttpFileTransfer.cpp \
     HttpStatus.cpp \
     Log.cpp \
     Pool.cpp \
