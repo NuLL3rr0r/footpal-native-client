@@ -18,15 +18,28 @@ public class Android extends org.qtproject.qt5.android.bindings.QtActivity
     private static final String TAG = "[Android Interface / com.ertebat.client.Android]";
 
     private static Android s_instance;
+    private static MailProfile s_mailProfileInstance;
 
     private static NotificationManager m_notificationManager;
     private static Notification.Builder m_notificationBuilder;
+
+    public static native void mailProfile_onConnectCompleted(boolean succeeded);
+    public static native void mailProfile_onDisconnectCompleted();
+    public static native void mailProfile_onSendCompleted(boolean succeeded);
+    public static native void mailProfile_onGetMessageCountCompleted(int count);
+    public static native void mailProfile_onFetchMessagesCompleted(CharSequence json);
 
     public static boolean release()
     {
         try {
             if (s_instance != null) {
                 s_instance = null;
+
+                Log.v(TAG, "Android interface successfully released!");
+            }
+
+            if (s_mailProfileInstance != null) {
+                s_mailProfileInstance = null;
 
                 Log.v(TAG, "Android interface successfully released!");
             }
@@ -99,59 +112,79 @@ public class Android extends org.qtproject.qt5.android.bindings.QtActivity
 
     public static void mailProfile_setHost(CharSequence host, CharSequence protocol)
     {
-        MailProfile.setHost(host.toString(), protocol.toString());
+        s_mailProfileInstance.setHost(host.toString(), protocol.toString());
     }
 
     public static void mailProfile_init() {
-        MailProfile.init();
+        s_mailProfileInstance = new MailProfile();
     }
 
     public static void mailProfile_setPort(short port, CharSequence protocol) {
-        MailProfile.setPort(port, protocol.toString());
+        s_mailProfileInstance.setPort(port, protocol.toString());
     }
 
     public static void mailProfile_setUsername(CharSequence username, CharSequence protocol) {
-        MailProfile.setUsername(username.toString(), protocol.toString());
+        s_mailProfileInstance.setUsername(username.toString(), protocol.toString());
     }
 
     public static void mailProfile_setPassword(CharSequence password, CharSequence protocol) {
-        MailProfile.setPassword(password.toString(), protocol.toString());
+        s_mailProfileInstance.setPassword(password.toString(), protocol.toString());
     }
 
     public static void mailProfile_setSecurity(int securityTypeIndex, CharSequence protocol) {
-        MailProfile.setSecurity(securityTypeIndex, protocol.toString());
+        s_mailProfileInstance.setSecurity(securityTypeIndex, protocol.toString());
     }
 
     public static void mailProfile_connect(CharSequence protocol) {
-        Log.d(TAG, protocol.toString());
-        MailProfile.connect(String.valueOf(protocol));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mailProfile_onConnectCompleted(s_mailProfileInstance.connect(String.valueOf(protocol)));
+            }
+        }).start();
     }
 
     public static void mailProfile_disconnect(CharSequence protocol) {
-        MailProfile.disconnect(protocol.toString());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                s_mailProfileInstance.disconnect(protocol.toString());
+                mailProfile_onDisconnectCompleted();
+            }
+        }).start();
     }
-
 
     public static void mailProfile_send(CharSequence jsonMessage) {
-        MailProfile.send(jsonMessage.toString());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mailProfile_onSendCompleted(s_mailProfileInstance.send(jsonMessage.toString()));
+           }
+       }).start();
     }
 
-
-    public static int mailProfile_getMessageCount() {
-        return MailProfile.getMessageCount();
+    public static void mailProfile_getMessageCount() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mailProfile_onGetMessageCountCompleted(s_mailProfileInstance.getMessageCount());
+            }
+        }).start();
     }
 
-
-    public static CharSequence mailProfile_fetchMessages(int startIndex, int count) {
-        String ret = MailProfile.fetchMessages(startIndex, count);
-        return ret;
+    public static void mailProfile_fetchMessages(int startIndex, int count) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mailProfile_onFetchMessagesCompleted(s_mailProfileInstance.fetchMessages(startIndex, count));
+            }
+        }).start();
     }
-
-
 
     public Android()
     {
         s_instance = this;
+        s_mailProfileInstance = new MailProfile();
 
         Log.v(TAG, "Android interface successfully initialized!");
     }

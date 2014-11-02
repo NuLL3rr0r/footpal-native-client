@@ -18,8 +18,49 @@
 
 using namespace Ertebat;
 
-//static JNINativeMethod s_nativeMethods[] = {
-//};
+Android::mailProfile_OnConnectCompletedHandler_t mailProfile_OnConnectCompletedHandler;
+Android::mailProfile_OnDisconnectCompletedHandler_t mailProfile_OnDisconnectCompletedHandler;
+Android::mailProfile_OnSendCompletedHandler_t mailProfile_OnSendCompletedHandler;
+Android::mailProfile_OnGetMessageCountCompletedHandler_t mailProfile_OnGetMessageCountCompletedHandler;
+Android::mailProfile_OnFetchMessagesCompletedHandler_t mailProfile_OnFetchMessagesCompletedHandler;
+
+static void mailProfile_OnConnectCompleted(JNIEnv *, jobject, bool succeeded)
+{
+    if (mailProfile_OnConnectCompletedHandler)
+        mailProfile_OnConnectCompletedHandler(succeeded);
+}
+
+static void mailProfile_OnDisconnectCompleted(JNIEnv *, jobject)
+{
+    if (mailProfile_OnDisconnectCompletedHandler)
+        mailProfile_OnDisconnectCompletedHandler();
+}
+
+static void mailProfile_OnSendCompleted(JNIEnv *, jobject, bool succeeded)
+{
+    if (mailProfile_OnSendCompletedHandler)
+        mailProfile_OnSendCompletedHandler(succeeded);
+}
+
+static void mailProfile_OnGetMessageCountCompleted(JNIEnv *, jobject, int count)
+{
+    if (mailProfile_OnGetMessageCountCompletedHandler)
+        mailProfile_OnGetMessageCountCompletedHandler(count);
+}
+
+static void mailProfile_OnFetchMessagesCompleted(JNIEnv *, jobject, jstring json)
+{
+    if (mailProfile_OnFetchMessagesCompletedHandler)
+        mailProfile_OnFetchMessagesCompletedHandler(QAndroidJniObject(json).toString());
+}
+
+static JNINativeMethod s_nativeMethods[] = {
+    { "mailProfile_onConnectCompleted", "(Z)V", (void *)mailProfile_OnConnectCompleted },
+    { "mailProfile_onDisconnectCompleted", "()V", (void *)mailProfile_OnDisconnectCompleted },
+    { "mailProfile_onSendCompleted", "(Z)V", (void *)mailProfile_OnSendCompleted },
+    { "mailProfile_onGetMessageCountCompleted", "(I)V", (void *)mailProfile_OnGetMessageCountCompleted },
+    { "mailProfile_onFetchMessagesCompleted", "(Ljava/lang/CharSequence;)V", (void *)mailProfile_OnFetchMessagesCompleted }
+};
 
 JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *)
 {
@@ -35,14 +76,14 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *)
         return -1;
     }
 
-    //    if (env->RegisterNatives(
-    //                clazz,
-    //                s_nativeMethods,
-    //                sizeof(s_nativeMethods) / sizeof(s_nativeMethods[0])
-    //                ) < 0) {
-    //        qCritical() << "   * Failed to Register native methods !!";
-    //        return -1;
-    //    }
+    if (env->RegisterNatives(
+                clazz,
+                s_nativeMethods,
+                sizeof(s_nativeMethods) / sizeof(s_nativeMethods[0])
+                ) < 0) {
+        qCritical() << "   * Failed to Register native methods !!";
+        return -1;
+    }
 
     return JNI_VERSION_1_6;
 }
@@ -59,6 +100,31 @@ Android::Android() :
 }
 
 Android::~Android() = default;
+
+void Android::mailProfile_OnConnectCompleted(mailProfile_OnConnectCompletedHandler_t handler)
+{
+    mailProfile_OnConnectCompletedHandler = handler;
+}
+
+void Android::mailProfile_OnDisconnectCompleted(mailProfile_OnDisconnectCompletedHandler_t handler)
+{
+    mailProfile_OnDisconnectCompletedHandler = handler;
+}
+
+void Android::mailProfile_OnSendCompleted(mailProfile_OnSendCompletedHandler_t handler)
+{
+    mailProfile_OnSendCompletedHandler = handler;
+}
+
+void Android::mailProfile_OnGetMessageCountCompleted(mailProfile_OnGetMessageCountCompletedHandler_t handler)
+{
+    mailProfile_OnGetMessageCountCompletedHandler = handler;
+}
+
+void Android::mailProfile_OnFetchMessagesCompleted(mailProfile_OnFetchMessagesCompletedHandler_t handler)
+{
+    mailProfile_OnFetchMessagesCompletedHandler = handler;
+}
 
 bool Android::ExceptionCheck()
 {

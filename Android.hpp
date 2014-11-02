@@ -7,6 +7,7 @@
 #define ERTEBAT_ANDROID_HPP
 
 
+#include <functional>
 #include <string>
 #include <jni.h>
 #include <QtAndroidExtras/QAndroidJniObject>
@@ -19,6 +20,13 @@ class Android;
 
 class Ertebat::Android : public QAndroidJniObject
 {
+public:
+    typedef std::function<void(bool)> mailProfile_OnConnectCompletedHandler_t;
+    typedef std::function<void()> mailProfile_OnDisconnectCompletedHandler_t;
+    typedef std::function<void(bool)> mailProfile_OnSendCompletedHandler_t;
+    typedef std::function<void(int)> mailProfile_OnGetMessageCountCompletedHandler_t;
+    typedef std::function<void(QString)> mailProfile_OnFetchMessagesCompletedHandler_t;
+
 private:
     struct Impl;
     std::unique_ptr<Impl> m_pimpl;
@@ -26,6 +34,13 @@ private:
 public:
     Android();
     virtual ~Android();
+
+public:
+    void mailProfile_OnConnectCompleted(mailProfile_OnConnectCompletedHandler_t handler);
+    void mailProfile_OnDisconnectCompleted(mailProfile_OnDisconnectCompletedHandler_t handler);
+    void mailProfile_OnSendCompleted(mailProfile_OnSendCompletedHandler_t handler);
+    void mailProfile_OnGetMessageCountCompleted(mailProfile_OnGetMessageCountCompletedHandler_t handler);
+    void mailProfile_OnFetchMessagesCompleted(mailProfile_OnFetchMessagesCompletedHandler_t handler);
 
 public:
     bool ExceptionCheck();

@@ -17,7 +17,7 @@ public enum MailProtocol {
 		return title;
 	}
 	
-	public static MailProtocol getByOrdinal(int index) {
+        public MailProtocol getByOrdinal(int index) {
 		for (MailProtocol protocol : MailProtocol.values()) {
 			if (protocol.ordinal() == index)
 				return protocol;

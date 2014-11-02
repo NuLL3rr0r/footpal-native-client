@@ -30,26 +30,22 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class MailProfile {
-	private static final String TAG = "MailProfile";
-	public static String Title = "GMail";
-	public static String SMTPHost = "smtp.gmail.com";
-	public static String Host = "imap.gmail.com";
-	public static MailProtocol Protocol = MailProtocol.MP_POP3S;
-	public static String Username = "morteza.sabetraftar@gmail.com";
-	public static String Password = "zjwdmoszjtinyogs";
+        private final String TAG = "MailProfile";
+        public String Title = "GMail";
+        public String SMTPHost = "smtp.gmail.com";
+        public String Host = "imap.gmail.com";
+        public MailProtocol Protocol = MailProtocol.MP_POP3S;
+        public String Username = "morteza.sabetraftar@gmail.com";
+        public String Password = "zjwdmoszjtinyogs";
 
-	private static boolean sIsReading = false;
-	private static Map<String, String> sMonthIndices;
-	private static Properties sMailProperties;
-	private static Session sMailSession;
-	private static Transport sMailTransport;
-	private static Store sMailStore;
-	private static String sJsonMessages = "";
+        private boolean sIsReading = false;
+        private Map<String, String> sMonthIndices;
+        private Properties sMailProperties;
+        private Session sMailSession;
+        private Transport sMailTransport;
+        private Store sMailStore;
 
-	/**
-	 * Prepares MailProfile for setup. Must be called before other methods
-	 */
-	public static void init() {
+        public MailProfile() {
 		sMonthIndices = new HashMap<String, String>();
 		sMonthIndices.put("Jan", "01");
 		sMonthIndices.put("Feb", "02");
@@ -72,7 +68,7 @@ public class MailProfile {
 	 * @param host address of the host e.g. 'smtp.gmail.com' for GMail's SMTP host
 	 * @param protocol the protocol for which the host address is set. Accepted values are 'smtp', 'imap', 'pop3'
 	 */
-	public static void setHost(String host, String protocol) {
+        public void setHost(String host, String protocol) {
 		if (sMailProperties == null) {
 			System.out.println("Invalid method call. Must first call init()");
 			return;
@@ -91,7 +87,7 @@ public class MailProfile {
 	 * @param port port number on the host to connect to
 	 * @param protocol the protocol for which the port number is set. Accepted values are 'smtp', 'imap', 'pop3'
 	 */
-	public static void setPort(short port, String protocol) {
+        public void setPort(short port, String protocol) {
 		if (sMailProperties == null) {
 			System.out.println("Invalid method call. Must first call init()");
 			return;
@@ -110,7 +106,7 @@ public class MailProfile {
 	 * @param username e.g. someone@somewhere.com
 	 * @param protocol the protocol to apply the user name to. Accepted values are 'smtp', 'imap', 'pop3'.
 	 */
-	public static void setUsername(String username, String protocol) {
+        public void setUsername(String username, String protocol) {
 		if (sMailProperties == null) {
 			System.out.println("Invalid method call. Must first call init()");
 			return;
@@ -130,7 +126,7 @@ public class MailProfile {
 	 * @param password
 	 * @param protocol the protocol to apply the password to. Accepted values are 'smtp', 'imap', 'pop3'.
 	 */
-	public static void setPassword(String password, String protocol) {
+        public void setPassword(String password, String protocol) {
 		if (sMailProperties == null) {
 			System.out.println("Invalid method call. Must first call init()");
 			return;
@@ -150,7 +146,7 @@ public class MailProfile {
 	 * @param securityTypeIndex index of the preferred security method. 0=PLAIN, 1=SSL/TLS, 2=STARTTLS
 	 * @param protocol the protocol for which to set the security configuration. Accepted values are 'smtp', 'imap', 'pop3'.
 	 */
-	public static void setSecurity(int securityTypeIndex, String protocol) {
+        public void setSecurity(int securityTypeIndex, String protocol) {
 		if (sMailProperties == null) {
 			System.out.println("Invalid method call. Must first call init()");
 			return;
@@ -204,14 +200,14 @@ public class MailProfile {
 	 * @param protocol the protocol by which to connect to the host. Accepted values are 'smtp', 'imap' and 'pop3'.
 	 * Use SMTP for send and IMAP/POP3 for fetch operations
 	 */
-	public static void connect(String protocol) {
+        public boolean connect(String protocol) {
 		if (sMailProperties == null) {
 			System.out.println("Invalid method call. Must first call init()");
-			return;
+                        return false;
 		}
 		if (!protocol.equals("smtp") && !protocol.equals("imap") && !protocol.equals("pop3")) {
 			System.out.println("Unknown protocol: " + protocol);
-			return;
+                        return false;
 		}
 
 		try {
@@ -219,20 +215,21 @@ public class MailProfile {
 				sMailProperties.setProperty("mail.smtp.auth", "true");
 				Authenticator auth = new Authenticator(){
 					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(MailProfile.Username, MailProfile.Password);
+                                                return new PasswordAuthentication(Username, Password);
 					}
 				};
 				sMailSession = Session.getInstance(sMailProperties, auth);
 				sMailTransport = sMailSession.getTransport("smtp");
 				sMailTransport.connect();
-				Log.d(TAG, "SMTP transport connected!");
+                                Log.d(TAG, "SMTP transport connected!");
 			} else {
 				sMailSession = Session.getInstance(sMailProperties, null);
 				sMailStore = sMailSession.getStore();
 				Log.d(TAG, "Connecting to " + protocol.toUpperCase(Locale.ENGLISH) + " store...");
 				sMailStore.connect(sMailProperties.getProperty("mail." + protocol + ".host"), Username, Password);
-				Log.d(TAG, protocol.toUpperCase(Locale.ENGLISH) + " store connected!");
+				Log.d(TAG, protocol.toUpperCase(Locale.ENGLISH) + " store connected!");                                
 			}
+                        return true;
 		} catch (NoSuchProviderException nspEx) {
 			if (nspEx.getMessage() != null)
 				Log.d(TAG, nspEx.getMessage());
@@ -243,14 +240,16 @@ public class MailProfile {
 				Log.d(TAG, mEx.getMessage());
 			else
 				Log.d(TAG, "MessagingException was thrown with no further message");
-		}
+                }
+
+                return false;
 	}
 
 	/**
 	 * Closes the previously established connection for a certain protocol. Must be called after connect()
 	 * @param protocol the protocol by which the connection had been made. Accepted values are 'smtp', 'imap' and 'pop3'
 	 */
-	public static void disconnect(String protocol) {
+        public void disconnect(String protocol) {
 		if (sMailProperties == null) {
 			System.out.println("Invalid method call. Must first call init()");
 			return;
@@ -284,7 +283,7 @@ public class MailProfile {
 	 * Gets the number of messages in the inbox folder
 	 * @return number of messages
 	 */
-	public static int getMessageCount() {
+        public int getMessageCount() {
 		if (sMailStore == null || !sMailStore.isConnected()) {
 			Log.d(TAG, "Store not connected. Cannot enumerate messages!");
 			return -1;
@@ -311,10 +310,12 @@ public class MailProfile {
 	 * @param startIndex zero-based index of the message to read first. 0 is the index of the newest message of the inbox
 	 * @param count number of messages to read
 	 */
-	public static String fetchMessages(final int startIndex, final int count) {
+        public String fetchMessages(final int startIndex, final int count) {
+                private String sJsonMessages = "";
+
 		if (sIsReading) {
 			Log.d(TAG, "Already in fetch!");
-			return null;
+                        return "";
 		}
 
 		sIsReading = true;
@@ -374,10 +375,10 @@ public class MailProfile {
 	 * Sends an MIME message defined by a JSON string
 	 * @param jsonMessage the JSON-formatted message to send
 	 */
-	public static void send(String jsonMessage) {
+        public boolean send(String jsonMessage) {
 		try {
 			MimeMessage message = new MimeMessage(sMailSession);
-			message.setFrom(new InternetAddress(MailProfile.Username));
+                        message.setFrom(new InternetAddress(Username));
 
 			JSONObject json = new JSONObject(jsonMessage);
 			JSONArray jArray = json.getJSONArray("to");
@@ -394,9 +395,10 @@ public class MailProfile {
 			if (sMailTransport != null) {
 				sMailTransport.sendMessage(message, message.getAllRecipients());
 				Log.d(TAG, "Message successfully sent!");
+                                return true;
 			} else {
 				System.out.println("Invalid method call. Must first call connect()");
-				return;
+                                return false;
 			}
 		} catch (JSONException jEx) {
 			if (jEx.getMessage() != null)
@@ -409,11 +411,13 @@ public class MailProfile {
 			else
 				Log.d(TAG, "MessagingException was thrown with no further message");
 		}
+
+                return false;
 	}
 
 
 
-	private static String getJsonMessage(Message message) {
+        private String getJsonMessage(Message message) {
 		String jsonString = "";
 
 		try {
@@ -522,7 +526,7 @@ public class MailProfile {
 		return jsonString;
 	}
 
-	private static String parseHeaderDate(String date) {
+        private String parseHeaderDate(String date) {
 		// Sat, 18 Oct 2014 13:18:23 +0330
 		String[] tokens = date.split("[ :\\,]");
 
@@ -544,7 +548,7 @@ public class MailProfile {
 		return result;
 	}
 
-	private static String getMessageText(Part p) {
+        private String getMessageText(Part p) {
 		try {
 			if (p.isMimeType("text/*")) {
 				String s = (String)p.getContent();
@@ -592,7 +596,7 @@ public class MailProfile {
 		return "COULD NOT FIND MESSAGE BODY";
 	}
 
-	private static Message.RecipientType stringToRecipientType(String type) throws InvalidParameterException {
+        private Message.RecipientType stringToRecipientType(String type) throws InvalidParameterException {
 		if (type.equals("TO"))
 			return RecipientType.TO;
 		else if (type.equals("CC"))
