@@ -311,7 +311,7 @@ public class MailProfile {
 	 * @param count number of messages to read
 	 */
         public String fetchMessages(final int startIndex, final int count) {
-                private String sJsonMessages = "";
+                String sJsonMessages = "";
 
 		if (sIsReading) {
 			Log.d(TAG, "Already in fetch!");
