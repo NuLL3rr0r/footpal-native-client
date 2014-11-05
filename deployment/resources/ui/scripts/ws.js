@@ -29,11 +29,10 @@ function parseTextMessage(message){
     //console.log("new message : " + message);
     var encoded = JSON.parse(message);
     //console.log(encoded + " : " + encoded.code);
-    if(encoded.code === 0){
+    if(encoded.code === 100){
         authorizeToWs(Context.token);
     }
-    else if(encoded.code === 1){
-        //console.log("Send GetIndividualRooms cmd");
+    else if(encoded.code === 101){
         getIndividualRooms();
         getMyProfile();
         getFriendList();
@@ -55,7 +54,7 @@ function parseTextMessage(message){
         Context.currentProfile = encoded.profile;
         //console.log(Context.currentProfile.id + " : " + Context.currentProfile.username);
     }
-    else if(encoded.code === 3){
+    else if(encoded.code === 103){
         //console.log(encoded.message);
         //console.log(encoded.value.roomId);
         var room = Context.getRoomById(encoded.value.roomId);
