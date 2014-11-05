@@ -4,12 +4,13 @@
  */
 
 
-#include <QObject>
+#include <QtCore/QObject>
 #include <cassert>
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/thread/thread.hpp>
-#include <QString>
+#include <QtCore/QDebug>
+#include <QtCore/QString>
 #if !defined ( Q_OS_ANDROID )
 #include <vmime/vmime.hpp>
 #include "BlindCertificateVerifier.hpp"
@@ -21,6 +22,7 @@
 #include "Log.hpp"
 #include "Message.hpp"
 #include "Mailbox.hpp"
+#include "Pool.hpp"
 #include "Json.hpp"
 
 #define         UNKNOWN_ERROR               "  ** SmtpClient ->  Unknown Error!"
@@ -42,7 +44,7 @@ struct SmtpClient::Impl
     vmime::shared_ptr<vmime::net::store> Store;
     vmime::shared_ptr<Ertebat::Mail::BlindCertificateVerifier> BlindCertificateVerifier;
 #elif defined ( Q_OS_ANDROID )
-    Ertebat::Mail::Android::MailProfile profile;
+    /////////Ertebat::Mail::Android::MailProfile profile;
 #endif // !defined ( Q_OS_ANDROID )
 
     Impl();
@@ -51,9 +53,7 @@ struct SmtpClient::Impl
 SmtpClient::SmtpClient() :
     m_pimpl(std::make_unique<SmtpClient::Impl>())
 {
-#if defined(Q_OS_ANDROID)
-    m_pimpl->profile.init();
-#endif
+
 }
 
 SmtpClient::~SmtpClient()
@@ -189,17 +189,28 @@ void SmtpClient::ConnectAsync()
 
 #elif defined ( Q_OS_ANDROID )
 
-        m_pimpl->profile.init();
-        m_pimpl->profile.setHost(m_pimpl->Host, "smtp");
-        m_pimpl->profile.setPort(m_pimpl->Port, "smtp");
-        m_pimpl->profile.setUsername(m_pimpl->Username, "smtp");
-        m_pimpl->profile.setPassword(m_pimpl->Password, "smtp");
-        m_pimpl->profile.setSecurity(m_pimpl->SecurityType, "smtp");
-        m_pimpl->profile.connect("smtp");
+        qDebug("00000000000000");
+        Pool::Android()->MailProfile_init();
+        qDebug("a0000000000000");
+        Pool::Android()->MailProfile_init();
+        qDebug("b00000000000000");
+        Pool::Android()->MailProfile_setHost(m_pimpl->Host, "smtp");
+        qDebug("c00000000000000");
+        Pool::Android()->MailProfile_setPort(m_pimpl->Port, "smtp");
+        qDebug("d00000000000000");
+        Pool::Android()->MailProfile_setUsername(m_pimpl->Username, "smtp");
+        qDebug("e00000000000000");
+        Pool::Android()->MailProfile_setPassword(m_pimpl->Password, "smtp");
+        qDebug("f0000000000000");
+        Pool::Android()->MailProfile_setSecurity(m_pimpl->SecurityType, "smtp");
+        qDebug("g0000000000000");
+        qDebug() << Pool::Android()->MailProfile_connect("smtp");
+        qDebug("1111111111");
 
 #endif // !defined ( Q_OS_ANDROID )
 
         emit signal_ConnectCompleted(true);
+        qDebug("22222222222222");
     }
 #if !defined ( Q_OS_ANDROID )
     catch (vmime::exception &ex) {
@@ -224,7 +235,7 @@ void SmtpClient::DisconnectAsync()
             emit signal_DisconnectCompleted();
         }
 #elif defined ( Q_OS_ANDROID )
-        m_pimpl->profile.disconnect("smtp");
+        Pool::Android()->MailProfile_disconnect("smtp");
 #endif // !defined ( Q_OS_ANDROID )
     }
 #if !defined ( Q_OS_ANDROID )
@@ -316,7 +327,7 @@ bool SmtpClient::Send(const Message &message)
         }
 #elif defined ( Q_OS_ANDROID )
 
-        m_pimpl->profile.send(message);
+        Pool::Android()->MailProfile_send(Json::EncodeMessage(message));
         return true;
 #endif // !defined ( Q_OS_ANDROID )
     }

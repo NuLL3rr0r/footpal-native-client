@@ -75,7 +75,7 @@ public:
     void MailProfile_setSecurity(Mail::SecurityType securityType, QString const& protocol);
     void MailProfile_setSmtpSecurity(Mail::SecurityType securityType);
     void MailProfile_setImapSecurity(Mail::SecurityType securityType);
-    void MailProfile_connect(QString const& protocol);
+    bool MailProfile_connect(QString const& protocol);
     void MailProfile_connectSmtp();
     void MailProfile_disconnect(QString const& protocol);
     void MailProfile_disconnectSmtp();

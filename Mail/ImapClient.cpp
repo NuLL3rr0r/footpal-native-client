@@ -48,7 +48,7 @@ std::size_t ImapClient::GetMessageCount() {
     f->open(vmime::net::folder::MODE_READ_WRITE);
     return ((std::size_t) f->getMessageCount());
 #elif defined(Q_OS_ANDROID)
-    return m_pimpl->profile.getMessageCount();
+    ////return m_pimpl->profile.getMessageCount();
 #endif
 
 }
@@ -77,7 +77,7 @@ std::vector<Message> ImapClient::Fetch(std::size_t from, std::size_t count) {
 
         return ret;
 #elif defined(Q_OS_ANDROID)
-        return m_pimpl->profile.fetchMessage((int) from, (int) count);
+        ////return m_pimpl->profile.fetchMessage((int) from, (int) count);
 #endif
     }
 #if !defined ( Q_OS_ANDROID )
@@ -113,7 +113,7 @@ ImapClient::ImapClient() :
     m_pimpl(std::make_unique<ImapClient::Impl>())
 {
 #if defined(Q_OS_ANDROID)
-    m_pimpl->profile.init();
+    ////m_pimpl->profile.init();
 #endif
 }
 
@@ -232,13 +232,14 @@ void ImapClient::Connect()
 
 #elif defined(Q_OS_ANDROID)
 
-        m_pimpl->profile.init();
-        m_pimpl->profile.setHost(m_pimpl->Host, "imap");
-        m_pimpl->profile.setPort(m_pimpl->Port, "imap");
-        m_pimpl->profile.setUsername(m_pimpl->Username, "imap");
-        m_pimpl->profile.setPassword(m_pimpl->Password, "imap");
-        m_pimpl->profile.setSecurity(m_pimpl->SecurityType, "imap");
-        m_pimpl->profile.connect("imap");
+        //////////
+//        m_pimpl->profile.init();
+//        m_pimpl->profile.setHost(m_pimpl->Host, "imap");
+//        m_pimpl->profile.setPort(m_pimpl->Port, "imap");
+//        m_pimpl->profile.setUsername(m_pimpl->Username, "imap");
+//        m_pimpl->profile.setPassword(m_pimpl->Password, "imap");
+//        m_pimpl->profile.setSecurity(m_pimpl->SecurityType, "imap");
+//        m_pimpl->profile.connect("imap");
 
 #endif // !defined ( Q_OS_ANDROID )
         ///return true;
@@ -265,7 +266,7 @@ void ImapClient::Disconnect()
             m_pimpl->Store->disconnect();
         }
 #elif defined(Q_OS_ANDROID)
-        m_pimpl->profile.disconnect("imap");
+        /////////////m_pimpl->profile.disconnect("imap");
 #endif // !defined ( Q_OS_ANDROID )
     }
 #if !defined ( Q_OS_ANDROID )

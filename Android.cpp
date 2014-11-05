@@ -290,15 +290,22 @@ void Android::MailProfile_setSecurity(Mail::SecurityType securityType, QString c
 }
 
 
-void Android::MailProfile_connect(QString const& protocol) {
+bool Android::MailProfile_connect(QString const& protocol) {
     ExceptionClear();
 
-    QAndroidJniObject::callStaticMethod<void>(
+    /*QAndroidJniObject::callStaticMethod<void>(
                 JAVA_CLASS,
                 "mailProfile_connect",
-                "(Ljava/lang/CharSequence;)V",
+                "(Ljava/lang/CharSequence;)Z",
                 QAndroidJniObject::fromString(protocol).object<jstring>()
-                );
+                );*/
+    jboolean ret = QAndroidJniObject::callStaticMethod<jboolean>(
+                JAVA_CLASS,
+                "mailProfile_connect",
+                "(Ljava/lang/CharSequence;)Z",
+                QAndroidJniObject::fromString(protocol).object<jstring>());
+
+    return ret;
 }
 
 
