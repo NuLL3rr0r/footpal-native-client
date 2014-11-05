@@ -51,7 +51,8 @@ Rectangle {
         console.log("self : " + self + ", " + WS.Context.currentProfile.id);
         var data = { 'self': self, 'contact': message.from , 'date': message.date , 'time': message.time , 'content': message.body };
         console.log(data)
-        jsonModel.model.append(data)
+        jsonModel.model.append(data);
+        listViewMessages.positionViewAtEnd();
     }
 
     function initChatRoom(){
@@ -286,10 +287,10 @@ Rectangle {
         var data = { 'self': self, 'contact': "Self", 'date': new Date().toDateString(),
             'time': new Date().toTimeString().substring(0, 5),
             'content': messageTextField.text }
-        jsonModel.model.append(data);
-        listViewMessages.positionViewAtEnd();
+//        jsonModel.model.append(data);
+//        listViewMessages.positionViewAtEnd();
+        WS.sendTextMessageToRoom(messageTextField.text, WS.Context.currentRoomId);
         messageTextField.text = "";
-//                    WS.sendTextMessageToRoom(messageTextField.text, WS.Context.currentRoomId)
     }
 }
 

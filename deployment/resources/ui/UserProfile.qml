@@ -21,9 +21,13 @@ Rectangle {
     state: "public"
 
     Component.onCompleted: {
+        RestApi.onSignal_GetCurrentProfile.connect(onGetCurrentProfileCallback);
+
+        loadProfile();
     }
 
     Component.onDestruction: {
+        RestApi.onSignal_GetCurrentProfile.disconnect(onGetCurrentProfileCallback);
     }
 
     QtObject {
@@ -159,6 +163,14 @@ Rectangle {
                 pageLoader.setSource("ChangePassword.qml");
             }
         }
+    }
+
+    function loadProfile() {
+        RestApi.getCurrentProfile(WS.Context.token);
+    }
+
+    function onGetCurrentProfileCallback(connectionStatus, signInStatus, response) {
+//        console.log("c")
     }
 }
 

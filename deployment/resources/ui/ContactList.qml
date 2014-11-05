@@ -215,6 +215,7 @@ Rectangle {
                     }
 
                     WS.addFriendToList(phoneNumberTextField.text);
+                    phoneNumberTextField.text = "";
                     newContactBar.state = "normal"
                 }
             }
