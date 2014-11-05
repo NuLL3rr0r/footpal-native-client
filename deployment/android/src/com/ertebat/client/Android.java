@@ -135,16 +135,12 @@ public class Android extends org.qtproject.qt5.android.bindings.QtActivity
         s_mailProfileInstance.setSecurity(securityTypeIndex, protocol.toString());
     }
 
-    public static void mailProfile_connect(CharSequence protocol) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mailProfile_onConnectCompleted(s_mailProfileInstance.connect(String.valueOf(protocol)));
-            }
-        }).start();
+    public static boolean mailProfile_connect(CharSequence protocol) {
+        Log.v(TAG, "s_mailProfileInstance");
+        return s_mailProfileInstance.connect(String.valueOf(protocol));
     }
 
-    public static void mailProfile_disconnect(CharSequence protocol) {
+    public static void mailProfile_disconnect(final CharSequence protocol) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -154,7 +150,7 @@ public class Android extends org.qtproject.qt5.android.bindings.QtActivity
         }).start();
     }
 
-    public static void mailProfile_send(CharSequence jsonMessage) {
+    public static void mailProfile_send(final CharSequence jsonMessage) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -172,7 +168,7 @@ public class Android extends org.qtproject.qt5.android.bindings.QtActivity
         }).start();
     }
 
-    public static void mailProfile_fetchMessages(int startIndex, int count) {
+    public static void mailProfile_fetchMessages(final int startIndex, final int count) {
         new Thread(new Runnable() {
             @Override
             public void run() {
