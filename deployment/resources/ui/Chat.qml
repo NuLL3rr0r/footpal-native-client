@@ -43,6 +43,10 @@ Rectangle {
         initChatRoom();
     }
 
+    Component.onDestruction: {
+        WS.Context.unRegitserRoomMessageReaderCallback(WS.Context.currentRoomId);
+    }
+
     function messageHandler(roomId, message){
         console.log("chat room message handler");
         var self = false;

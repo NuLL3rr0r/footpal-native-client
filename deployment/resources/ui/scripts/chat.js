@@ -97,6 +97,13 @@ ContextSchema.prototype.regitserRoomMessageReaderCallback = function(roomId, cb)
         room.registerMessageReaderCallback(cb);
 }
 
+ContextSchema.prototype.unRegitserRoomMessageReaderCallback = function(roomId){
+    this.roomMessageReaderCallback = null;
+    var room = this.getRoomById(roomId);
+    if(room)
+        room.unregisterMessageReaderCallback();
+}
+
 ContextSchema.prototype.addMemberToRoom = function(roomId, memberId, memberUsername){
     var room = this.getRoomById(roomId);
     if(room){
