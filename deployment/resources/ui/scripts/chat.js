@@ -151,8 +151,10 @@ RoomSchema.prototype.getMessages = function(){
         this.messages = [];
     }
     if(this.unreadMessages){
-        for(var i = 0 ; i < this.unreadMessages.length ; i++){
-            this.messages.push(this.unreadMessages.shift());
+        var tmp = this.unreadMessages.shift();
+        while(tmp){
+            this.messages.push(tmp);
+            tmp = this.unreadMessages.shift();
         }
     }
 
