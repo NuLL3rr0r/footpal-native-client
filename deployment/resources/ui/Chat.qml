@@ -48,7 +48,7 @@ Rectangle {
         var self = false;
         if(message.from === WS.Context.currentProfile.id || message.from === 'self')
             self = true;
-        console.log("self : " + self + " : " + WS.Context.currentProfile.id )
+        console.log("self : " + self + ", " + WS.Context.currentProfile.id);
         var data = { 'self': self, 'contact': message.from , 'date': message.date , 'time': message.time , 'content': message.body };
         console.log(data)
         jsonModel.model.append(data)
@@ -61,7 +61,7 @@ Rectangle {
             var messages = room.getMessages();
             console.log("Exist Messages : " + messages.length)
             for(var i = 0 ; i < messages.length ; i++){
-                messageHandler(WS.Context.currentRoomId, messages[i])
+                messageHandler(WS.Context.currentRoomId, messages[i]);
             }
             WS.Context.regitserRoomMessageReaderCallback(WS.Context.currentRoomId, messageHandler);
         }
@@ -96,8 +96,9 @@ Rectangle {
     }
 
     ListView {
+        id: listViewMessages
         anchors.top: topBar.bottom
-        anchors.bottom: parent.bottom
+        anchors.bottom: bottomBar.top
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.margins: 5
@@ -113,7 +114,7 @@ Rectangle {
                     id: deleateRow
                     width: parent.width
                     anchors.verticalCenter: parent.verticalCenter
-                    layoutDirection: model.self == true ? Qt.RightToLeft : Qt.LeftToRight
+                    layoutDirection: model.self == true ? Qt.RightToLeft : Qt.LeftToRight;
                     spacing: 5
                     Image {
                         id: contactImage
@@ -242,6 +243,9 @@ Rectangle {
                 font.pixelSize: height * 0.5
                 placeholderText: qsTr("TYPE_HERE") + UiEngine.EmptyLangString;
                 focus: true;
+                onAccepted: {
+                    submitMessage();
+                }
             }
 
             Button {
@@ -253,12 +257,7 @@ Rectangle {
                 height: parent.height
                 text: qsTr("SUBMIT") + UiEngine.EmptyLangString;
                 onClicked: {
-                    if (messageTextField.text == "")
-                        return;
-//                    var data = { 'self': "true", 'contact': "Self", 'date': new Date().toDateString(), 'time': new Date().toTimeString().substring(0, 5), 'content': messageTextField.text }
-//                    jsonModel.model.append(data)
-//                    messageTextField.text = ""
-                    WS.sendTextMessageToRoom(messageTextField.text, WS.Context.currentRoomId)
+                    submitMessage();
                 }
             }
 
@@ -278,6 +277,19 @@ Rectangle {
                 }
             }
         }
+    }
+
+    function submitMessage() {
+        if (messageTextField.text == "")
+            return;
+        var self = messageTextField.text.charAt(0) == '-' ? false : true;
+        var data = { 'self': self, 'contact': "Self", 'date': new Date().toDateString(),
+            'time': new Date().toTimeString().substring(0, 5),
+            'content': messageTextField.text }
+        jsonModel.model.append(data);
+        listViewMessages.positionViewAtEnd();
+        messageTextField.text = "";
+//                    WS.sendTextMessageToRoom(messageTextField.text, WS.Context.currentRoomId)
     }
 }
 

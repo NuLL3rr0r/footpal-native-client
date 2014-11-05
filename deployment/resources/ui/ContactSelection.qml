@@ -175,18 +175,22 @@ Rectangle {
             style: buttonStyle
             text: qsTr("CONTINUE") + UiEngine.EmptyLangString;
             onClicked: {
-                console.log(privates.selectedContacts.toString())
-                var users = privates.selectedContacts.toString().split(",");
-                if(users.length == 1){
-                    RestApi.createIndividualRoom(WS.Context.token, users[0]);
+                console.log(privates.selectedContacts.toString());
+                if (privates.selectedContacts.length > 0) {
+                    var users = privates.selectedContacts.toString().split(",");
+                    if(users.length == 1){
+                        RestApi.createIndividualRoom(WS.Context.token, users[0]);
+                    }
+                    else if(users.length > 1){
+                        console.log("Create group room");
+                    }
+                    else {
+                        console.log("Please select one user at least");
+                        //TODO : show dialog that contains the warning
+                    }
                 }
-                else if(users.length > 1){
-                    console.log("Create group room");
-                }
-                else {
-                    console.log("Please select one user at least");
-                    //TODO : show dialog that contains the warning
-                }
+
+                pageLoader.setSource("qrc:///ui/Chat.qml");
             }
         }
     }

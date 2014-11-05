@@ -34,14 +34,17 @@ Rectangle {
             id: phoneNumberTextInput;
             style: textFieldStyle;
             width: parent.width;
+            height: width / 8;
             placeholderText: qsTr("PHONE_NUMBER") + UiEngine.EmptyLangString;
             focus: true;
+            font.pixelSize: height * 0.5
         }
 
         Button {
             id: recoverPasswordButton;
             style: buttonStyle;
             width: parent.width;
+            height: width / 8;
             text: qsTr("RECOVER_PASSWORD") + UiEngine.EmptyLangString;
             onClicked: {
                 if (!phoneNumberTextInput.acceptableInput) {

@@ -24,23 +24,36 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        RestApi.onSignal_SignIn.connect(onSingInCallback);
+        RestApi.onSignal_SignIn.connect(onSignInCallback);
     }
 
     Component.onDestruction: {
-        RestApi.onSignal_SignIn.disconnect(onSingInCallback);
+        RestApi.onSignal_SignIn.disconnect(onSignInCallback);
     }
 
-    function onSingInCallback(connectionStatus, signInStatus, response)
-    {
-        console.log(connectionStatus +  " : " + signInStatus);
-        UiEngine.notify(qsTr("APP_TITLE"), response);
-        UiEngine.showToast(response);
-        var result = JSON.parse(response);
-        WS.Context.token = result.token;
-        console.log(WS.Context.token);
-        WS.authorizeToWs(WS.Context.token);
-        pageLoader.setSource("Home.qml");
+    function onSignInCallback(connectionStatus, signInStatus, response) {
+        console.log("connection: " + connectionStatus +  ", status: " + signInStatus,
+                    ", response: " + response);
+        switch (signInStatus) {
+        case 202:
+            var result = JSON.parse(response);
+            WS.Context.token = result.token;
+            WS.authorizeToWs(WS.Context.token);
+            pageLoader.setSource("Home.qml");
+            break;
+        case 403:
+            UiEngine.showToast(qsTr("ERROR_SIGNIN_403") + UiEngine.EmptyLangString);
+            break;
+        case 404:
+            UiEngine.showToast(qsTr("ERROR_SIGNIN_404") + UiEngine.EmptyLangString);
+            break;
+        case 406:
+            UiEngine.showToast(qsTr("ERROR_SIGNIN_406") + UiEngine.EmptyLangString);
+            break;
+        case 400:
+        default:
+            break;
+        }
     }
 
     Column {
@@ -97,6 +110,8 @@ Rectangle {
                 }
 
                 RestApi.signIn(usernameTextInput.text, passwordTextInput.text);
+
+//                pageLoader.setSource("qrc:///ui/Home.qml");
             }
         }
 

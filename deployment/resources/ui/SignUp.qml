@@ -28,17 +28,30 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        RestApi.onSignal_SignUp.connect(onSingUpCallback);
+        RestApi.onSignal_SignUp.connect(onSignUpCallback);
     }
 
     Component.onDestruction: {
-        RestApi.onSignal_SignUp.disconnect(onSingUpCallback);
+        RestApi.onSignal_SignUp.disconnect(onSignUpCallback);
     }
 
-    function onSingUpCallback(connectionStatus, statusCode, data)
+    function onSignUpCallback(connectionStatus, statusCode, data)
     {
-        UiEngine.notify(qsTr("APP_TITLE"), connectionStatus + " : " + statusCode + " : " + data);
-        UiEngine.showToast(connectionStatus + " : " + statusCode + " : " + data);
+        console.log("connection: " + connectionStatus, ", status: " + statusCode + ", data: "
+                    + data);
+
+        switch (statusCode) {
+        case 201:
+            UiEngine.showToast(qsTr("ERROR_SIGNUP_201") + UiEngine.EmptyLangString);
+            pageLoader.setSource("qrc:///ui/SignIn.qml");
+            break;
+        case 409:
+            UiEngine.showToast(qsTr("ERROR_SIGNUP_409") + UiEngine.EmptyLangString);
+            break;
+        case 400:
+        default:
+            break;
+        }
     }
 
     Column {

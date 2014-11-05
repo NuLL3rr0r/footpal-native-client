@@ -62,7 +62,7 @@ Rectangle {
     }
 
     Component.onCompleted: {
-//        loadInbox(0, privates.loadSize);
+        loadInbox(0, privates.loadSize);
         privates.isInitialized = true;
     }
 
@@ -223,11 +223,29 @@ Rectangle {
         var messages;
         if (Mail.currentMailAccount.protocol === "imap") {
             messages = loadImap(start, size);
-            privates.loadIndex += privates.loadSize;
         } else {    //  protocol is pop3
             messages = loadPop3(start, size);
-            privates.loadIndex += privates.loadSize;
         }
+
+        privates.loadIndex += privates.loadSize;
+
+        var newJson = [];
+        var i = 0;
+
+        if (jsonModel.json.length > 0) {
+            var oldJson = JSON.parse(jsonModel.json);
+            for (i = 0; i < oldJson.data.length; i++) {
+                newJson.push(oldJson.data[i]);
+            }
+        }
+
+        var tempJson = JSON.parse(messages);
+        for (i = 0; i < tempJson.data.length; i++) {
+            newJson.push(tempJson.data[i]);
+        }
+
+        jsonModel.json = JSON.stringify(newJson);
+
         // TODO:    1. read jsonModel.json into Temp
         //          2. append new messages to Temp
         //          3. assign Temp to jsonModel.json

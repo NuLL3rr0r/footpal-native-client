@@ -11,6 +11,7 @@ import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
 import "custom"
 import "scripts/settings.js" as Settings
+import "scripts/ws.js" as WS
 
 Rectangle {
     id: root
@@ -29,7 +30,31 @@ Rectangle {
     }
 
     Component.onCompleted: {
+        RestApi.onSignal_SignOut.connect(onSignOutCallback);
         privates.isInitialized = true;
+    }
+
+    Component.onDestruction: {
+        RestApi.onSignal_SignOut.disconnect(onSignOutCallback);
+    }
+
+    function onSignOutCallback(connectionStatus, statusCode, response) {
+        try {
+            console.log("connection: " + connectionStatus + ", status: " + statusCode, ", response: "
+                        + response);
+
+            switch (statusCode) {
+            case 202:
+                pageLoader.setSource("qrc:///ui/SignIn.qml");
+                break;
+            case 400:
+            default:
+                break;
+            }
+        }
+        catch(ex){
+            console.log(ex);
+        }
     }
 
     Column {
@@ -83,9 +108,7 @@ Rectangle {
         defaultImage: "qrc:///img/btn_signout.png"
         pressedImage: "qrc:///img/btn_signout_pressed.png"
         onSignal_clicked: {
-            //  TODO: Signout
-
-            pageLoader.setSource("qrc:///ui/SignIn.qml")
+            RestApi.signOut(WS.Context.token, WS.Context.username, "N/A");
         }
     }
 

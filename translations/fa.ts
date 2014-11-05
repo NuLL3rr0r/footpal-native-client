@@ -11,69 +11,79 @@
 <context>
     <name>AddMailServer</name>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="96"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="114"/>
         <source>ADD_A_MAIL_SERVER</source>
         <translation>افزودن ایمیل جدید</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="117"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="135"/>
         <source>IMAP</source>
         <translation>IMAP</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="125"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="143"/>
         <source>POP3</source>
         <translation>POP3</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="138"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="156"/>
         <source>ACCOUNT_TITLE</source>
         <translation>عنوان حساب</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="148"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="166"/>
         <source>USERNAME</source>
         <translation>نام کاربری</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="159"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="177"/>
         <source>PASSWORD</source>
         <translation>کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="168"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="216"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="186"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="239"/>
         <source>SERVER_ADDRESS</source>
         <translation>آدرس سرور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="177"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="225"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="195"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="248"/>
         <source>PORT</source>
         <translation>پورت</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="253"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="276"/>
         <source>NEXT</source>
         <translation>ادامه</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="295"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="318"/>
         <source>ACCEPT</source>
         <translation>تأیید</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="335"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="390"/>
+        <source>NOT_SUCCESSFUL</source>
+        <translation>ایجاد حساب ناموفق بود</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="401"/>
         <source>BACK</source>
         <translation>بازگشت</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="261"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="267"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="273"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="279"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="303"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="309"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="284"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="290"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="296"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="302"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="326"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="332"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="338"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="344"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="350"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="356"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="362"/>
         <source>INVALID_FIELD_LENGTH</source>
         <translation>لطفاً همه موارد را پر کنید</translation>
     </message>
@@ -125,12 +135,12 @@
         <translation>گفتگو با</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="243"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="244"/>
         <source>TYPE_HERE</source>
         <translation>بنویس</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="254"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="258"/>
         <source>SUBMIT</source>
         <translation>ارسال</translation>
     </message>
@@ -146,32 +156,32 @@
 <context>
     <name>ComposeMail</name>
     <message>
-        <location filename="../deployment/resources/ui/ComposeMail.qml" line="53"/>
+        <location filename="../deployment/resources/ui/ComposeMail.qml" line="87"/>
         <source>COMPOSE_MAIL</source>
         <translation>نامه جدید</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/ComposeMail.qml" line="72"/>
+        <location filename="../deployment/resources/ui/ComposeMail.qml" line="106"/>
         <source>TO</source>
         <translation>به</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/ComposeMail.qml" line="82"/>
+        <location filename="../deployment/resources/ui/ComposeMail.qml" line="116"/>
         <source>SUBJECT</source>
         <translation>موضوع</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/ComposeMail.qml" line="91"/>
+        <location filename="../deployment/resources/ui/ComposeMail.qml" line="125"/>
         <source>CC</source>
         <translation>رونوشت</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/ComposeMail.qml" line="100"/>
+        <location filename="../deployment/resources/ui/ComposeMail.qml" line="134"/>
         <source>BCC</source>
         <translation>رونوشت مخفی</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/ComposeMail.qml" line="104"/>
+        <location filename="../deployment/resources/ui/ComposeMail.qml" line="138"/>
         <source>CONTENT</source>
         <translation>محتوای</translation>
     </message>
@@ -469,7 +479,7 @@
 <context>
     <name>Mailbox</name>
     <message>
-        <location filename="../deployment/resources/ui/Mailbox.qml" line="61"/>
+        <location filename="../deployment/resources/ui/Mailbox.qml" line="87"/>
         <source>INBOX</source>
         <translation>صندوق پستی</translation>
     </message>
@@ -485,40 +495,56 @@
 <context>
     <name>SignIn</name>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="37"/>
         <source>APP_TITLE</source>
-        <translation>ارتباط</translation>
+        <translation type="vanished">ارتباط</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="63"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="45"/>
+        <source>ERROR_SIGNIN_403</source>
+        <translation>در حال حاضر امکان دسترسی به حساب شما وجود ندارد. لطفاً دقایقی دیگر مجدداً تلاش نمائید</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="48"/>
+        <source>ERROR_SIGNIN_404</source>
+        <translation>کاربری با این نام یافت نشد</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="51"/>
+        <source>ERROR_SIGNIN_406</source>
+        <translation>کلمه عبور صحیح نیست</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="76"/>
         <source>USERNAME</source>
         <translation>نام کاربری</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="75"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="88"/>
         <source>PASSWORD</source>
         <translation>کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="84"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="97"/>
         <source>SIGN_IN</source>
         <translation>ورود</translation>
     </message>
     <message>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="100"/>
         <source>INVALID_PHONE_NUMBER</source>
-        <translation type="obsolete">شماره موبایل نامعتبر</translation>
+        <translation>شماره موبایل نامعتبر</translation>
     </message>
     <message>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="106"/>
         <source>INVALID_PASSWORD_LENGTH</source>
-        <translation type="obsolete">لطفاً کلمه عبور را وارد کنید</translation>
+        <translation>لطفاً کلمه عبور را وارد کنید</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="108"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="122"/>
         <source>FORGOT_PASSWORD</source>
         <translation>بازیابی کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="129"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="143"/>
         <source>SIGN_UP</source>
         <translation>ثبت نام</translation>
     </message>
