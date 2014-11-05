@@ -24,6 +24,11 @@ function ContextSchema(){
     this.currentContactId = null;
 }
 
+ContextSchema.prototype.cleanStorage = function(){
+    this.friends = [];
+    this.rooms = [];
+}
+
 ContextSchema.prototype.addFriend = function(friendId, friendUsername, state){
     if(!this.isFriendExist(friendUsername)){
         var newFriend = new FriendSchema(friendId, friendUsername, state);

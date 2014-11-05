@@ -25,6 +25,13 @@ function openSocket(){
     socketJs.active = true;
 }
 
+function closeSocket(){
+    socketJs.active = false;
+}
+
+function postSignOut(){
+}
+
 function parseTextMessage(message){
     //console.log("new message : " + message);
     var encoded = JSON.parse(message);

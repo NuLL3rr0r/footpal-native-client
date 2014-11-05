@@ -45,6 +45,7 @@ Rectangle {
 
             switch (statusCode) {
             case 202:
+                WS.postSignOut();
                 pageLoader.setSource("qrc:///ui/SignIn.qml");
                 break;
             case 400:
