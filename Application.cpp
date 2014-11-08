@@ -35,6 +35,23 @@ void Application::InitializeDatabase()
     Pool::Database()->Initialize();
 }
 
+void Application::OnEnglishLanguageSelected()
+{
+    this->removeTranslator(Pool::Translator());
+    Pool::Translator()->load("en", ":/translations/");
+    this->installTranslator(Pool::Translator());
+    emit m_pimpl->UiEngine->signal_LanguageChanged();
+}
+
+void Application::OnFarsiLanguageSelected()
+{
+    this->removeTranslator(Pool::Translator());
+    Pool::Translator()->load("fa", ":/translations/");
+    this->installTranslator(Pool::Translator());
+    emit m_pimpl->UiEngine->signal_LanguageChanged();
+    qDebug() << "343333333333333333333333333333333333333333333333333333333";
+}
+
 void Application::SetupUi()
 {
     int fontId = QFontDatabase::addApplicationFont(":/fnt/main.ttf");
@@ -48,6 +65,11 @@ void Application::SetupUi()
             std::make_unique<Ertebat::UiEngine>();
     m_pimpl->UiEngine->load(QUrl(QStringLiteral("qrc:///ui/Main.qml")));
 
-    //QObject *uiRootObject = m_pimpl->UiEngine->rootObjects().first();
+    QObject *uiRootObject = m_pimpl->UiEngine->rootObjects().first();
+
+    QObject::connect(uiRootObject, SIGNAL(signal_englishLanguageSelected()),
+                     this, SLOT(OnEnglishLanguageSelected()));
+    QObject::connect(uiRootObject, SIGNAL(signal_farsiLanguageSelected()),
+                     this, SLOT(OnFarsiLanguageSelected()));
 }
 

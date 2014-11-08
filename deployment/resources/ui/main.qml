@@ -24,6 +24,9 @@ ApplicationWindow {
     title: qsTr("APP_TITLE");
     color: "#203070";
 
+    signal signal_englishLanguageSelected();
+    signal signal_farsiLanguageSelected();
+
     property Component buttonStyle: ButtonStyle {
         id: buttonStyle;
         label: Text {

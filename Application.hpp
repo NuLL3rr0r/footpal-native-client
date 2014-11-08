@@ -29,6 +29,8 @@ public:
 signals:
 
 public slots:
+    void OnEnglishLanguageSelected();
+    void OnFarsiLanguageSelected();
 
 public:
     void InitializeDatabase();
