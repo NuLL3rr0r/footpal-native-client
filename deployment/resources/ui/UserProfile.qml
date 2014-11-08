@@ -115,9 +115,9 @@ Rectangle {
         currentIndex: 0;
         onCurrentIndexChanged: {
             if (currentIndex == 0) {
-                //  TODO: change language to English
+                applicationWindow.signal_englishLanguageSelected();
             } else if (currentIndex == 1) {
-                //  TODO: change language to Persian
+                applicationWindow.signal_farsiLanguageSelected();
             }
         }
     }
@@ -170,7 +170,7 @@ Rectangle {
     }
 
     function onGetCurrentProfileCallback(connectionStatus, signInStatus, response) {
-//        console.log("c")
+        //        console.log("c")
     }
 }
 
