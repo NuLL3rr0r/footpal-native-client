@@ -49,7 +49,6 @@ void Application::OnFarsiLanguageSelected()
     Pool::Translator()->load("fa", ":/translations/");
     this->installTranslator(Pool::Translator());
     emit m_pimpl->UiEngine->signal_LanguageChanged();
-    qDebug() << "343333333333333333333333333333333333333333333333333333333";
 }
 
 void Application::SetupUi()
