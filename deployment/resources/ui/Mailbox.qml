@@ -372,10 +372,6 @@ Rectangle {
         privates.loadSize = size;
 
         var account = Mail.currentMailAccount;
-        if (Mail.currentMailAccount.protocol === "imap") {
-            privates.targetClient = ImapClient;
-        }
-
         privates.targetClient.SetHost(account.readHost);
         privates.targetClient.setPort(account.readPort);
         privates.targetClient.setSecurityType(Mail.strToSecurityType(account.readSecurity));
