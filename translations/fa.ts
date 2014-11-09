@@ -479,7 +479,7 @@
 <context>
     <name>Mailbox</name>
     <message>
-        <location filename="../deployment/resources/ui/Mailbox.qml" line="154"/>
+        <location filename="../deployment/resources/ui/Mailbox.qml" line="152"/>
         <source>INBOX</source>
         <translation>صندوق پستی</translation>
     </message>
