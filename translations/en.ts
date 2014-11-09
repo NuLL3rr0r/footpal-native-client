@@ -478,7 +478,7 @@
 <context>
     <name>Mailbox</name>
     <message>
-        <location filename="../deployment/resources/ui/Mailbox.qml" line="87"/>
+        <location filename="../deployment/resources/ui/Mailbox.qml" line="154"/>
         <source>INBOX</source>
         <translation>Inbox</translation>
     </message>

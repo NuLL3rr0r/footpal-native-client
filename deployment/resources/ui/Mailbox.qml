@@ -70,10 +70,8 @@ Rectangle {
     }
 
     Component.onCompleted: {
-<<<<<<< fa08b750423bc5b36dc04e53debbc00aceecca51
         loadInbox(0, privates.loadSize);
         privates.isInitialized = true;
-=======
         if(Mail.isMailboxCached) {
             Mail.isMailboxCached = false;
             privates.isInitialized = Mail.cache_isInitialzed;
@@ -133,7 +131,6 @@ Rectangle {
         privates.targetClient.onSignal_DisconnectCompleted.connect(onDisconnectCallback);
         privates.targetClient.onSignal_GetMessageCountCompleted.connect(onGetMessageCountCallback);
         privates.targetClient.onSignal_FetchAsJsonCompleted.connect(onFetchAsJsonCallback);
->>>>>>> 72aa8855f45a33d1175d570451c51a3f8c8bf657
     }
 
     Bar {
@@ -321,7 +318,6 @@ Rectangle {
         }
     }
 
-<<<<<<< fa08b750423bc5b36dc04e53debbc00aceecca51
     function loadInbox(start, size) {
         var messages;
         if (Mail.currentMailAccount.protocol === "imap") {
@@ -348,8 +344,7 @@ Rectangle {
         }
 
         jsonModel.json = JSON.stringify(newJson);
-
-=======
+    }
     function extractDate(datetime) {
         var v = datetime.split(":");
         return v[3] + "/" + v[1] + "/" + v[2];
@@ -431,7 +426,6 @@ Rectangle {
         privates.targetClient.SetPassword(account.password);
 
         privates.targetClient.workerThread_connect();
->>>>>>> 72aa8855f45a33d1175d570451c51a3f8c8bf657
         // TODO:    1. read jsonModel.json into Temp
         //          2. append new messages to Temp
         //          3. assign Temp to jsonModel.json
