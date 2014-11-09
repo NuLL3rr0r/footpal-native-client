@@ -70,8 +70,6 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        loadInbox(0, privates.loadSize);
-        privates.isInitialized = true;
         if(Mail.isMailboxCached) {
             Mail.isMailboxCached = false;
             privates.isInitialized = Mail.cache_isInitialzed;
@@ -374,6 +372,10 @@ Rectangle {
         privates.loadSize = size;
 
         var account = Mail.currentMailAccount;
+        if (Mail.currentMailAccount.protocol === "imap") {
+            privates.targetClient = ImapClient;
+        }
+
         privates.targetClient.SetHost(account.readHost);
         privates.targetClient.setPort(account.readPort);
         privates.targetClient.setSecurityType(Mail.strToSecurityType(account.readSecurity));
