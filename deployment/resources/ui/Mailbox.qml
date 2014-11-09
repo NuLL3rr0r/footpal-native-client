@@ -167,7 +167,6 @@ Rectangle {
         anchors.bottom: bottomBar.top
         anchors.bottomMargin: 5
         width: parent.width
-//        spacing: privates.itemSpacing
         model: jsonModel.model;
 
         delegate: Component {
@@ -188,7 +187,7 @@ Rectangle {
                     anchors.left: parent.left
                     anchors.margins: 5
                     width: height
-                    source: "qrc:///img/ic_email.png" //model.picture
+                    source: "qrc:///img/ic_email.png"
                 }
                 Text {
                     id: titleText
@@ -318,33 +317,6 @@ Rectangle {
         }
     }
 
-    function loadInbox(start, size) {
-        var messages;
-        if (Mail.currentMailAccount.protocol === "imap") {
-            messages = loadImap(start, size);
-        } else {    //  protocol is pop3
-            messages = loadPop3(start, size);
-        }
-
-        privates.loadIndex += privates.loadSize;
-
-        var newJson = [];
-        var i = 0;
-
-        if (jsonModel.json.length > 0) {
-            var oldJson = JSON.parse(jsonModel.json);
-            for (i = 0; i < oldJson.data.length; i++) {
-                newJson.push(oldJson.data[i]);
-            }
-        }
-
-        var tempJson = JSON.parse(messages);
-        for (i = 0; i < tempJson.data.length; i++) {
-            newJson.push(tempJson.data[i]);
-        }
-
-        jsonModel.json = JSON.stringify(newJson);
-    }
     function extractDate(datetime) {
         var v = datetime.split(":");
         return v[3] + "/" + v[1] + "/" + v[2];
@@ -395,23 +367,6 @@ Rectangle {
             }
         }
         return "";
-
-//        console.log("+ extractfrom");
-//        console.log(model.message_id);
-//        if(privates.idToIndex.hasOwnProperty(model.message_id)) {
-//            var from = JSON.parse(privates.mailJSON).data[
-//                        privates.idToIndex[model.message_id]
-//                    ].from[0];
-//            var result = "From: " + from.name + " <" + from.email + ">";
-//            console.log("result = " + result);
-//            return result;
-//        } else {
-//            for(var key in privates.idToIndex) {
-//                console.log("--- " + key + " --- " + privates.idToIndex[key]);
-//            }
-//        }
-
-//        return "";
     }
 
     function loadInbox(start, size) {
@@ -426,10 +381,6 @@ Rectangle {
         privates.targetClient.SetPassword(account.password);
 
         privates.targetClient.workerThread_connect();
-        // TODO:    1. read jsonModel.json into Temp
-        //          2. append new messages to Temp
-        //          3. assign Temp to jsonModel.json
-        //          4. set listview position to the item at privates.loadIndex
     }
 
     function onConnectCallback(succeeded)
@@ -456,9 +407,9 @@ Rectangle {
         console.log("GetMessageCount successfuly : " + count);
         privates.mailCount = count;
         privates.targetClient.workerThread_autoFetchEnable(
-            privates.loadIndex, privates.loadSize,
-            privates.mailCount
-        );
+                    privates.loadIndex, privates.loadSize,
+                    privates.mailCount
+                    );
     }
 
     function onFetchAsJsonCallback(msg) {
