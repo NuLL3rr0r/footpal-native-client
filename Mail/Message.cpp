@@ -130,6 +130,10 @@ void Message::SetTime(QDateTime t) {
     m_pimpl->Time = t;
 }
 
+QDateTime Message::GetTime() const{
+    return m_pimpl->Time;
+}
+
 QString const& Message::GetMessageId() const {
     return m_pimpl->MessageId;
 }

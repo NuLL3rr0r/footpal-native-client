@@ -35,11 +35,6 @@ public:
     Q_INVOKABLE Pop3Client();
     ~Pop3Client();
 
-signals:
-    void signal_Connected(bool);
-    void signal_Disconnected(bool);
-    void signal_Sent(const QString &);
-
 public:
     Q_INVOKABLE const Ertebat::Mail::SecurityType &GetSecurityType() const;
     Q_INVOKABLE void SetSecurityType(const Ertebat::Mail::SecurityType &securityType);
@@ -65,14 +60,21 @@ public:
     Q_INVOKABLE void Connect();
     Q_INVOKABLE void Disconnect();
 
-    Q_INVOKABLE std::size_t GetMessageCount();
-    Q_INVOKABLE std::vector<Message> Fetch(std::size_t i, std::size_t count);
+    Q_INVOKABLE void GetMessageCount();
+    Q_INVOKABLE void Fetch(std::size_t i, std::size_t count);
 
-    Q_INVOKABLE QString FetchAsJson(std::size_t i, std::size_t count);
+    Q_INVOKABLE void FetchAsJson(std::size_t i, std::size_t count);
+    Q_INVOKABLE void FetchAsJsonAsync(std::size_t i, std::size_t count);
 
     // QML Hacks
     Q_INVOKABLE void getMessageCount();
     Q_INVOKABLE void fetchAsJson(int i, int count);
+
+private:
+    void ConnectAsync();
+    void DisconnectAsync();
+    void GetMessageCountAsync();
+    void FetchAsync(std::size_t i, std::size_t count);
 };
 
 

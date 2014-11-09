@@ -25,12 +25,25 @@ namespace detail { namespace Json {
 
     boost::property_tree::ptree EncodeMessage(Message const& message) {
         boost::property_tree::ptree pt;
-        boost::property_tree::ptree from, to, headers;
-        //pt.put("message_id", message.GetMessageId().toStdString());
-        //from.put("email", message.GetFrom().GetAddress().toStdString());
-        //from.put("name", message.GetFrom().GetName().toStdString());
-        //pt.add_child("from", from);
+        boost::property_tree::ptree from, from_holder, to, headers;
+        pt.put("message_id", message.GetMessageId().toStdString());
+        from.put("email", message.GetFrom().GetAddress().toStdString());
+        from.put("name", message.GetFrom().GetName().toStdString());
+        from_holder.push_back(std::make_pair("",from));
+        pt.add_child("from", from_holder);
         pt.put("subject", message.GetSubject().toStdString());
+
+        std::stringstream sin;
+        sin << message.GetTime().date().dayOfWeek() << ":"
+            << message.GetTime().date().day() << ":"
+            << message.GetTime().date().month() << ":"
+            << message.GetTime().date().year() << ":"
+            << message.GetTime().time().hour() << ":"
+            << message.GetTime().time().minute() << ":"
+            << message.GetTime().time().second() << ":"
+            << "+0330";
+        pt.put("date", sin.str());
+
         auto recep = message.GetRecipients();
         for(auto i = recep.begin(), _i = recep.end(); i != _i; ++i) {
             Mail::Recipient iv = *i;

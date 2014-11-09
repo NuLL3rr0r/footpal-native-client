@@ -136,45 +136,23 @@ public class Android extends org.qtproject.qt5.android.bindings.QtActivity
     }
 
     public static boolean mailProfile_connect(CharSequence protocol) {
-        Log.v(TAG, "s_mailProfileInstance");
         return s_mailProfileInstance.connect(String.valueOf(protocol));
     }
 
     public static void mailProfile_disconnect(final CharSequence protocol) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                s_mailProfileInstance.disconnect(protocol.toString());
-                mailProfile_onDisconnectCompleted();
-            }
-        }).start();
+        s_mailProfileInstance.disconnect(protocol.toString());
     }
 
     public static void mailProfile_send(final CharSequence jsonMessage) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mailProfile_onSendCompleted(s_mailProfileInstance.send(jsonMessage.toString()));
-           }
-       }).start();
+        s_mailProfileInstance.send(jsonMessage.toString());
     }
 
-    public static void mailProfile_getMessageCount() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mailProfile_onGetMessageCountCompleted(s_mailProfileInstance.getMessageCount());
-            }
-        }).start();
+    public static int mailProfile_getMessageCount() {
+        return s_mailProfileInstance.getMessageCount();
     }
 
-    public static void mailProfile_fetchMessages(final int startIndex, final int count) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mailProfile_onFetchMessagesCompleted(s_mailProfileInstance.fetchMessages(startIndex, count));
-            }
-        }).start();
+    public static CharSequence mailProfile_fetchMessages(final int startIndex, final int count) {
+        return s_mailProfileInstance.fetchMessages(startIndex, count);
     }
 
     public Android()

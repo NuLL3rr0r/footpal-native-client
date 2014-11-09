@@ -34,11 +34,6 @@ public:
     Q_INVOKABLE SmtpClient();
     virtual ~SmtpClient();
 
-signals:
-    void signal_ConnectCompleted(bool);
-    void signal_DisconnectCompleted();
-    void signal_SendCompleted(bool);
-
 public:
     Q_INVOKABLE const Ertebat::Mail::SecurityType &GetSecurityType() const;
     Q_INVOKABLE void SetSecurityType(const Ertebat::Mail::SecurityType &securityType);

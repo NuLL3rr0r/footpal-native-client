@@ -236,6 +236,7 @@ void SmtpClient::DisconnectAsync()
         }
 #elif defined ( Q_OS_ANDROID )
         Pool::Android()->MailProfile_disconnect("smtp");
+        emit signal_DisconnectCompleted();
 #endif // !defined ( Q_OS_ANDROID )
     }
 #if !defined ( Q_OS_ANDROID )

@@ -23,47 +23,117 @@ Rectangle {
     QtObject {
         id: privates
 
+        property variant targetClient: ({});
         property bool isInitialized: false;
+        property variant initializedTo: ({});
+        property int maxSummary: 50;
         property int itemHeight: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.2 : 100;
         property int itemSpacing: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.01 : 5;
         property int loadIndex: 0;
-        property int loadSize: 10;
-        property string testJSON: "{ \"data\": [" +
-                                  "{ \"id\":\"1\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
-                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
-                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
-                                  "{ \"id\":\"2\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
-                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
-                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
-                                  "{ \"id\":\"3\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
-                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
-                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
-                                  "{ \"id\":\"4\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
-                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
-                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
-                                  "{ \"id\":\"5\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
-                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
-                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
-                                  "{ \"id\":\"6\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
-                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
-                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
-                                  "{ \"id\":\"7\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
-                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
-                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
-                                  "{ \"id\":\"8\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
-                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
-                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
-                                  "{ \"id\":\"9\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Majid Sadeghi Alavijeh\"," +
-                                  "\"title\": \"List of Devices\", \"summary\": \"Hi! I've assembled a\"," +
-                                  "\"date\": \"2014/09/22\", \"time\": \"14:27\" }," +
-                                  "{ \"id\":\"10\", \"picture\": \"qrc:///img/ic_email.png\", \"sender\": \"Mohammad Sadegh Babaei\"," +
-                                  "\"title\": \"Today's Meeting\", \"summary\": \"Hi! Any thoughts on \"," +
-                                  "\"date\": \"2014/09/23\", \"time\": \"09:54\" } ] }";
+        property int loadSize: 1;
+        property int mailCount: 0;
+        property bool isInDetail: false;
+        property string navigatoTo: ""; // To prevent race-condition with message fetching, this is used to schedule disconnection after fetching.
+
+        property variant idToIndex: ({"\"1584243002.894505385.1415110596157.JavaMail.root@sjmas02.marketo.org": 0});
+        property string mailJSON: "{                                                                                                     "+
+                                  "    \"data\":                                                                                         "+
+                                  "    [                                                                                                 "+
+                                  "        {                                                                                             "+
+                                  "            \"message_id\": \"1584243002.894505385.1415110596157.JavaMail.root@sjmas02.marketo.org\", "+
+                                  "            \"from\":                                                                                 "+
+                                  "            [                                                                                         "+
+                                  "                {                                                                                         "+
+                                  "                     \"email\": \"sales@lisasoft.com\",                                                    "+
+                                  "                     \"name\": \"JulietLin\"                                                               "+
+                                  "                }                                                                                        "+
+                                  "            ]," +
+                                  "            \"subject\": \"How to reduce your IT Spend with Postgres\",                               "+
+                                  "            \"date\": \"2:4:11:2014:8:16:36:+0330\",                                                       "+
+                                  "            \"to\":                                                                                   "+
+                                  "            [                                                                                         "+
+                                  "                {                                                                                     "+
+                                  "                    \"name\": \"\",                                                                   "+
+                                  "                    \"email\": \"arcananemous@gmail.com\",                                            "+
+                                  "                    \"type\": \"TO\"                                                                  "+
+                                  "                }                                                                                     "+
+                                  "            ],                                                                                        "+
+                                  "            \"headers\":                                                                              "+
+                                  "            {                                                                                         "+
+                                  "                \"Reply-To\": \"edbmarketing@enterprisedb.com\"                                       "+
+                                  "            },                                                                                        "+
+                                  "            \"text\": \"<HTML><BODY test=\\\"2323232 fff\\\">FFFJFJFJJF</BODY></HTML>\""+
+                                  "        } "+
+                                  "    ]     "+
+                                  "}         ";
+
     }
 
     Component.onCompleted: {
+<<<<<<< fa08b750423bc5b36dc04e53debbc00aceecca51
         loadInbox(0, privates.loadSize);
         privates.isInitialized = true;
+=======
+        if(Mail.isMailboxCached) {
+            Mail.isMailboxCached = false;
+            privates.isInitialized = Mail.cache_isInitialzed;
+            privates.initializedTo = Mail.cache_initializedTo;
+            privates.maxSummary    = Mail.cache_maxSummary;
+            privates.itemHeight    = Mail.cache_itemHeight;
+            privates.itemSpacing   = Mail.cache_itemSpacing;
+            privates.loadSize      = Mail.cache_loadSize;
+            privates.loadIndex     = Mail.cache_loadIndex;
+            privates.mailCount     = Mail.cache_mailCount;
+            privates.idToIndex     = Mail.cache_idToIndex;
+            privates.mailJSON      = Mail.cache_mailJSON;
+            privates.targetClient  = Mail.cache_targetClient;
+
+            console.log("CACHE UNLOADED");
+
+            if(JSON.stringify(privates.initializedTo) !== JSON.stringify(Mail.currentMailAccount)) {
+                privates.loadIndex = 0;
+                privates.isInitialized = true;
+                privates.initializedTo = Mail.currentMailAccount;
+                privates.idToIndex = {};
+                privates.mailJSON = "{\"data\":[]}";
+                console.log("loading from " + privates.loadIndex + ", " + privates.loadSize);
+                privates.targetClient.workerThread_disconnect();
+                loadInbox(privates.loadIndex, privates.loadSize);
+            } else {
+                privates.targetClient.workerThread_autoFetchEnable(
+                            privates.loadIndex,
+                            privates.loadSize,
+                            privates.mailCount
+                            );
+            }
+
+        } else {
+            if (Mail.currentMailAccount.protocol === "imap" || Mail.currentMailAccount.protocol === "1") {
+                privates.targetClient = ImapClient;
+            } else {    //  protocol is pop3
+                privates.targetClient = Pop3Client;
+            }
+            privates.loadIndex = 0;
+            privates.isInitialized = true;
+            privates.initializedTo = Mail.currentMailAccount;
+            privates.idToIndex = {};
+            privates.mailJSON = "{\"data\":[]}";
+
+            if(!privates.targetClient.workerThread_isEnabled()) {
+                privates.targetClient.workerThread_enable();
+            }
+
+            console.log("loading from " + privates.loadIndex + ", " + privates.loadSize);
+            loadInbox(privates.loadIndex, privates.loadSize);
+            privates.isInitialized = true;
+        }
+
+
+        privates.targetClient.onSignal_ConnectCompleted.connect(onConnectCallback);
+        privates.targetClient.onSignal_DisconnectCompleted.connect(onDisconnectCallback);
+        privates.targetClient.onSignal_GetMessageCountCompleted.connect(onGetMessageCountCallback);
+        privates.targetClient.onSignal_FetchAsJsonCompleted.connect(onFetchAsJsonCallback);
+>>>>>>> 72aa8855f45a33d1175d570451c51a3f8c8bf657
     }
 
     Bar {
@@ -91,7 +161,7 @@ Rectangle {
 
     JSONListModel {
         id: jsonModel;
-        json: privates.testJSON;
+        json: privates.mailJSON;
         query: "$.data[*]";
     }
 
@@ -121,14 +191,14 @@ Rectangle {
                     anchors.left: parent.left
                     anchors.margins: 5
                     width: height
-                    source: model.picture
+                    source: "qrc:///img/ic_email.png" //model.picture
                 }
                 Text {
                     id: titleText
                     anchors.left: contactPicture.right
                     anchors.top: parent.top
                     anchors.margins: 5
-                    text: model.title
+                    text: model.subject
                     font.pixelSize: parent.height * 0.2
                 }
                 Text {
@@ -136,7 +206,7 @@ Rectangle {
                     anchors.left: contactPicture.right
                     anchors.top: titleText.bottom
                     anchors.margins: 5
-                    text: "From: " + model.sender
+                    text: extractFrom(model);
                     font.pixelSize: parent.height * 0.15
                 }
                 Text {
@@ -144,7 +214,7 @@ Rectangle {
                     anchors.left: contactPicture.right
                     anchors.top: senderText.bottom
                     anchors.margins: 5
-                    text: model.summary + "..."
+                    text: extractSummary(model.text)
                     font.pixelSize: parent.height * 0.15
                 }
                 Text {
@@ -152,7 +222,7 @@ Rectangle {
                     anchors.right: parent.right
                     anchors.top: parent.top
                     anchors.margins: 5
-                    text: model.date
+                    text: extractDate(model.date)
                     font.pixelSize: parent.height * 0.15
                 }
                 Text {
@@ -160,15 +230,47 @@ Rectangle {
                     anchors.right: parent.right
                     anchors.top: dateText.bottom
                     anchors.margins: 5
-                    text: model.time
+                    text: extractTime(model.date)
                     font.pixelSize: parent.height * 0.15
                 }
 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        Mail.selectedMessageId = model.id;
-                        pageLoader.setSource("qrc:///ui/MailDetails.qml")
+                        if(privates.navigatoTo === "") {
+
+                            privates.targetClient.workerThread_autoFetchDisable();
+
+                            Mail.isMailboxCached     = true;
+                            Mail.cache_isInitialzed  = privates.isInitialized;
+                            Mail.cache_initializedTo = privates.initializedTo;
+                            Mail.cache_maxSummary    = privates.maxSummary;
+                            Mail.cache_itemHeight    = privates.itemHeight;
+                            Mail.cache_itemSpacing   = privates.itemSpacing;
+                            Mail.cache_loadIndex     = privates.loadIndex;
+                            Mail.cache_loadSize      = privates.loadSize;
+                            Mail.cache_mailCount     = privates.mailCount;
+                            Mail.cache_idToIndex     = privates.idToIndex;
+                            Mail.cache_mailJSON      = privates.mailJSON;
+                            Mail.cache_targetClient  = privates.targetClient;
+
+
+                            Mail.selectedMessageId = model.message_id;
+                            Mail.text = model.text;
+                            Mail.from = extractFrom(model);
+                            Mail.date = extractDate(model.date);
+                            Mail.time = extractTime(model.date);
+                            Mail.subject = model.subject;
+
+                            privates.targetClient.onSignal_ConnectCompleted.disconnect(onConnectCallback);
+                            privates.targetClient.onSignal_DisconnectCompleted.disconnect(onDisconnectCallback);
+                            privates.targetClient.onSignal_GetMessageCountCompleted.disconnect(onGetMessageCountCallback);
+                            privates.targetClient.onSignal_FetchAsJsonCompleted.disconnect(onFetchAsJsonCallback);
+
+                            privates.navigatoTo = "qrc:///ui/MailDetails.qml";
+                            privates.isInDetail = true;
+                            pageLoader.setSource("qrc:///ui/MailDetails.qml");
+                        }
                     }
                 }
             }
@@ -219,6 +321,7 @@ Rectangle {
         }
     }
 
+<<<<<<< fa08b750423bc5b36dc04e53debbc00aceecca51
     function loadInbox(start, size) {
         var messages;
         if (Mail.currentMailAccount.protocol === "imap") {
@@ -246,40 +349,150 @@ Rectangle {
 
         jsonModel.json = JSON.stringify(newJson);
 
+=======
+    function extractDate(datetime) {
+        var v = datetime.split(":");
+        return v[3] + "/" + v[1] + "/" + v[2];
+    }
+
+    function extractTime(datetime) {
+        var v = datetime.split(":");
+        return v[4] + ":" + v[5] + ":" + v[6];
+    }
+
+    function removeHtml(text) {
+
+        var newtext = text;
+        if(newtext.toLowerCase().search(/<(\s[^<>])*body[^<>]*>/i) >= 0) {
+            newtext = newtext.substring(text.toLowerCase().search(/<(\s[^<>])*body[^<>]*>/i), text.toLowerCase().search(/<(\s[^<>])*\/body(\s[^<>])*>/i));
+        } else {
+        }
+
+        newtext = newtext.replace(/&nbsp;/ig, " ");
+        newtext = newtext.replace(/(\r\n|\n|\r)/g," ");
+        newtext = newtext.replace(/<[^<>]*>/igm, "");
+        newtext = newtext.replace(/<(\s[^<>])*\/[^<>]*>/igm, "");
+        newtext = newtext.replace(/^\s*/igm, "");
+        if(newtext === text)
+            return text;
+        else
+            return removeHtml(newtext);
+    }
+
+    function extractSummary(body) {
+        body = removeHtml(body);
+        var toCopy = privates.maxSummary;
+        if(toCopy > body.length) {
+            toCopy = body.length;
+        }
+        var result =  body.substr(0, toCopy);
+        return result;
+    }
+
+    function extractFrom(model) {
+
+        var all = JSON.parse(privates.mailJSON);
+        for(var i = 0; i < all.data.length; ++i) {
+            if(all.data[i].message_id === model.message_id) {
+                var from = all.data[i].from[0];
+                var result = "From: " + from.name + " <" + from.email + ">";
+                return result;
+            }
+        }
+        return "";
+
+//        console.log("+ extractfrom");
+//        console.log(model.message_id);
+//        if(privates.idToIndex.hasOwnProperty(model.message_id)) {
+//            var from = JSON.parse(privates.mailJSON).data[
+//                        privates.idToIndex[model.message_id]
+//                    ].from[0];
+//            var result = "From: " + from.name + " <" + from.email + ">";
+//            console.log("result = " + result);
+//            return result;
+//        } else {
+//            for(var key in privates.idToIndex) {
+//                console.log("--- " + key + " --- " + privates.idToIndex[key]);
+//            }
+//        }
+
+//        return "";
+    }
+
+    function loadInbox(start, size) {
+        privates.loadIndex = start;
+        privates.loadSize = size;
+
+        var account = Mail.currentMailAccount;
+        privates.targetClient.SetHost(account.readHost);
+        privates.targetClient.setPort(account.readPort);
+        privates.targetClient.setSecurityType(Mail.strToSecurityType(account.readSecurity));
+        privates.targetClient.SetUsername(account.username);
+        privates.targetClient.SetPassword(account.password);
+
+        privates.targetClient.workerThread_connect();
+>>>>>>> 72aa8855f45a33d1175d570451c51a3f8c8bf657
         // TODO:    1. read jsonModel.json into Temp
         //          2. append new messages to Temp
         //          3. assign Temp to jsonModel.json
         //          4. set listview position to the item at privates.loadIndex
     }
 
-    function loadImap(start, size) {
-        var account = Mail.currentMailAccount;
-        ImapClient.SetHost(account.readHost);
-        ImapClient.setPort(account.readPort);
-        ImapClient.setSecurityType(Mail.strToSecurityType(account.readSecurity));
-        ImapClient.SetUsername(account.username);
-        ImapClient.SetPassword(account.password);
-        ImapClient.Connect();
-        var count = ImapClient.getMessageCount();
-        console.log(count);
-        var messages = ImapClient.fetchAsJson(start, Math.min(count - start, size));
-        console.log(messages);
-        return messages;
+    function onConnectCallback(succeeded)
+    {
+        if (succeeded) {
+            console.log("Connected successfully. Fetching now...");
+            privates.targetClient.workerThread_getMessageCount();
+        } else {
+        }
     }
 
-    function loadPop3(start, size) {
-        var account = Mail.currentMailAccount;
-        Pop3Client.SetHost(account.readHost);
-        Pop3Client.setPort(account.readPort);
-        Pop3Client.setSecurityType(Mail.strToSecurityType(account.readSecurity));
-        Pop3Client.SetUsername(account.username);
-        Pop3Client.SetPassword(account.password);
-        Pop3Client.Connect();
-        var count = Pop3Client.getMessageCount();
-        console.log(count);
-        var messages = Pop3Client.fetchAsJson(start, Math.min(count - start, size));
-        console.log(messages);
-        return messages;
+    function onDisconnectCallback()
+    {
+        if(privates === null) {
+            return;
+        }
+        console.log("Disconnected successfully.");
+        if(privates.doReconnect) {
+            loadInbox(0, privates.loadSize);
+        }
+    }
+
+    function onGetMessageCountCallback(count) {
+        console.log("GetMessageCount successfuly : " + count);
+        privates.mailCount = count;
+        privates.targetClient.workerThread_autoFetchEnable(
+            privates.loadIndex, privates.loadSize,
+            privates.mailCount
+        );
+    }
+
+    function onFetchAsJsonCallback(msg) {
+        console.log("FetchAsJson successfuly!");
+
+        if(msg.indexOf("[") < 0) {
+            //error had occured! no data was fetched!!
+            //repeat last fetched
+
+            //privates.targetClient.fetchAsJson(privates.loadIndex, Math.min(privates.mailCount - privates.loadIndex, privates.loadSize));
+
+            //end execution, no need to advance.
+            return;
+        }
+
+        console.log(privates.loadIndex);
+
+        var inner = msg.substring(msg.indexOf("[") + 1, msg.lastIndexOf("]"));
+        var msgObject = JSON.parse(msg).data;
+        for(var i = 0; i < msgObject.length; ++i) {
+            privates.idToIndex[msgObject[i].message_id] = privates.loadIndex + i;
+        }
+        var toInsert = privates.mailJSON.lastIndexOf("]");
+        privates.mailJSON = privates.mailJSON.substr(0, toInsert) +
+                (privates.loadIndex > 0 ? "," : "") + inner +
+                privates.mailJSON.substr(toInsert, privates.mailJSON.length - toInsert);
+
+        privates.loadIndex += privates.loadSize;
     }
 }
 

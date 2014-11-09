@@ -22,7 +22,7 @@ Rectangle {
 
     Component.onCompleted: {
         // TODO: load the selected message into the page
-        contentView.loadHtml("<div dir=\"ltr\">Hi! Howyadoin?<br></div>");
+        contentView.loadHtml(Mail.text);
         privates.isInitialized = true;
     }
 
@@ -90,7 +90,7 @@ Rectangle {
             Text {
                 id: titleText
                 font.pixelSize: parent.height * 0.4
-                text: "List of Devices"
+                text: Mail.subject
                 wrapMode: Text.WordWrap
                 width: parent.width
                 anchors.top: parent.top
@@ -101,7 +101,7 @@ Rectangle {
             Text {
                 id: contactNameText
                 font.pixelSize: parent.height * 0.25
-                text: "Majid Sadeghi Alavijeh"
+                text: Mail.from
                 anchors.bottom: contactPicture.bottom
                 anchors.left: contactPicture.right
                 anchors.leftMargin: root.height * 0.02
@@ -110,7 +110,7 @@ Rectangle {
             Text {
                 id: dateTimeText
                 font.pixelSize: parent.height * 0.2
-                text: "2014/09/23 at 09:54"
+                text: Mail.date + " at " + Mail.time
                 anchors.bottom: contactPicture.bottom
                 anchors.right: parent.right
                 anchors.leftMargin: root.height * 0.02

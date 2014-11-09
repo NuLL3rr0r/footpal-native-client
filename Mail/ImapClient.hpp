@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <QObject>
+#include <QVector>
 #include "Mail.hpp"
 #include "Client.hpp"
 #include "Message.hpp"
@@ -54,14 +55,22 @@ public:
 public:
     Q_INVOKABLE void Connect();
     Q_INVOKABLE void Disconnect();
-    Q_INVOKABLE std::size_t GetMessageCount();
-    Q_INVOKABLE std::vector<Message> Fetch(std::size_t i, std::size_t count);
-
-    Q_INVOKABLE QString FetchAsJson(std::size_t i, std::size_t count);
+    Q_INVOKABLE void GetMessageCount();
+    Q_INVOKABLE void Fetch(std::size_t i, std::size_t count);
+    Q_INVOKABLE void FetchAsJson(std::size_t i, std::size_t count);
+    Q_INVOKABLE void FetchAsJsonAsync(std::size_t i, std::size_t count);
 
     // QML Hack
     Q_INVOKABLE void getMessageCount();
     Q_INVOKABLE void fetchAsJson(int i, int count);
+
+private:
+
+    void ConnectAsync();
+    void DisconnectAsync();
+    void GetMessageCountAsync();
+    void FetchAsync(std::size_t i, std::size_t count);
+
 };
 
 
