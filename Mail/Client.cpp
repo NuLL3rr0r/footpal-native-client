@@ -312,10 +312,16 @@ void Client::Fetch(std::size_t i, std::size_t count) {
 }
 
 void Client::FetchAsJson(std::size_t i, std::size_t j) {
+    // by-passing compiler warnings, it will be ommited in optimization stage - Mohammad S. Babaei
+    (void)i;
+    (void)j;
     throw std::runtime_error("NOT IMPLEMENTED");
 }
 
 void Client::FetchAsJsonAsync(std::size_t i, std::size_t count) {
+    // by-passing compiler warnings, it will be ommited in optimization stage - Mohammad S. Babaei
+    (void)i;
+    (void)count;
     throw std::runtime_error("NOT IMPLEMENTED");
 }
 
@@ -327,6 +333,9 @@ void Client::getMessageCount()
 
 void Client::fetchAsJson(int i, int count)
 {
+    // by-passing compiler warnings, it will be ommited in optimization stage - Mohammad S. Babaei
+    (void)i;
+    (void)count;
     throw std::runtime_error("NOT IMPLEMENTED");
     ///return FetchAsJson((size_t)i, (size_t)count);
 }
