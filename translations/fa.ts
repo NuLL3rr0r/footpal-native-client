@@ -130,17 +130,17 @@
 <context>
     <name>Chat</name>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="87"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="92"/>
         <source>CHAT</source>
         <translation>گفتگو با</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="244"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="249"/>
         <source>TYPE_HERE</source>
         <translation>بنویس</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="258"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="263"/>
         <source>SUBMIT</source>
         <translation>ارسال</translation>
     </message>
@@ -413,22 +413,22 @@
 <context>
     <name>ForgotPassword</name>
     <message>
-        <location filename="../deployment/resources/ui/ForgotPassword.qml" line="37"/>
+        <location filename="../deployment/resources/ui/ForgotPassword.qml" line="38"/>
         <source>PHONE_NUMBER</source>
         <translation>شماره موبایل</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/ForgotPassword.qml" line="45"/>
+        <location filename="../deployment/resources/ui/ForgotPassword.qml" line="48"/>
         <source>RECOVER_PASSWORD</source>
         <translation>بازیابی کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/ForgotPassword.qml" line="48"/>
+        <location filename="../deployment/resources/ui/ForgotPassword.qml" line="51"/>
         <source>INVALID_PHONE_NUMBER</source>
         <translation>شماره موبایل نامعتبر</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/ForgotPassword.qml" line="64"/>
+        <location filename="../deployment/resources/ui/ForgotPassword.qml" line="67"/>
         <source>RETURN</source>
         <translation>بازگشت</translation>
     </message>
@@ -436,22 +436,22 @@
 <context>
     <name>Home</name>
     <message>
-        <location filename="../deployment/resources/ui/Home.qml" line="42"/>
+        <location filename="../deployment/resources/ui/Home.qml" line="68"/>
         <source>CHAT</source>
         <translation>گفتگو</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Home.qml" line="51"/>
+        <location filename="../deployment/resources/ui/Home.qml" line="77"/>
         <source>FRIENDS</source>
         <translation>دوستان</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Home.qml" line="60"/>
+        <location filename="../deployment/resources/ui/Home.qml" line="86"/>
         <source>EMAIL</source>
         <translation>پست الکترونیکی</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Home.qml" line="69"/>
+        <location filename="../deployment/resources/ui/Home.qml" line="95"/>
         <source>FILES</source>
         <translation>فایل ها</translation>
     </message>
@@ -552,57 +552,66 @@
 <context>
     <name>SignUp</name>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="40"/>
         <source>APP_TITLE</source>
-        <translation>ارتباط</translation>
+        <translation type="vanished">ارتباط</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="62"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="45"/>
+        <source>ERROR_SIGNUP_201</source>
+        <translation>ثبت نام با موفقیت انجام شد</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="49"/>
+        <source>ERROR_SIGNUP_409</source>
+        <translation>نام کاربری قبلاً ثبت شده</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="75"/>
         <source>PHONE_NUMBER</source>
         <translation>شماره موبایل</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="73"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="86"/>
         <source>EMAIL</source>
         <translation>پست الکترونیکی</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="84"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="97"/>
         <source>PASSWORD</source>
         <translation>کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="94"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="107"/>
         <source>CONFIRM_PASSWORD</source>
         <translation>تکرار کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="102"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="115"/>
         <source>SIGN_UP</source>
         <translation>ثبت نام</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="105"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="118"/>
         <source>INVALID_PHONE_NUMBER</source>
         <translation>شماره موبایل نامعتبر</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="111"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="124"/>
         <source>INVALID_EMAIL_ADDRESS</source>
         <translation>پست الکترونیکی نامعتبر</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="117"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="130"/>
         <source>INVALID_PASSWORD_LENGTH</source>
         <translation>لطفاً کلمه عبور را وارد کنید</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="123"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="136"/>
         <source>PASSWORDS_WONT_MATCH</source>
         <translation>تکرار نادرست کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignUp.qml" line="142"/>
+        <location filename="../deployment/resources/ui/SignUp.qml" line="155"/>
         <source>RETURN</source>
         <translation>بازگشت</translation>
     </message>
@@ -610,12 +619,12 @@
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../deployment/resources/ui/UserProfile.qml" line="61"/>
+        <location filename="../deployment/resources/ui/UserProfile.qml" line="65"/>
         <source>MY_PROFILE</source>
         <translation>مشخصات من</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/UserProfile.qml" line="152"/>
+        <location filename="../deployment/resources/ui/UserProfile.qml" line="156"/>
         <source>CHANGE_PASSWORD</source>
         <translation>تغییر کلمه عبور</translation>
     </message>
