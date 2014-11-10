@@ -129,7 +129,7 @@ public:
                 }
                 boost::this_thread::yield();
             }
-            catch(std::exception excep) {
+            catch(std::exception const& excep) {
                 qDebug() << "mail-worker-thread, exception occured: " << excep.what();
             }
             catch(...) {
@@ -581,6 +581,10 @@ Message& Client::ExtractMessage(Message& out, std::shared_ptr<vmime::net::messag
     std::vector<QString> contents;
     QString single_content;
 
+    auto utf8_encoder =
+            vmime::utility::encoder::encoderFactory::
+                     getInstance()->create("utf-8");
+
     for(std::size_t i=0, _i=p.getTextPartCount(); i < _i; ++i) {
         auto part = p.getTextPartAt(i);
         if(part->getType().getSubType() == vmime::mediaTypes::TEXT_HTML) {
@@ -595,6 +599,25 @@ Message& Client::ExtractMessage(Message& out, std::shared_ptr<vmime::net::messag
             std::string raw = sout.str();
             contents.push_back(QString::fromUtf8(raw.c_str()));
             single_content = single_content + contents.back();
+        }
+    }
+
+    if(contents.empty()) {
+        for(std::size_t i=0, _i=p.getTextPartCount(); i < _i; ++i) {
+            auto part = p.getTextPartAt(i);
+            if(part->getType().getSubType() == vmime::mediaTypes::TEXT_PLAIN) {
+                auto plain = std::static_pointer_cast<vmime::plainTextPart const>(
+                                part
+                            );
+                // HTML tex t i s in tp−>getText ()
+                // Plain tex t i s in tp−>getPlainText ()
+                std::stringstream sout;
+                vmime::utility::outputStreamAdapter adap(sout);
+                plain->getText()->extract(adap);
+                std::string raw = sout.str();
+                contents.push_back(QString::fromUtf8(raw.c_str()));
+                single_content = single_content + contents.back();
+            }
         }
     }
 

@@ -323,8 +323,9 @@ public class MailProfile {
 		try {
 			// get inbox folder
 			if (sMailStore == null || !sMailStore.isConnected()) {
-				Log.d(TAG, "Store not connected. Cannot fetch!");
-				return null;
+                                Log.d(TAG, "Store not connected. Cannot fetch!");
+                                sIsReading = false;
+                                return "";
 			}
 
 			Folder folder = sMailStore.getFolder("inbox");
@@ -350,8 +351,7 @@ public class MailProfile {
 				JSONObject resultJson = new JSONObject();
 				resultJson.put("data", messageArray);
 
-				folder.close(true);
-				sIsReading = false;
+                                folder.close(true);
 				sJsonMessages = resultJson.toString();
 			} else {
 				System.out.println("Folder isn't open");
@@ -368,7 +368,8 @@ public class MailProfile {
 				Log.d(TAG, "MessagingException was thrown with no further message");
 		}
 
-		return sJsonMessages;
+                sIsReading = false;
+                return sJsonMessages;
 	}
 
 	/**
