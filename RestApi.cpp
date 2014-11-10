@@ -45,7 +45,12 @@ public:
     Http_t Http_FS_MoveEntity;
     Http_t Http_FS_DeleteEntity;
     Http_t Http_FS_Download;
+    Http_t Http_FS_DownloadUrl;
     Http_t Http_FS_Upload;
+    Http_t Http_FS_AddAccessRole;
+    Http_t Http_FS_RemoveAccessRole;
+    Http_t Http_FS_ChangeAccessType;
+    Http_t Http_FS_GetSharedEntities;
 
 public:
     Impl(RestApi *parent);
@@ -100,8 +105,23 @@ public slots:
     void On_FS_DownloadRequestFailed(const Http::Error &error);
     void On_FS_DownloadRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
                                        const QString &data);
+    void On_FS_DownloadUrlRequestFailed(const Http::Error &error);
+    void On_FS_DownloadUrlRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                       const QString &data);
     void On_FS_UploadRequestFailed(const Http::Error &error);
     void On_FS_UploadRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                     const QString &data);
+    void On_FS_AddAccessRoleRequestFailed(const Http::Error &error);
+    void On_FS_AddAccessRoleRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                     const QString &data);
+    void On_FS_RemoveAccessRoleRequestFailed(const Http::Error &error);
+    void On_FS_RemoveAccessRoleRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                     const QString &data);
+    void On_FS_ChangeAccessTypeRequestFailed(const Http::Error &error);
+    void On_FS_ChangeAccessTypeRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                     const QString &data);
+    void On_FS_GetSharedEntitiesRequestFailed(const Http::Error &error);
+    void On_FS_GetSharedEntitiesRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
                                      const QString &data);
 
 public:
@@ -329,7 +349,16 @@ void RestApi::fs_Download(const QString &token, const QString &entityId)
     Http::Headers_t headers;
     headers["token"] = token;
 
-    m_pimpl->Http_FS_DeleteEntity->Get(QString("%1/document/download/%2").arg(REST_BASE_URL).arg(entityId),
+    m_pimpl->Http_FS_Download->Get(QString("%1/document/download/%2").arg(REST_BASE_URL).arg(entityId),
+                                       headers);
+}
+
+void RestApi::fs_DownloadUrl(const QString &token, const QString &entityId)
+{
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    m_pimpl->Http_FS_DownloadUrl->Get(QString("%1/document/downloadUrl/%2").arg(REST_BASE_URL).arg(entityId),
                                        headers);
 }
 
@@ -346,8 +375,67 @@ void RestApi::fs_Upload(const QString &token, const QString &parentId, const QSt
     QByteArray data;
     data.append(QString::fromStdWString(stream.str()));
 
-    m_pimpl->Http_FS_Upload->Post(QString("%1/document/%2/%3").arg(REST_BASE_URL).arg(parentId).arg(access),
+    m_pimpl->Http_FS_Upload->Post(QString("%1/document/uploadFile/%2/%3").arg(REST_BASE_URL).arg(parentId).arg(access),
                                   data, headers);
+}
+
+void RestApi::fs_AddAccessRole(const QString &token, const QString &entityId, const QString &access)
+{
+    std::wstringstream stream;
+    boost::property_tree::wptree tree;
+
+    boost::property_tree::write_json(stream, tree);
+
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    QByteArray data;
+    data.append(QString::fromStdWString(stream.str()));
+
+    m_pimpl->Http_FS_AddAccessRole->Post(QString("%1/document/addAccessRole/%2/%3").arg(REST_BASE_URL).arg(entityId).arg(access),
+                                  data, headers);
+}
+
+void RestApi::fs_RemoveAccessRole(const QString &token, const QString &entityId, const QString &access)
+{
+    std::wstringstream stream;
+    boost::property_tree::wptree tree;
+
+    boost::property_tree::write_json(stream, tree);
+
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    QByteArray data;
+    data.append(QString::fromStdWString(stream.str()));
+
+    m_pimpl->Http_FS_AddAccessRole->Post(QString("%1/document/removeAccessRole/%2/%3").arg(REST_BASE_URL).arg(entityId).arg(access),
+                                  data, headers);
+}
+
+void RestApi::fs_ChangeAccessType(const QString &token, const QString &entityId, const QString &access)
+{
+    std::wstringstream stream;
+    boost::property_tree::wptree tree;
+
+    boost::property_tree::write_json(stream, tree);
+
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    QByteArray data;
+    data.append(QString::fromStdWString(stream.str()));
+
+    m_pimpl->Http_FS_ChangeAccessType->Post(QString("%1/document/changeAccessType/%2/%3").arg(REST_BASE_URL).arg(entityId).arg(access),
+                                  data, headers);
+}
+
+void RestApi::fs_GetSharedEntities(const QString &token, const QString &user)
+{
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    m_pimpl->Http_FS_GetSharedEntities->Get(QString("%1/document/getSharedEntities/%2").arg(REST_BASE_URL).arg(user), headers);
 }
 
 RestApi::Impl::Impl(RestApi *parent) :
@@ -366,7 +454,12 @@ RestApi::Impl::Impl(RestApi *parent) :
     Http_FS_MoveEntity(std::make_unique<Http>()),
     Http_FS_DeleteEntity(std::make_unique<Http>()),
     Http_FS_Download(std::make_unique<Http>()),
-    Http_FS_Upload(std::make_unique<Http>())
+    Http_FS_DownloadUrl(std::make_unique<Http>()),
+    Http_FS_Upload(std::make_unique<Http>()),
+    Http_FS_AddAccessRole(std::make_unique<Http>()),
+    Http_FS_RemoveAccessRole(std::make_unique<Http>()),
+    Http_FS_ChangeAccessType(std::make_unique<Http>()),
+    Http_FS_GetSharedEntities(std::make_unique<Http>())
 {
     SetupEvents();
 }
@@ -595,6 +688,22 @@ void RestApi::Impl::On_FS_DownloadRequestCallback(const Ertebat::HttpStatus::Htt
                                       data);
 }
 
+void RestApi::Impl::On_FS_DownloadUrlRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_DownloadUrl(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_DownloadUrlStatus::FS_DownloadUrl_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_DownloadUrlRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                  const QString &data)
+{
+    emit m_parent->signal_FS_DownloadUrl(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                      static_cast<Ertebat::RestStatusCodes::FS_DownloadUrlStatus>(statusCode),
+                                      data);
+}
+
 void RestApi::Impl::On_FS_UploadRequestFailed(const Http::Error &error)
 {
     emit m_parent->signal_FS_Upload(
@@ -608,6 +717,70 @@ void RestApi::Impl::On_FS_UploadRequestCallback(const Ertebat::HttpStatus::HttpS
 {
     emit m_parent->signal_FS_Upload(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
                                     static_cast<Ertebat::RestStatusCodes::FS_UploadStatus>(statusCode),
+                                    data);
+}
+
+void RestApi::Impl::On_FS_AddAccessRoleRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_AddAccessRole(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_AddAccessRoleStatus::FS_AddAccessRole_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_AddAccessRoleRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                const QString &data)
+{
+    emit m_parent->signal_FS_AddAccessRole(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                    static_cast<Ertebat::RestStatusCodes::FS_AddAccessRoleStatus>(statusCode),
+                                    data);
+}
+
+void RestApi::Impl::On_FS_RemoveAccessRoleRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_RemoveAccessRole(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_RemoveAccessRoleStatus::FS_RemoveAccessRole_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_RemoveAccessRoleRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                const QString &data)
+{
+    emit m_parent->signal_FS_RemoveAccessRole(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                    static_cast<Ertebat::RestStatusCodes::FS_RemoveAccessRoleStatus>(statusCode),
+                                    data);
+}
+
+void RestApi::Impl::On_FS_ChangeAccessTypeRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_ChangeAccessType(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_ChangeAccessTypeStatus::FS_ChangeAccessType_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_ChangeAccessTypeRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                const QString &data)
+{
+    emit m_parent->signal_FS_ChangeAccessType(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                    static_cast<Ertebat::RestStatusCodes::FS_ChangeAccessTypeStatus>(statusCode),
+                                    data);
+}
+
+void RestApi::Impl::On_FS_GetSharedEntitiesRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_FS_GetSharedEntities(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::FS_GetSharedEntitiesStatus::FS_GetSharedEntities_None,
+                QString());
+}
+
+void RestApi::Impl::On_FS_GetSharedEntitiesRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                const QString &data)
+{
+    emit m_parent->signal_FS_GetSharedEntities(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                    static_cast<Ertebat::RestStatusCodes::FS_GetSharedEntitiesStatus>(statusCode),
                                     data);
 }
 
@@ -687,5 +860,25 @@ void RestApi::Impl::SetupEvents()
             this, SLOT(On_FS_UploadRequestFailed(const Http::Error &)));
     connect(Http_FS_Upload.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
             this, SLOT(On_FS_UploadRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_FS_AddAccessRole.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_AddAccessRoleRequestFailed(const Http::Error &)));
+    connect(Http_FS_AddAccessRole.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_AddAccessRoleRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_FS_RemoveAccessRole.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_RemoveAccessRoleRequestFailed(const Http::Error &)));
+    connect(Http_FS_RemoveAccessRole.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_RemoveAccessRoleRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_FS_ChangeAccessType.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_ChangeAccessTypeRequestFailed(const Http::Error &)));
+    connect(Http_FS_ChangeAccessType.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_ChangeAccessTypeRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_FS_GetSharedEntities.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_GetSharedEntitiesRequestFailed(const Http::Error &)));
+    connect(Http_FS_GetSharedEntities.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_GetSharedEntitiesRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
 }
 
