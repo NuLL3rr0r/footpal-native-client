@@ -315,7 +315,7 @@ public:
     Q_INVOKABLE void fs_DeleteEntity(const QString &token, const QString &entityId);
     Q_INVOKABLE void fs_Download(const QString &token, const QString &entityId);
     Q_INVOKABLE void fs_DownloadUrl(const QString &token, const QString &entityId);
-    Q_INVOKABLE void fs_Upload(const QString &token, const QString &parentId, const QString &access);
+    Q_INVOKABLE void fs_Upload(const QString &token, const QString &parentId, const QString &access, const QString &localFilePath);
     Q_INVOKABLE void fs_AddAccessRole(const QString &token, const QString &entityId, const QString &access);
     Q_INVOKABLE void fs_RemoveAccessRole(const QString &token, const QString &entityId, const QString &access);
     Q_INVOKABLE void fs_ChangeAccessType(const QString &token, const QString &entityId, const QString &access);
