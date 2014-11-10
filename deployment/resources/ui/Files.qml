@@ -90,6 +90,12 @@ Rectangle {
         RestApi.onSignal_FS_MoveEntity.connect(
                     onSignalFS_MoveEntityCallback
                     );
+        RestApi.onSignal_FS_Upload.connect(
+                    onSignalFS_UploadCallback
+                    );
+        RestApi.onSignal_FS_DownloadUrl.connect(
+                    onSignalFS_DownloadUrlCallback
+                    );
 
         privates.filesJson = "[]";
         listCurrentDirectory();
@@ -114,6 +120,14 @@ Rectangle {
         RestApi.onSignal_FS_MoveEntity.disconnect(
                     onSignalFS_MoveEntityCallback
                     );
+        RestApi.onSignal_FS_Upload.disconnect(
+                    onSignalFS_UploadCallback
+                    );
+        RestApi.onSignal_FS_DownloadUrl.disconnect(
+                    onSignalFS_DownloadUrlCallback
+                    );
+
+
     }
 
     Bar {
@@ -166,9 +180,18 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        privates.parentId = privates.currentId;
-                        privates.currentId = model._id;
-                        listCurrentDirectory();
+                        if(model.contentType === "Folder") {
+                            privates.parentId = privates.currentId;
+                            privates.currentId = model._id;
+                            listCurrentDirectory();
+                        }
+                        else {
+                            console.log("Calling DownloadUrl");
+                            RestApi.fs_DownloadUrl(
+                                        WS.Context.token,
+                                        model._id
+                                        );
+                        }
                     }
                 }
 
@@ -180,7 +203,7 @@ Rectangle {
                     anchors.margins: 5
                     width: height
                     source: {
-                        if (model.contentType == "file")
+                        if (model.contentType === "File")
                             return "qrc:///img/ic_file.png";
                         else
                             return "qrc:///img/ic_folder.png";
@@ -236,6 +259,7 @@ Rectangle {
                     pressedImage: "qrc:///img/btn_file_move_pressed.png";
                     onSignal_clicked: {
                         privates.movedFileId = model._id;
+                        UiEngine.showToast(qsTr("FILESHARING_MOVE") + UiEngine.EmptyLangString);
                     }
                 }
             }
@@ -385,7 +409,14 @@ Rectangle {
     }
 
     function onOpenFileDialogAccepted(path) {
-
+        path = path.replace("file:///", "");
+        console.log("OPEN FILE " + path);
+        RestApi.fs_Upload(
+                    WS.Context.token,
+                    privates.currentId,
+                    "Public",
+                    path
+                    );
     }
 
     function onOpenFileDialogRejected() {
@@ -397,6 +428,60 @@ Rectangle {
             RestApi.fs_GetListOfEntity(WS.Context.token);
         } else {
             RestApi.fs_GetListOfEntity(WS.Context.token, privates.currentId);
+        }
+    }
+
+    function onSignalFS_DownloadUrlCallback(connectionStatus, downloadUrlStatus, response)
+    {
+        console.log("11connection: " + connectionStatus +  ", status: " + downloadUrlStatus,
+                    ", response: " + response);
+
+        switch(downloadUrlStatus) {
+        case 404:
+            UiEngine.showToast(qsTr("ERROR_FS_DOWNLOADURL_404") + UiEngine.EmptyLangString);
+            break;
+        case 400:
+            UiEngine.showToast(qsTr("ERROR_FS_DOWNLOADURL_400") + UiEngine.EmptyLangString);
+            break;
+        case 500:
+            UiEngine.showToast(qsTr("ERROR_FS_DOWNLOADURL_500") + UiEngine.EmptyLangString);
+            break;
+        case 403:
+            UiEngine.showToast(qsTr("ERROR_FS_DOWNLOADURL_403") + UiEngine.EmptyLangString);
+            break;
+        case 200:
+            console.log("HEYYYYYYYYYYYY!");
+            console.log(response);
+            break;
+        default:
+            break;
+        }
+    }
+
+    function onSignalFS_UploadCallback(
+        connectionStatus, uploadStatus, response
+        )
+    {
+        console.log("connection: " + connectionStatus +  ", status: " + uploadStatus,
+                    ", response: " + response);
+        switch(uploadStatus) {
+        case 404:
+            UiEngine.showToast(qsTr("ERROR_FS_UPLOAD_404") + UiEngine.EmptyLangString);
+            break;
+        case 400:
+            UiEngine.showToast(qsTr("ERROR_FS_UPLAOD_400") + UiEngine.EmptyLangString);
+            break;
+        case 500:
+            UiEngine.showToast(qsTr("ERROR_FS_UPLAOD_500") + UiEngine.EmptyLangString);
+            break;
+        case 403:
+            UiEngine.showToast(qsTr("ERROR_FS_UPLOAD_403") + UiEngine.EmptyLangString);
+            break;
+        case 201:
+            listCurrentDirectory();
+            break;
+        default:
+            break;
         }
     }
 
