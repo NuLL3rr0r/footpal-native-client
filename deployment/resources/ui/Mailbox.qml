@@ -192,21 +192,12 @@ Rectangle {
                 Text {
                     id: titleText
                     anchors.left: contactPicture.right
-                    anchors.right: dateText.left
                     anchors.top: parent.top
                     anchors.margins: 5
+                    width: parent.width * 0.5
                     text: model.subject
                     font.pixelSize: parent.height * 0.2
-
-                    onTextChanged: {
-                        var maxChars = ((parent.width * 0.5) / font.pixelSize) - 4;
-                        console.log("Max Chars: " + maxChars);
-                        console.log("Text Length: " + text.length);
-                        if (text.length > maxChars) {
-                            text = text.substring(0, maxChars) + "...";
-                            console.log("Text New Length: " + text.length);
-                        }
-                    }
+                    elide: Text.ElideRight
                 }
                 Text {
                     id: senderText
@@ -214,14 +205,6 @@ Rectangle {
                     anchors.top: titleText.bottom
                     anchors.margins: 5
                     text: extractFrom(model);
-                    font.pixelSize: parent.height * 0.15
-                }
-                Text {
-                    id: summaryText
-                    anchors.left: contactPicture.right
-                    anchors.top: senderText.bottom
-                    anchors.margins: 5
-                    text: extractSummary(model.text)
                     font.pixelSize: parent.height * 0.15
                 }
                 Text {
@@ -285,7 +268,6 @@ Rectangle {
         onMovementEnded: {
             if (atYEnd) {
                 console.log("end of list!");
-                loadInbox(privates.loadIndex, privates.loadSize);
             }
         }
     }
@@ -373,7 +355,8 @@ Rectangle {
         for(var i = 0; i < all.data.length; ++i) {
             if(all.data[i].message_id === model.message_id) {
                 var from = all.data[i].from[0];
-                var result = "From: " + from.name + " <" + from.email + ">";
+                var result = "From: " + from.name +
+                        "\n <" + from.email + ">";
                 return result;
             }
         }
@@ -424,6 +407,12 @@ Rectangle {
     }
 
     function onFetchAsJsonCallback(msg) {
+
+        if(privates.loadIndex > 9) {
+            privates.targetClient.workerThread_autoFetchDisable();
+            return;
+        }
+
         console.log("FetchAsJson successfuly!");
 
         if(msg.indexOf("[") < 0) {
@@ -449,10 +438,6 @@ Rectangle {
                 privates.mailJSON.substr(toInsert, privates.mailJSON.length - toInsert);
 
         privates.loadIndex += privates.loadSize;
-
-        if(privates.loadIndex > 10) {
-            privates.targetClient.workerThread_autoFetchDisable();
-        }
     }
 }
 

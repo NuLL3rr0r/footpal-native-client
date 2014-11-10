@@ -581,10 +581,6 @@ Message& Client::ExtractMessage(Message& out, std::shared_ptr<vmime::net::messag
     std::vector<QString> contents;
     QString single_content;
 
-    auto utf8_encoder =
-            vmime::utility::encoder::encoderFactory::
-                     getInstance()->create("utf-8");
-
     for(std::size_t i=0, _i=p.getTextPartCount(); i < _i; ++i) {
         auto part = p.getTextPartAt(i);
         if(part->getType().getSubType() == vmime::mediaTypes::TEXT_HTML) {
