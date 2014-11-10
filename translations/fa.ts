@@ -382,17 +382,22 @@
 <context>
     <name>Files</name>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="69"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="54"/>
+        <source>CHOOSE_FILE</source>
+        <translation>لطفا یک فایل را انتخاب نمائید</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="84"/>
         <source>MY_FILES</source>
         <translation>فایل های من</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="259"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="275"/>
         <source>FOLDER_NAME</source>
         <translation>نام پوشه</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="274"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="290"/>
         <source>INVALID_FOLDER_NAME</source>
         <translation>نام پوشه نامعتبر</translation>
     </message>
@@ -401,7 +406,7 @@
         <translation type="obsolete">شماره موبایل</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="271"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="287"/>
         <source>ADD</source>
         <translation>تأیید</translation>
     </message>
@@ -479,7 +484,7 @@
 <context>
     <name>Mailbox</name>
     <message>
-        <location filename="../deployment/resources/ui/Mailbox.qml" line="152"/>
+        <location filename="../deployment/resources/ui/Mailbox.qml" line="154"/>
         <source>INBOX</source>
         <translation>صندوق پستی</translation>
     </message>

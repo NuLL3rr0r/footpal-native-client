@@ -381,17 +381,22 @@
 <context>
     <name>Files</name>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="69"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="54"/>
+        <source>CHOOSE_FILE</source>
+        <translation>Please choose a file</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="84"/>
         <source>MY_FILES</source>
         <translation>My Files</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="259"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="275"/>
         <source>FOLDER_NAME</source>
         <translation>Folder Name</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="274"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="290"/>
         <source>INVALID_FOLDER_NAME</source>
         <translation>Invalid Folder Name</translation>
     </message>
@@ -400,7 +405,7 @@
         <translation type="obsolete">Phone Number</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="271"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="287"/>
         <source>ADD</source>
         <translation>Add</translation>
     </message>
@@ -478,7 +483,7 @@
 <context>
     <name>Mailbox</name>
     <message>
-        <location filename="../deployment/resources/ui/Mailbox.qml" line="152"/>
+        <location filename="../deployment/resources/ui/Mailbox.qml" line="154"/>
         <source>INBOX</source>
         <translation>Inbox</translation>
     </message>
