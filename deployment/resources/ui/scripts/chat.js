@@ -22,6 +22,7 @@ function ContextSchema(){
     this.currentProfile = null;
     this.currentRoomId = null;
     this.currentContactId = null;
+    this.currentLanguage = "EN";
 }
 
 ContextSchema.prototype.cleanStorage = function(){

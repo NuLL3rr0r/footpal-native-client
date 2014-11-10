@@ -23,7 +23,7 @@ Rectangle {
         id: privates
 
         property bool isInitialized: false;
-        property int itemHeight: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.2 : 100;
+        property int itemHeight: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.15 : 100;
         property int itemSpacing: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.01 : 5;
         property string testJSON: "{ \"server\": [" +
                                   "{ \"name\": \"GMail\", \"username\": \"morteza.sabetraftar@gmail.com\", \"count\": 4 }," +

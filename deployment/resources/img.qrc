@@ -2,6 +2,8 @@
     <qresource prefix="/">
         <file>img/btn_account.png</file>
         <file>img/btn_account_pressed.png</file>
+        <file>img/btn_bar_back.png</file>
+        <file>img/btn_bar_back_pressed.png</file>
         <file>img/btn_bar_forward.png</file>
         <file>img/btn_bar_forward_pressed.png</file>
         <file>img/btn_bar_more.png</file>

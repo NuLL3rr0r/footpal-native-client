@@ -7,7 +7,6 @@ import QtQuick 2.3;
 import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
-import QtWebKit 3.0;
 import ScreenTypes 1.0;
 import "custom"
 import "scripts/settings.js" as Settings
@@ -21,8 +20,7 @@ Rectangle {
     color: Settings.globalBgColor;
 
     Component.onCompleted: {
-        // TODO: load the selected message into the page
-        contentView.loadHtml(Mail.text);
+        contentTextField.text = removeHtml(Mail.text);
         privates.isInitialized = true;
     }
 
@@ -34,6 +32,9 @@ Rectangle {
 
         property bool isInitialized: false;
         property int nameWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.6 : root.width * 0.4;
+        property int textFieldHeight: root.height * 0.05
+        property int textFieldMaxPixelSize: root.height * 0.04
+        property int textFieldMinPixelSize: root.height * 0.02
     }
 
     Bar {
@@ -78,53 +79,82 @@ Rectangle {
 
         Item {
             anchors.fill: parent;
-            anchors.margins: root.height * 0.02;
-
-            Image {
-                id: contactPicture
-                height: parent.height
-                width: height
-                source: "qrc:///img/ic_contact.png"
-            }
+            anchors.margins: 5
 
             Text {
                 id: titleText
-                font.pixelSize: parent.height * 0.4
+                font.pixelSize: parent.height * 0.2
                 text: Mail.subject
-                wrapMode: Text.WordWrap
                 width: parent.width
                 anchors.top: parent.top
-                anchors.left: contactPicture.right
-                anchors.leftMargin: root.height * 0.02
+                anchors.leftMargin: 5
+                elide: Text.ElideRight
             }
 
             Text {
                 id: contactNameText
-                font.pixelSize: parent.height * 0.25
+                font.pixelSize: parent.height * 0.15
                 text: Mail.from
-                anchors.bottom: contactPicture.bottom
-                anchors.left: contactPicture.right
-                anchors.leftMargin: root.height * 0.02
+                width: parent.width * 0.5
+                anchors.top: titleText.bottom
+                anchors.topMargin: 5
+                anchors.leftMargin: 5
+                elide: Text.ElideRight
             }
 
             Text {
                 id: dateTimeText
-                font.pixelSize: parent.height * 0.2
+                font.pixelSize: parent.height * 0.15
                 text: Mail.date + " at " + Mail.time
-                anchors.bottom: contactPicture.bottom
+                anchors.bottom: parent.bottom
                 anchors.right: parent.right
-                anchors.leftMargin: root.height * 0.02
+                anchors.rightMargin: root.height * 0.02
+
             }
         }
     }
 
-    WebView {
-        id: contentView;
-        anchors.top: headerRectangle.bottom;
-        anchors.bottom: bottomBar.top;
-        anchors.left: parent.left;
-        anchors.right: parent.right;
-        anchors.margins: root.height * 0.01;
+    Rectangle {
+        id: contentTextField;
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: headerRectangle.bottom
+        anchors.bottom: bottomBar.top
+        anchors.margins: 5
+
+        Flickable {
+            id: flickArea
+            anchors.fill: parent
+            contentWidth: textContent.width; contentHeight: textContent.height
+            flickableDirection: Flickable.VerticalFlick
+            clip: true
+
+            Text {
+                id: textContent
+                text: Mail.text
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.margins: 5
+                wrapMode: Text.WordWrap
+            }
+        }
+
+        //        property int lineChars: (width / (font.pixelSize * 0.8));
+        //        property bool firstLine: true;
+        //        property int charCount: 0
+        //        font.pixelSize: Math.max(Math.min(height / lineCount, privates.textFieldMaxPixelSize),
+        //                                 privates.textFieldMinPixelSize);
+        //        onTextChanged: {
+        //            charCount++;
+        //            console.log(charCount);
+        //            if (charCount > lineChars) {
+        //                charCount = -1;
+        //                console.log("Append");
+        //                append("");
+        //            }
+        //        }
     }
 
     Bar {
@@ -162,6 +192,25 @@ Rectangle {
                 }
             }
         }
+    }
+
+    function removeHtml(text) {
+
+        var newtext = text;
+        if(newtext.toLowerCase().search(/<(\s[^<>])*body[^<>]*>/i) >= 0) {
+            newtext = newtext.substring(text.toLowerCase().search(/<(\s[^<>])*body[^<>]*>/i), text.toLowerCase().search(/<(\s[^<>])*\/body(\s[^<>])*>/i));
+        } else {
+        }
+
+        newtext = newtext.replace(/&nbsp;/ig, " ");
+        newtext = newtext.replace(/(\r\n|\n|\r)/g," ");
+        newtext = newtext.replace(/<[^<>]*>/igm, "");
+        newtext = newtext.replace(/<(\s[^<>])*\/[^<>]*>/igm, "");
+        newtext = newtext.replace(/^\s*/igm, "");
+        if(newtext === text)
+            return text;
+        else
+            return removeHtml(newtext);
     }
 }
 

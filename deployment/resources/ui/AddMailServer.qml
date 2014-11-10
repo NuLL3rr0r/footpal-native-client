@@ -25,7 +25,7 @@ Rectangle {
 
         property int columnWidth: textFieldHeight * 8;// UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.8 : root.width * 0.5;
         property int textFieldHeight: root.height * 0.075;// columnWidth / 8;
-        property int buttonWidth: columnWidth / 2;
+        property int buttonWidth: columnWidth / 2.5;
     }
 
     Component.onCompleted: {
@@ -228,6 +228,8 @@ Rectangle {
         Text {
             font.pixelSize: privates.textFieldHeight * 0.5;
             text: "SMTP"
+            color: "#FFF"
+            anchors.horizontalCenter: parent.horizontalCenter
         }
 
         TextField {
@@ -270,7 +272,7 @@ Rectangle {
     Button {
         id: buttonNext;
         style: buttonStyle;
-        width: privates.columnWidth / 3;
+        width: privates.buttonWidth;
         height: width / 4;
         y: root.height - (height + (root.height * 0.025));
         text: qsTr("NEXT") + UiEngine.EmptyLangString;
@@ -312,7 +314,7 @@ Rectangle {
     Button {
         id: buttonAccept;
         style: buttonStyle;
-        width: privates.columnWidth / 3;
+        width: privates.buttonWidth;
         height: width / 4;
         y: root.height - (height + (root.height * 0.025));
         text: qsTr("ACCEPT") + UiEngine.EmptyLangString;
@@ -395,7 +397,7 @@ Rectangle {
     Button {
         id: buttonBack;
         style: buttonStyle;
-        width: privates.columnWidth / 3;
+        width: privates.buttonWidth;
         height: width / 4;
         y: root.height - (height + (root.height * 0.025));
         text: qsTr("BACK") + UiEngine.EmptyLangString;

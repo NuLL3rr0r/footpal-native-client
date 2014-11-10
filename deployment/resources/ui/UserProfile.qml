@@ -9,6 +9,7 @@ import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
 import "custom"
+import "utils"
 import "scripts/ws.js" as WS
 import "scripts/settings.js" as Settings
 
@@ -24,6 +25,7 @@ Rectangle {
         RestApi.onSignal_GetCurrentProfile.connect(onGetCurrentProfileCallback);
 
         loadProfile();
+        console.log(jsonModel.model.get(0).things.length());
     }
 
     Component.onDestruction: {
@@ -32,16 +34,53 @@ Rectangle {
 
     QtObject {
         id: privates
-        property int firstNameWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.2 : root.width * 0.3
-        property int lastNameWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.3 : root.width * 0.4
-        property int textFieldHeight: root.height * 0.075
+        property int firstNameWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.3 : root.width * 0.3
+        property int lastNameWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.4 : root.width * 0.4
+        property int nameColumnWidth: UiEngine.TargetScreenType === ScreenType.Phone ? root.width * 0.75 : root.width * 0.5
+        property int textFieldHeight: nameColumnWidth / 8;// root.height * 0.075
         property int textHeight: root.height * 0.05
+        property string jsonTest: "{                                                                                                     "+
+                                  "    \"data\":                                                                                         "+
+                                  "    [                                                                                                 "+
+                                  "        {                                                                                             "+
+                                  "            \"message_id\": \"1584243002.894505385.1415110596157.JavaMail.root@sjmas02.marketo.org\", "+
+                                  "            \"from\":                                                                                 "+
+                                  "            [                                                                                         "+
+                                  "                {                                                                                         "+
+                                  "                     \"email\": \"sales@lisasoft.com\",                                                    "+
+                                  "                     \"name\": \"JulietLin\"                                                               "+
+                                  "                }                                                                                        "+
+                                  "            ]," +
+                                  "            \"subject\": \"How to reduce your IT Spend with Postgres\",                               "+
+                                  "            \"date\": \"2:4:11:2014:8:16:36:+0330\",                                                       "+
+                                  "            \"to\":                                                                                   "+
+                                  "            [                                                                                         "+
+                                  "                {                                                                                     "+
+                                  "                    \"name\": \"\",                                                                   "+
+                                  "                    \"email\": \"arcananemous@gmail.com\",                                            "+
+                                  "                    \"type\": \"TO\"                                                                  "+
+                                  "                }                                                                                     "+
+                                  "            ],                                                                                        "+
+                                  "            \"headers\":                                                                              "+
+                                  "            {                                                                                         "+
+                                  "                \"Reply-To\": \"edbmarketing@enterprisedb.com\"                                       "+
+                                  "            },                                                                                        "+
+                                  "            \"text\": \"<HTML><BODY test=\\\"2323232 fff\\\">FFFJFJFJJF</BODY></HTML>\""+
+                                  "        } "+
+                                  "    ]     "+
+                                  "}         ";
     }
 
     ListModel {
         id: languageModel
         ListElement { text: "English"; }
         ListElement { text: "فارسی"; }
+    }
+
+    JSONListModel {
+        id: jsonModel;
+        json: privates.jsonTest;
+        query: "$.data.items[*]";
     }
 
     Bar {
@@ -77,8 +116,8 @@ Rectangle {
         source: "qrc:///img/ic_contact.png"
     }
 
-    Row {
-        id: nameRow
+    Column {
+        id: nameColumn
         anchors.top: profilePicture.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.topMargin: root.height * 0.05
@@ -86,7 +125,7 @@ Rectangle {
 
         TextField {
             id: firstNameText
-            width: privates.firstNameWidth
+            width: privates.nameColumnWidth
             height: privates.textFieldHeight
             font.pixelSize: height / 2
             text: "Morteza"
@@ -95,7 +134,7 @@ Rectangle {
 
         TextField {
             id: lastNameText
-            width: privates.lastNameWidth
+            width: privates.nameColumnWidth
             height: privates.textFieldHeight
             font.pixelSize: height / 2
             text: "Sabetraftar"
@@ -106,18 +145,20 @@ Rectangle {
     ComboBox {
         id: comboBoxLanguage
         model: languageModel;
-        width: nameRow.width;
+        width: nameColumn.width;
         height: privates.textFieldHeight;
-        anchors.top: nameRow.bottom
+        anchors.top: nameColumn.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.topMargin: root.height * 0.05
         style: comboBoxStyle;
-        currentIndex: 0;
+        currentIndex: WS.Context.currentLanguage === "EN" ? 0 : 1;
         onCurrentIndexChanged: {
             if (currentIndex == 0) {
                 applicationWindow.signal_englishLanguageSelected();
+                WS.Context.currentLanguage = "EN";
             } else if (currentIndex == 1) {
                 applicationWindow.signal_farsiLanguageSelected();
+                WS.Context.currentLanguage = "FA";
             }
         }
     }
@@ -137,7 +178,7 @@ Rectangle {
         id: phoneNumberText
         height: privates.textFieldHeight
         font.pixelSize: height / 2
-        text: "+09125300764"
+        text: "+989125300764"
         anchors.top: emailText.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.topMargin: root.height * 0.025
