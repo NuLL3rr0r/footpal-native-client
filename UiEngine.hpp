@@ -57,8 +57,10 @@ public:
 public:
     Q_INVOKABLE bool notify(const QString &title, const QString &text, const int id = 0) const;
 #if defined ( Q_OS_ANDROID )
+    Q_INVOKABLE bool openFileDialog() const;
     Q_INVOKABLE bool showToast(const QString &text, const int duration = 4000) const;
 #else
+    Q_INVOKABLE bool openFileDialog();
     Q_INVOKABLE bool showToast(const QString &text, const int duration = 4000);
 #endif // defined ( Q_OS_ANDROID )
 };

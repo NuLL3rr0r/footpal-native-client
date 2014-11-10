@@ -18,48 +18,24 @@
 
 using namespace Ertebat;
 
-Android::mailProfile_OnConnectCompletedHandler_t mailProfile_OnConnectCompletedHandler;
-Android::mailProfile_OnDisconnectCompletedHandler_t mailProfile_OnDisconnectCompletedHandler;
-Android::mailProfile_OnSendCompletedHandler_t mailProfile_OnSendCompletedHandler;
-Android::mailProfile_OnGetMessageCountCompletedHandler_t mailProfile_OnGetMessageCountCompletedHandler;
-Android::mailProfile_OnFetchMessagesCompletedHandler_t mailProfile_OnFetchMessagesCompletedHandler;
+Android::OpenFileDialogAcceptedHandler_t OpenFileDialogAcceptedHandler;
+Android::OpenFileDialogRejectedHandler_t OpenFileDialogRejectedHandler;
 
-static void mailProfile_OnConnectCompleted(JNIEnv *, jobject, bool succeeded)
+static void OpenFileDialogAccepted(JNIEnv *, jobject, jstring path)
 {
-    if (mailProfile_OnConnectCompletedHandler)
-        mailProfile_OnConnectCompletedHandler(succeeded);
+    if (OpenFileDialogAcceptedHandler)
+        OpenFileDialogAcceptedHandler(QAndroidJniObject(path).toString());
 }
 
-static void mailProfile_OnDisconnectCompleted(JNIEnv *, jobject)
+static void OpenFileDialogRejected(JNIEnv *, jobject)
 {
-    if (mailProfile_OnDisconnectCompletedHandler)
-        mailProfile_OnDisconnectCompletedHandler();
-}
-
-static void mailProfile_OnSendCompleted(JNIEnv *, jobject, bool succeeded)
-{
-    if (mailProfile_OnSendCompletedHandler)
-        mailProfile_OnSendCompletedHandler(succeeded);
-}
-
-static void mailProfile_OnGetMessageCountCompleted(JNIEnv *, jobject, int count)
-{
-    if (mailProfile_OnGetMessageCountCompletedHandler)
-        mailProfile_OnGetMessageCountCompletedHandler(count);
-}
-
-static void mailProfile_OnFetchMessagesCompleted(JNIEnv *, jobject, jstring json)
-{
-    if (mailProfile_OnFetchMessagesCompletedHandler)
-        mailProfile_OnFetchMessagesCompletedHandler(QAndroidJniObject(json).toString());
+    if (OpenFileDialogRejectedHandler)
+        OpenFileDialogRejectedHandler();
 }
 
 static JNINativeMethod s_nativeMethods[] = {
-    { "mailProfile_onConnectCompleted", "(Z)V", (void *)mailProfile_OnConnectCompleted },
-    { "mailProfile_onDisconnectCompleted", "()V", (void *)mailProfile_OnDisconnectCompleted },
-    { "mailProfile_onSendCompleted", "(Z)V", (void *)mailProfile_OnSendCompleted },
-    { "mailProfile_onGetMessageCountCompleted", "(I)V", (void *)mailProfile_OnGetMessageCountCompleted },
-    { "mailProfile_onFetchMessagesCompleted", "(Ljava/lang/CharSequence;)V", (void *)mailProfile_OnFetchMessagesCompleted }
+    { "OpenFileDialogAccepted", "(Ljava/lang/String;)V", (void *)OpenFileDialogAccepted },
+    { "OpenFileDialogRejected", "()V", (void *)OpenFileDialogRejected }
 };
 
 JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *)
@@ -101,29 +77,14 @@ Android::Android() :
 
 Android::~Android() = default;
 
-void Android::mailProfile_OnConnectCompleted(mailProfile_OnConnectCompletedHandler_t handler)
+void Android::OpenFileDialogAccepted(OpenFileDialogAcceptedHandler_t handler)
 {
-    mailProfile_OnConnectCompletedHandler = handler;
+    OpenFileDialogAcceptedHandler = handler;
 }
 
-void Android::mailProfile_OnDisconnectCompleted(mailProfile_OnDisconnectCompletedHandler_t handler)
+void Android::OpenFileDialogRejected(OpenFileDialogRejectedHandler_t handler)
 {
-    mailProfile_OnDisconnectCompletedHandler = handler;
-}
-
-void Android::mailProfile_OnSendCompleted(mailProfile_OnSendCompletedHandler_t handler)
-{
-    mailProfile_OnSendCompletedHandler = handler;
-}
-
-void Android::mailProfile_OnGetMessageCountCompleted(mailProfile_OnGetMessageCountCompletedHandler_t handler)
-{
-    mailProfile_OnGetMessageCountCompletedHandler = handler;
-}
-
-void Android::mailProfile_OnFetchMessagesCompleted(mailProfile_OnFetchMessagesCompletedHandler_t handler)
-{
-    mailProfile_OnFetchMessagesCompletedHandler = handler;
+    OpenFileDialogRejectedHandler = handler;
 }
 
 bool Android::ExceptionCheck()
@@ -143,8 +104,7 @@ void Android::Initialize()
     if (!IsInitialized()) {
         ExceptionClear();
 
-        this->callMethod<void>(
-                    "<init>", "()V");
+        this->callMethod<void>("<init>", "()V");
     }
 }
 
@@ -187,6 +147,18 @@ bool Android::Notify(const QString &title, const QString &text, const int id)
                 QAndroidJniObject::fromString(title).object<jstring>(),
                 QAndroidJniObject::fromString(text).object<jstring>(),
                 id);
+
+    return ret;
+}
+
+bool Android::OpenFileDialog()
+{
+    ExceptionClear();
+
+    jboolean ret = QAndroidJniObject::callStaticMethod<jboolean>(
+                JAVA_CLASS,
+                "openFileDialog",
+                "()Z");
 
     return ret;
 }

@@ -5,9 +5,11 @@
 
 package com.ertebat.client;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,12 +18,16 @@ import java.lang.Exception;
 public class Android extends org.qtproject.qt5.android.bindings.QtActivity
 {
     private static final String TAG = "[Android Interface / com.ertebat.client.Android]";
+    private static final int PICKFILE_RESULT_CODE = 101;
 
     private static Android s_instance;
     private static MailProfile s_mailProfileInstance;
 
     private static NotificationManager m_notificationManager;
     private static Notification.Builder m_notificationBuilder;
+
+    public static native void OpenFileDialogAccepted(String path);
+    public static native void OpenFileDialogRejected();
 
     public static native void mailProfile_onConnectCompleted(boolean succeeded);
     public static native void mailProfile_onDisconnectCompleted();
@@ -79,6 +85,24 @@ public class Android extends org.qtproject.qt5.android.bindings.QtActivity
             m_notificationBuilder.setContentTitle(title);
             m_notificationBuilder.setContentText(text);
             m_notificationManager.notify(id, m_notificationBuilder.build());
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean openFileDialog()
+    {
+        Log.v(TAG, "openFileDialog");
+
+        try {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("file/*");
+            s_instance.startActivityForResult(intent, PICKFILE_RESULT_CODE);
         }
 
         catch (Exception e) {
@@ -167,6 +191,24 @@ public class Android extends org.qtproject.qt5.android.bindings.QtActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        switch (requestCode) {
+        case PICKFILE_RESULT_CODE:
+            if (resultCode == Activity.RESULT_OK) {
+                Log.v(TAG, "OpenFileDialogAccepted!");
+                Log.v(TAG, data.getDataString());
+                OpenFileDialogAccepted(data.getDataString());
+            } else {
+                Log.v(TAG, "OpenFileDialogRejected!");
+                OpenFileDialogRejected();
+            }
+            break;
+        default:
+            break;
+        }
     }
 }
 

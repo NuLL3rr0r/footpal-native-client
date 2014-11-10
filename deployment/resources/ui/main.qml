@@ -8,6 +8,7 @@
 import QtQuick 2.3;
 import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
+import QtQuick.Dialogs 1.0
 import QtQuick.Layouts 1.1;
 import QtQuick.LocalStorage 2.0 as Sql;
 import Qt.WebSockets 1.0
@@ -26,6 +27,9 @@ ApplicationWindow {
 
     signal signal_englishLanguageSelected();
     signal signal_farsiLanguageSelected();
+
+    signal openFileDialogAccepted(string path);
+    signal openFileDialogRejected();
 
     property Component buttonStyle: ButtonStyle {
         id: buttonStyle;
@@ -154,11 +158,43 @@ ApplicationWindow {
         toast.notificationText = text;
     }
 
+    function openFileDialog() {
+        fileDialog.open();
+    }
+
+    function onOpenFileDialogAccepted(path)
+    {
+        openFileDialogAccepted(path);
+    }
+
+    function onOpenFileDialogRejected()
+    {
+        openFileDialogRejected();
+    }
+
     Toast {
         id: toast;
         anchors.fill: parent;
         anchors.centerIn: parent;
         fontPath: FontPath;
+    }
+
+    FileDialog {
+        id: fileDialog;
+        modality: Qt.WindowModal;
+        nameFilters: [ "All files (*)" ];
+        selectExisting: true;
+        selectMultiple: false;
+        selectFolder: false;
+        title: qsTr("CHOOSE_FILE");
+        visible: false;
+
+        onAccepted: {
+            applicationWindow.openFileDialogAccepted(fileDialog.fileUrl + "");
+        }
+        onRejected: {
+            applicationWindow.openFileDialogRejected();
+        }
     }
 
     /**********************************************************************************************

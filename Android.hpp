@@ -21,11 +21,8 @@ class Android;
 class Ertebat::Android : public QAndroidJniObject
 {
 public:
-    typedef std::function<void(bool)> mailProfile_OnConnectCompletedHandler_t;
-    typedef std::function<void()> mailProfile_OnDisconnectCompletedHandler_t;
-    typedef std::function<void(bool)> mailProfile_OnSendCompletedHandler_t;
-    typedef std::function<void(int)> mailProfile_OnGetMessageCountCompletedHandler_t;
-    typedef std::function<void(QString)> mailProfile_OnFetchMessagesCompletedHandler_t;
+    typedef std::function<void(QString)> OpenFileDialogAcceptedHandler_t;
+    typedef std::function<void()> OpenFileDialogRejectedHandler_t;
 
 private:
     struct Impl;
@@ -36,11 +33,8 @@ public:
     virtual ~Android();
 
 public:
-    void mailProfile_OnConnectCompleted(mailProfile_OnConnectCompletedHandler_t handler);
-    void mailProfile_OnDisconnectCompleted(mailProfile_OnDisconnectCompletedHandler_t handler);
-    void mailProfile_OnSendCompleted(mailProfile_OnSendCompletedHandler_t handler);
-    void mailProfile_OnGetMessageCountCompleted(mailProfile_OnGetMessageCountCompletedHandler_t handler);
-    void mailProfile_OnFetchMessagesCompleted(mailProfile_OnFetchMessagesCompletedHandler_t handler);
+    void OpenFileDialogAccepted(OpenFileDialogAcceptedHandler_t handler);
+    void OpenFileDialogRejected(OpenFileDialogRejectedHandler_t handler);
 
 public:
     bool ExceptionCheck();
@@ -54,6 +48,7 @@ public:
 public:
     QString GetScreenType();
     bool Notify(const QString &title, const QString &text, const int id = 0);
+    bool OpenFileDialog();
     bool ShowToast(const QString &text, const int duration = 4000);
 
     void MailProfile_init();

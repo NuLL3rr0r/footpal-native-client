@@ -55,6 +55,12 @@ public:
     ~Impl();
 
 public:
+#if defined ( Q_OS_ANDROID )
+    void OpenFileDialogAccepted(QString path);
+    void OpenFileDialogRejected();
+#endif // defined ( Q_OS_ANDROID )
+
+public:
     void Initialize();
     void InitializeEvents();
 };
@@ -122,6 +128,20 @@ bool UiEngine::notify(const QString &title, const QString &text, const int id) c
 }
 
 #if defined ( Q_OS_ANDROID )
+bool UiEngine::openFileDialog() const
+#else
+bool UiEngine::openFileDialog()
+#endif // defined ( Q_OS_ANDROID )
+{
+#if defined ( Q_OS_ANDROID )
+    return Pool::Android()->OpenFileDialog();
+#else
+    QMetaObject::invokeMethod(this->rootObjects().first(), "openFileDialog");
+    return true;
+#endif // defined ( Q_OS_ANDROID )
+}
+
+#if defined ( Q_OS_ANDROID )
 bool UiEngine::showToast(const QString &text, const int duration) const
 #else
 bool UiEngine::showToast(const QString &text, const int duration)
@@ -160,6 +180,20 @@ UiEngine::Impl::~Impl()
     Tray->hide();
 #endif // !defined ( Q_OS_ANDROID )
 }
+
+#if defined ( Q_OS_ANDROID )
+void UiEngine::Impl::OpenFileDialogAccepted(QString path)
+{
+    QVariant varPath = path;
+    QMetaObject::invokeMethod(m_parent->rootObjects().first(), "onOpenFileDialogAccepted",
+                              Q_ARG(QVariant, path));
+}
+
+void UiEngine::Impl::OpenFileDialogRejected()
+{
+    QMetaObject::invokeMethod(m_parent->rootObjects().first(), "onOpenFileDialogRejected");
+}
+#endif // defined ( Q_OS_ANDROID )
 
 void UiEngine::Impl::Initialize()
 {
@@ -202,6 +236,16 @@ void UiEngine::Impl::Initialize()
 
 void UiEngine::Impl::InitializeEvents()
 {
-
+#if defined ( Q_OS_ANDROID )
+    Pool::Android()->OpenFileDialogAccepted(
+                std::bind(&UiEngine::Impl::OpenFileDialogAccepted,
+                          this,
+                          std::placeholders::_1)
+                );
+    Pool::Android()->OpenFileDialogRejected(
+                std::bind(&UiEngine::Impl::OpenFileDialogRejected,
+                          this)
+                );
+#endif // defined ( Q_OS_ANDROID )
 }
 
