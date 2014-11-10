@@ -865,6 +865,11 @@ void RestApi::Impl::SetupEvents()
     connect(Http_FS_Download.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
             this, SLOT(On_FS_DownloadRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
 
+    connect(Http_FS_DownloadUrl.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_FS_DownloadUrlRequestFailed(const Http::Error &)));
+    connect(Http_FS_DownloadUrl.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_FS_DownloadUrlRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
     connect(Http_FS_Upload.get(), SIGNAL(Signal_Failed(const Http::Error &)),
             this, SLOT(On_FS_UploadRequestFailed(const Http::Error &)));
     connect(Http_FS_Upload.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
