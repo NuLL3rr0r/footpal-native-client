@@ -27,13 +27,13 @@ public:
     virtual ~HttpFileTransfer();
 
 signals:
-    void Signal_Failed();
-    void Signal_ReadyRead();
-    void Signal_DownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-    void Signal_Finished();
+    void signal_Failed();
+    void signal_ReadyRead();
+    void signal_DownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+    void signal_Finished();
 
 public:
-    Q_INVOKABLE void Download(const QString &url, const QString &localPath, const QString &localFileName);
+    Q_INVOKABLE void download(const QString &url, const QString &localPath, const QString &localFileName);
 };
 
 

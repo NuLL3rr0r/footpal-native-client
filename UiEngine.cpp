@@ -225,6 +225,7 @@ void UiEngine::Impl::Initialize()
     QQmlContext *context = m_parent->rootContext();
     context->setContextProperty("UiEngine", m_parent);
     context->setContextProperty("RestApi", Pool::RestApi());
+    context->setContextProperty("HttpFileTransfer", reinterpret_cast<QObject *>(Pool::HttpFileTransfer()));
     context->setContextProperty("FontPath", "qrc:///fnt/main.ttf");
 
     context->setContextProperty("ImapClient", Pool::ImapClient());

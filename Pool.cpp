@@ -17,6 +17,7 @@
 #endif // defined ( Q_OS_ANDROID )
 #include "Crypto.hpp"
 #include "Database.hpp"
+#include "HttpFileTransfer.hpp"
 #include "RestApi.hpp"
 #include "Mail/Mailbox.hpp"
 
@@ -46,6 +47,7 @@ struct Pool::Impl
 #endif // defined ( Q_OS_ANDROID )
     typedef std::unique_ptr<Ertebat::Crypto> Crypto_t;
     typedef std::unique_ptr<Ertebat::Database> Database_t;
+    typedef std::unique_ptr<Ertebat::HttpFileTransfer> HttpFileTransfer_t;
     typedef std::unique_ptr<Ertebat::RestApi> RestApi_t;
     typedef std::unique_ptr<QTranslator> Translator_t;
     typedef std::unique_ptr<Ertebat::Mail::SmtpClient> SmtpClient_t;
@@ -65,6 +67,9 @@ struct Pool::Impl
 
     static std::mutex DatabaseMutex;
     static Database_t DatabaseInstance;
+
+    static std::mutex HttpFileTransferMutex;
+    static HttpFileTransfer_t HttpFileTransferInstance;
 
     static std::mutex RestApiMutex;
     static RestApi_t RestApiInstance;
@@ -95,6 +100,9 @@ Pool::Impl::Crypto_t Pool::Impl::CryptoInstance = nullptr;
 
 std::mutex Pool::Impl::DatabaseMutex;
 Pool::Impl::Database_t Pool::Impl::DatabaseInstance = nullptr;
+
+std::mutex Pool::Impl::HttpFileTransferMutex;
+Pool::Impl::HttpFileTransfer_t Pool::Impl::HttpFileTransferInstance = nullptr;
 
 std::mutex Pool::Impl::RestApiMutex;
 Pool::Impl::RestApi_t Pool::Impl::RestApiInstance = nullptr;
@@ -201,6 +209,19 @@ Ertebat::Database *Pool::Database()
     }
 
     return Impl::DatabaseInstance.get();
+}
+
+Ertebat::HttpFileTransfer *Pool::HttpFileTransfer()
+{
+    lock_guard<mutex> lock(Impl::HttpFileTransferMutex);
+    (void)lock;
+
+    if (Impl::HttpFileTransferInstance == nullptr) {
+        Impl::HttpFileTransferInstance =
+                std::make_unique<Ertebat::HttpFileTransfer>();
+    }
+
+    return Impl::HttpFileTransferInstance.get();
 }
 
 Ertebat::RestApi *Pool::RestApi()

@@ -21,6 +21,7 @@ class Android;
 #endif /* defined(Q_OS_ANDROID) */
 class Crypto;
 class Database;
+class HttpFileTransfer;
 class Pool;
 class RestApi;
 }
@@ -46,6 +47,7 @@ public:
 #endif /* defined(Q_OS_ANDROID) */
     static Ertebat::Crypto *Crypto();
     static Ertebat::Database *Database();
+    static Ertebat::HttpFileTransfer *HttpFileTransfer();
     static Ertebat::RestApi *RestApi();
     static QTranslator *Translator();
     static Ertebat::Mail::SmtpClient* SmtpClient();
