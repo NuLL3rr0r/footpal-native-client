@@ -29,7 +29,7 @@ Rectangle {
         property bool isInitialized: false;
         property variant initializedTo: ({});
         property int maxSummary: 50;
-        property int itemHeight: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.2 : 100;
+        property int itemHeight: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.15 : 100;
         property int itemSpacing: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.01 : 5;
         property int loadIndex: 0;
         property int loadSize: 1;
@@ -192,10 +192,21 @@ Rectangle {
                 Text {
                     id: titleText
                     anchors.left: contactPicture.right
+                    anchors.right: dateText.left
                     anchors.top: parent.top
                     anchors.margins: 5
                     text: model.subject
                     font.pixelSize: parent.height * 0.2
+
+                    onTextChanged: {
+                        var maxChars = ((parent.width * 0.5) / font.pixelSize) - 4;
+                        console.log("Max Chars: " + maxChars);
+                        console.log("Text Length: " + text.length);
+                        if (text.length > maxChars) {
+                            text = text.substring(0, maxChars) + "...";
+                            console.log("Text New Length: " + text.length);
+                        }
+                    }
                 }
                 Text {
                     id: senderText
@@ -438,6 +449,10 @@ Rectangle {
                 privates.mailJSON.substr(toInsert, privates.mailJSON.length - toInsert);
 
         privates.loadIndex += privates.loadSize;
+
+        if(privates.loadIndex > 10) {
+            privates.targetClient.workerThread_autoFetchDisable();
+        }
     }
 }
 
