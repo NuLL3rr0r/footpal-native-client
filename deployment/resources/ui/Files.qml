@@ -1,5 +1,7 @@
 /**
  * @author  Morteza Sabetraftar <morteza.sabetraftar@gmail.com>
+ * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
+ * @author  Mohammad S. Babaei <info@babaei.net>
  */
 
 
@@ -10,6 +12,7 @@ import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
 import "custom"
 import "utils"
+import "scripts/ws.js" as WS
 import "scripts/settings.js" as Settings
 
 Rectangle {
@@ -27,19 +30,41 @@ Rectangle {
         id: privates
 
         property bool isInitialized: false
+        property variant parentId: null;
+        property variant currentId: null;
+        property string movedFileId: "";
         property int barHeight: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.08 : 40
         property int itemHeight: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.15 : 75
         property int itemSpacing: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.01 : 5
         property int checkBoxSize: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.05 : 25
         property int buttonSize: UiEngine.TargetScreenType === ScreenType.Phone ? root.height * 0.08 : 40
         property var selectedItems: new Array();
-        property string testJson: "{ \"files\":" +
-                                  "{ \"file\": [" +
-                                  "{ \"Id\": \"1234\", \"contentType\":\"folder\", \"filename\":\"Work Pics\" }, " +
-                                  "{ \"Id\": \"2345\", \"contentType\":\"folder\", \"filename\":\"Personal Pics\" }, " +
-                                  "{ \"Id\": \"3456\", \"contentType\":\"file\", \"filename\":\"saves.dat\" }, " +
-                                  "{ \"Id\": \"4567\", \"contentType\":\"file\", \"filename\":\"links.txt\" } " +
-                                  "] } }";
+        property string filesJson:
+            "[                                                            " +
+            "   {                                                         " +
+            "      \"_id\":\"5460816f81ec8056ab7defed\",                  " +
+            "      \"contentType\":\"Folder\",                            " +
+            "      \"readCount\":0,                                       " +
+            "      \"entityName\":\"mehdi\",                              " +
+            "      \"owner\":\"54606739a0d1969d3039166e\",                " +
+            "      \"access\":\"Public\",                                 " +
+            "      \"__v\":0,                                             " +
+            "      \"actionLog\":[                                        " +
+            "         {                                                   " +
+            "            \"userId\":\"54606739a0d1969d3039166e\",         " +
+            "            \"action\":\"Create\",                           " +
+            "            \"_id\":\"5460816f81ec8056ab7defee\",            " +
+            "            \"date\":            \"2014-11-10T08:09:29.000           Z\"" +
+            "         }                                                   " +
+            "      ],                                                     " +
+            "      \"status\":true,                                       " +
+            "      \"acl\":[                                              " +
+            "                                                             " +
+            "      ]                                                      " +
+            "   }                                                         " +
+            "]                                                            "
+        ;
+        property variant filesObject: ({});
     }
 
     Component.onCompleted: {
@@ -49,6 +74,46 @@ Rectangle {
         // TODO: load the list of files and folder
 
         privates.isInitialized = true;
+
+        RestApi.onSignal_FS_GetListOfEntity.connect(
+                    onSignalFS_GetListOfEntityCallback
+                    );
+        RestApi.onSignal_FS_CreateDirectory.connect(
+                    onSignalFS_CreateDirectoryCallback
+                    );
+        RestApi.onSignal_FS_DeleteEntity.connect(
+                    onSignalFS_DeleteEntityCallback
+                    );
+        RestApi.onSignal_FS_GetParentId.connect(
+                    onSignalFS_GetParentIdCallback
+                    );
+        RestApi.onSignal_FS_MoveEntity.connect(
+                    onSignalFS_MoveEntityCallback
+                    );
+
+        privates.filesJson = "[]";
+        listCurrentDirectory();
+    }
+
+    Component.onDestruction: {
+        applicationWindow.openFileDialogAccepted.disconnect(root.onOpenFileDialogAccepted);
+        applicationWindow.openFileDialogRejected.disconnect(root.onOpenFileDialogRejected);
+
+        RestApi.onSignal_FS_GetListOfEntity.disconnect(
+                    onSignalFS_GetListOfEntityCallback
+                    );
+        RestApi.onSignal_FS_CreateDirectory.disconnect(
+                    onSignalFS_CreateDirectoryCallback
+                    );
+        RestApi.onSignal_FS_DeleteEntity.disconnect(
+                    onSignalFS_DeleteEntityCallback
+                    );
+        RestApi.onSignal_FS_GetParentId.disconnect(
+                    onSignalFS_GetParentIdCallback
+                    );
+        RestApi.onSignal_FS_MoveEntity.disconnect(
+                    onSignalFS_MoveEntityCallback
+                    );
     }
 
     Bar {
@@ -76,8 +141,8 @@ Rectangle {
 
     JSONListModel {
         id: jsonModel
-        json: privates.testJson
-        query: "$.files.file[*]"
+        json: privates.filesJson
+        query: "*"
     }
 
     ListView {
@@ -101,6 +166,9 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+                        privates.parentId = privates.currentId;
+                        privates.currentId = model._id;
+                        listCurrentDirectory();
                     }
                 }
 
@@ -123,7 +191,7 @@ Rectangle {
                     anchors.left: typeIconImage.right
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.margins: 5
-                    text: model.filename
+                    text: model.entityName
                     font.pixelSize: parent.height * 0.2
                 }
                 ExtButton {
@@ -136,8 +204,10 @@ Rectangle {
                     defaultImage: "qrc:///img/btn_file_delete.png";
                     pressedImage: "qrc:///img/btn_file_delete_pressed.png";
                     onSignal_clicked: {
-                        UiEngine.showToast("Clicked on Delete");
-
+                        RestApi.fs_DeleteEntity(
+                                    WS.Context.token,
+                                    model._id
+                                    );
                         // TODO: prompt and delete the file
                     }
                 }
@@ -151,10 +221,8 @@ Rectangle {
                     defaultImage: "qrc:///img/btn_file_share.png";
                     pressedImage: "qrc:///img/btn_file_share_pressed.png";
                     onSignal_clicked: {
-                        UiEngine.showToast("Clicked on Share");
-
+                        WS.Context.fileIdToShare = model._id;
                         pageLoader.setSource("qrc:///ui/FileSharing.qml");
-                        // TODO: go to file sharing page
                     }
                 }
                 ExtButton {
@@ -167,9 +235,7 @@ Rectangle {
                     defaultImage: "qrc:///img/btn_file_move.png";
                     pressedImage: "qrc:///img/btn_file_move_pressed.png";
                     onSignal_clicked: {
-                        UiEngine.showToast("Clicked on Move");
-
-                        // TODO: mark for movement
+                        privates.movedFileId = model._id;
                     }
                 }
             }
@@ -185,6 +251,22 @@ Rectangle {
             anchors.fill: parent
             anchors.margins: 5
             spacing: 5
+
+            ExtButton {
+                id: buttonUp
+                height: parent.height * 0.8;
+                width: height;
+                anchors.verticalCenter: parent.verticalCenter
+                defaultImage: "qrc:///img/btn_bar_back.png"
+                pressedImage: "qrc:///img/btn_bar_back_pressed.png"
+                onSignal_clicked: {
+                    privates.currentId = privates.parentId;
+                    RestApi.fs_GetParentId(
+                                WS.Context.token,
+                                privates.currentId
+                                );
+                }
+            }
 
             ExtButton {
                 id: buttonNewFolder
@@ -222,6 +304,14 @@ Rectangle {
                 defaultImage: "qrc:///img/btn_bar_paste.png"
                 pressedImage: "qrc:///img/btn_bar_paste_pressed.png"
                 onSignal_clicked: {
+                    if(privates.movedFileId !== "") {
+                        RestApi.fs_MoveEntity(
+                                    WS.Context.token,
+                                    privates.movedFileId,
+                                    privates.currentId
+                                    );
+                        privates.movedFileId = "";
+                    }
                 }
             }
         }
@@ -281,7 +371,12 @@ Rectangle {
                         return;
                     }
 
-                    // TODO: create the folder
+                    RestApi.fs_CreateDirectory(
+                                WS.Context.token,
+                                folderNameTextField.text,
+                                "Public",
+                                (privates.currentId === null ? "" : privates.currentId)
+                                );
 
                     newFolderBar.state = "normal"
                 }
@@ -295,6 +390,140 @@ Rectangle {
 
     function onOpenFileDialogRejected() {
 
+    }
+
+    function listCurrentDirectory() {
+        if(privates.currentId == null) {
+            RestApi.fs_GetListOfEntity(WS.Context.token);
+        } else {
+            RestApi.fs_GetListOfEntity(WS.Context.token, privates.currentId);
+        }
+    }
+
+    function onSignalFS_GetParentIdCallback(
+        connectionStatus, getParentIdStatus, response
+        )
+    {
+        console.log("connection: " + connectionStatus +  ", status: " + getParentIdStatus,
+                    ", response: " + response);
+
+        switch(getParentIdStatus) {
+        case 404:
+            UiEngine.showToast(qsTr("ERROR_FS_PARENTID_404") + UiEngine.EmptyLangString);
+            break;
+        case 400:
+            UiEngine.showToast(qsTr("ERROR_FS_PARENTID_400") + UiEngine.EmptyLangString);
+            break;
+        case 500:
+            UiEngine.showToast(qsTr("ERROR_FS_PARENTID_500") + UiEngine.EmptyLangString);
+            break;
+        case 200:
+            privates.parentId = JSON.parse(response).parentId;
+            listCurrentDirectory();
+            break;
+        default:
+            break;
+        }
+    }
+
+    function onSignalFS_MoveEntityCallback(
+        connectionStatus, moveEntityStatus, response
+        )
+    {
+        console.log("connection: " + connectionStatus +  ", status: " + moveEntityStatus,
+                    ", response: " + response);
+
+        switch(moveEntityStatus) {
+        case 404:
+            UiEngine.showToast(qsTr("ERROR_FS_MOVEENTITY_404") + UiEngine.EmptyLangString);
+            break;
+        case 400:
+            UiEngine.showToast(qsTr("ERROR_FS_MOVEENTITY_400") + UiEngine.EmptyLangString);
+            break;
+        case 500:
+            UiEngine.showToast(qsTr("ERROR_FS_MOVEENTITY_500") + UiEngine.EmptyLangString);
+            break;
+        case 403:
+            UiEngine.showToast(qsTr("ERROR_FS_MOVEENTITY_403") + UiEngine.EmptyLangString);
+            break;
+        case 200:
+            listCurrentDirectory();
+            break;
+        default:
+            break;
+        }
+    }
+
+    function onSignalFS_DeleteEntityCallback(
+        connectionStatus, deleteEntityStatus, response
+        )
+    {
+        console.log("connection: " + connectionStatus +  ", status: " + deleteEntityStatus,
+                    ", response: " + response);
+        switch(deleteEntityStatus) {
+        case 404:
+            UiEngine.showToast(qsTr("ERROR_FS_DELETEENTITY_404") + UiEngine.EmptyLangString);
+            break;
+        case 400:
+            UiEngine.showToast(qsTr("ERROR_FS_DELETEENTITY_400") + UiEngine.EmptyLangString);
+            break;
+        case 500:
+            UiEngine.showToast(qsTr("ERROR_FS_DELETEENTITY_500") + UiEngine.EmptyLangString);
+            break;
+        case 403:
+            UiEngine.showToast(qsTr("ERROR_FS_DELETEENTITY_403") + UiEngine.EmptyLangString);
+            break;
+        case 200:
+            listCurrentDirectory();
+            break;
+        default:
+            break;
+        }
+    }
+
+    function onSignalFS_GetListOfEntityCallback(
+        connectionStatus, getListOfEntityStatus, response
+        )
+    {
+        console.log("connection: " + connectionStatus +  ", status: " + getListOfEntityStatus,
+                    ", response: " + response);
+        switch(getListOfEntityStatus) {
+        case 404:
+            UiEngine.showToast(qsTr("ERROR_FS_GETLISTOFENTITY_404") + UiEngine.EmptyLangString);
+            break;
+        case 500:
+            UiEngine.showToast(qsTr("ERROR_FS_GETLISTOFENTITY_500") + UiEngine.EmptyLangString);
+            break;
+        case 403:
+            UiEngine.showToast(qsTr("ERROR_FS_GETLISTOFENTITY_403") + UiEngine.EmptyLangString);
+            break;
+        case 200:
+            privates.filesJson = response;
+            privates.filesObject = JSON.parse(response);
+            break;
+        default:
+        }
+    }
+
+    function onSignalFS_CreateDirectoryCallback(
+        connectionStatus, createDirectoryStatus, response
+        )
+    {
+        console.log("connection: " + connectionStatus +  ", status: " + createDirectoryStatus,
+                    ", response: " + response);
+        switch(createDirectoryStatus) {
+        case 400:
+            UiEngine.showToast(qsTr("ERROR_FS_CREATEDIRECTORY_400") + UiEngine.EmptyLangString);
+            break;
+        case 404:
+            UiEngine.showToast(qsTr("ERROR_FS_CREATEDIRECTORY_404") + UiEngine.EmptyLangString);
+            break;
+        case 201:
+            listCurrentDirectory();
+            break;
+        default:
+            break;
+        }
     }
 }
 
