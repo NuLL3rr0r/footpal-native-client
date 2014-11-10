@@ -6,6 +6,7 @@
 import QtQuick 2.3;
 import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
+import QtQuick.Dialogs 1.0
 import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
 import "custom"
@@ -46,6 +47,20 @@ Rectangle {
         // TODO: load the list of files and folder
 
         privates.isInitialized = true;
+    }
+
+    FileDialog {
+        id: fileDialog;
+        title: qsTr("CHOOSE_FILE");
+        visible: false;
+        nameFilters: [ "All files (*)" ];
+
+        onAccepted: {
+
+        }
+        onRejected: {
+
+        }
     }
 
     Bar {
@@ -207,6 +222,7 @@ Rectangle {
                 defaultImage: "qrc:///img/btn_bar_new_file.png"
                 pressedImage: "qrc:///img/btn_bar_new_file_pressed.png"
                 onSignal_clicked: {
+                    fileDialog.open();
                 }
             }
 
