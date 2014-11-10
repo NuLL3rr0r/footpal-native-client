@@ -9,10 +9,10 @@ QT += core gui network qml quick websockets widgets
 QT -= multimedia multimediawidgets sql testlib
 android {
     QT += androidextras
-    QT -=  webkit
+    QT -= webkit
 }
 win32 {
-    QT +=  webkit
+    QT += webkit
 }
 
 
