@@ -6,13 +6,9 @@ TEMPLATE = app
 
 
 QT += core gui network qml quick websockets widgets
-QT -= multimedia multimediawidgets sql testlib
+QT -= multimedia multimediawidgets sql testlib webkit webkitwidgets
 android {
     QT += androidextras
-    QT -= webkit
-}
-win32 {
-    QT += webkit
 }
 
 
