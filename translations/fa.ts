@@ -42,48 +42,48 @@
     </message>
     <message>
         <location filename="../deployment/resources/ui/AddMailServer.qml" line="186"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="239"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="241"/>
         <source>SERVER_ADDRESS</source>
         <translation>آدرس سرور</translation>
     </message>
     <message>
         <location filename="../deployment/resources/ui/AddMailServer.qml" line="195"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="248"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="250"/>
         <source>PORT</source>
         <translation>پورت</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="276"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="278"/>
         <source>NEXT</source>
         <translation>ادامه</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="318"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="320"/>
         <source>ACCEPT</source>
         <translation>تأیید</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="390"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="392"/>
         <source>NOT_SUCCESSFUL</source>
         <translation>ایجاد حساب ناموفق بود</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="401"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="403"/>
         <source>BACK</source>
         <translation>بازگشت</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="284"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="290"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="296"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="302"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="326"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="332"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="338"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="344"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="350"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="356"/>
-        <location filename="../deployment/resources/ui/AddMailServer.qml" line="362"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="286"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="292"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="298"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="304"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="328"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="334"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="340"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="346"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="352"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="358"/>
+        <location filename="../deployment/resources/ui/AddMailServer.qml" line="364"/>
         <source>INVALID_FIELD_LENGTH</source>
         <translation>لطفاً همه موارد را پر کنید</translation>
     </message>
@@ -382,31 +382,170 @@
 <context>
     <name>Files</name>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="54"/>
         <source>CHOOSE_FILE</source>
-        <translation>لطفا یک فایل را انتخاب نمائید</translation>
+        <translation type="vanished">لطفا یک فایل را انتخاب نمائید</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="84"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="150"/>
         <source>MY_FILES</source>
         <translation>فایل های من</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="275"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="261"/>
+        <source>FILESHARING_MOVE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="376"/>
         <source>FOLDER_NAME</source>
         <translation>نام پوشه</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="290"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="391"/>
         <source>INVALID_FOLDER_NAME</source>
         <translation>نام پوشه نامعتبر</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="435"/>
+        <source>Failed to download %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="445"/>
+        <source>Downloading %1: %2%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="451"/>
+        <source>Your file has been saved to %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="461"/>
+        <source>ERROR_FS_DOWNLOADURL_404</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="464"/>
+        <source>ERROR_FS_DOWNLOADURL_400</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="467"/>
+        <source>ERROR_FS_DOWNLOADURL_500</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="470"/>
+        <source>ERROR_FS_DOWNLOADURL_403</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="505"/>
+        <source>ERROR_FS_UPLOAD_404</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="508"/>
+        <source>ERROR_FS_UPLAOD_400</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="511"/>
+        <source>ERROR_FS_UPLAOD_500</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="514"/>
+        <source>ERROR_FS_UPLOAD_403</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="533"/>
+        <source>ERROR_FS_PARENTID_404</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="536"/>
+        <source>ERROR_FS_PARENTID_400</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="539"/>
+        <source>ERROR_FS_PARENTID_500</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="559"/>
+        <source>ERROR_FS_MOVEENTITY_404</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="562"/>
+        <source>ERROR_FS_MOVEENTITY_400</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="565"/>
+        <source>ERROR_FS_MOVEENTITY_500</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="568"/>
+        <source>ERROR_FS_MOVEENTITY_403</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="586"/>
+        <source>ERROR_FS_DELETEENTITY_404</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="589"/>
+        <source>ERROR_FS_DELETEENTITY_400</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="592"/>
+        <source>ERROR_FS_DELETEENTITY_500</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="595"/>
+        <source>ERROR_FS_DELETEENTITY_403</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="613"/>
+        <source>ERROR_FS_GETLISTOFENTITY_404</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="616"/>
+        <source>ERROR_FS_GETLISTOFENTITY_500</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="619"/>
+        <source>ERROR_FS_GETLISTOFENTITY_403</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="637"/>
+        <source>ERROR_FS_CREATEDIRECTORY_400</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="640"/>
+        <source>ERROR_FS_CREATEDIRECTORY_404</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>PHONE_NUMBER</source>
         <translation type="obsolete">شماره موبایل</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="287"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="388"/>
         <source>ADD</source>
         <translation>تأیید</translation>
     </message>
@@ -464,7 +603,7 @@
 <context>
     <name>MailDetails</name>
     <message>
-        <location filename="../deployment/resources/ui/MailDetails.qml" line="57"/>
+        <location filename="../deployment/resources/ui/MailDetails.qml" line="58"/>
         <source>MAIL_DETAILS</source>
         <translation>مشاهده نامه</translation>
     </message>
@@ -492,9 +631,14 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="../deployment/resources/ui/Main.qml" line="24"/>
+        <location filename="../deployment/resources/ui/Main.qml" line="25"/>
         <source>APP_TITLE</source>
         <translation>ارتباط</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Main.qml" line="189"/>
+        <source>CHOOSE_FILE</source>
+        <translation type="unfinished">لطفا یک فایل را انتخاب نمائید</translation>
     </message>
 </context>
 <context>
@@ -524,22 +668,22 @@
         <translation>نام کاربری</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="88"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="89"/>
         <source>PASSWORD</source>
         <translation>کلمه عبور</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="97"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="99"/>
         <source>SIGN_IN</source>
         <translation>ورود</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="100"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="102"/>
         <source>INVALID_PHONE_NUMBER</source>
         <translation>شماره موبایل نامعتبر</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="106"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="108"/>
         <source>INVALID_PASSWORD_LENGTH</source>
         <translation>لطفاً کلمه عبور را وارد کنید</translation>
     </message>
@@ -624,12 +768,12 @@
 <context>
     <name>UserProfile</name>
     <message>
-        <location filename="../deployment/resources/ui/UserProfile.qml" line="65"/>
+        <location filename="../deployment/resources/ui/UserProfile.qml" line="104"/>
         <source>MY_PROFILE</source>
         <translation>مشخصات من</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/UserProfile.qml" line="156"/>
+        <location filename="../deployment/resources/ui/UserProfile.qml" line="197"/>
         <source>CHANGE_PASSWORD</source>
         <translation>تغییر کلمه عبور</translation>
     </message>
