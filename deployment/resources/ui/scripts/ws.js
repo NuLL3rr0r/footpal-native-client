@@ -41,6 +41,7 @@ function parseTextMessage(message){
     }
     else if(encoded.code === 101){
         getIndividualRooms();
+        getGroupRooms();
         getMyProfile();
         getFriendList();
     }
@@ -49,6 +50,18 @@ function parseTextMessage(message){
         for(var i = 0 ; i < encoded.rooms.length ; i++){
             //console.log(encoded.rooms[i]._id);
             Context.addNewRoom("room", encoded.rooms[i]._id, "", "", "I");
+            for(var j = 0 ; j < encoded.rooms[i].Members.length; j++){
+                //console.log(encoded.rooms[i].Members[j]);
+                Context.addMemberToRoom(encoded.rooms[i]._id, encoded.rooms[i].Members[j], encoded.rooms[i].Members[j]);
+            }
+            Context.getRoomById(encoded.rooms[i]._id).log();
+        }
+    }
+    else if(encoded.code === 8){
+        //console.log("GroupRooms result");
+        for(var i = 0 ; i < encoded.rooms.length ; i++){
+            //console.log(encoded.rooms[i]._id);
+            Context.addNewRoom(encoded.room[i].name, encoded.rooms[i]._id, "", "", "G");
             for(var j = 0 ; j < encoded.rooms[i].Members.length; j++){
                 //console.log(encoded.rooms[i].Members[j]);
                 Context.addMemberToRoom(encoded.rooms[i]._id, encoded.rooms[i].Members[j], encoded.rooms[i].Members[j]);
@@ -146,6 +159,30 @@ function addFriendToList(username){
 
 function getFriendList(){
     var cmd = "{\"requestCode\" : \"7\", \"message\": \"GetFriendList\"}";
+    //console.log(cmd);
+    socketJs.sendTextMessage(cmd);
+}
+
+function getGroupRooms(){
+    var cmd = "{\"requestCode\" : \"8\", \"message\": \"GetGroupContacts\"}";
+    //console.log(cmd);
+    socketJs.sendTextMessage(cmd);
+}
+
+function createGroupRoom(roomName){
+    var cmd = "{\"requestCode\" : \"9\", \"message\": \"CreateGroupRoom\", \"roomName\" : \"" + roomName + "\"}";
+    //console.log(cmd);
+    socketJs.sendTextMessage(cmd);
+}
+
+function AddMemberToGroup(roomId, memberId){
+    var cmd = "{\"requestCode\" : \"10\", \"message\": \"AddMemberToGroup\", \"roomId\" : \"" + roomId + "\,\"memberId\" : \"" + memberId + "\"}";
+    //console.log(cmd);
+    socketJs.sendTextMessage(cmd);
+}
+
+function GetGroupMembers(roomId){
+    var cmd = "{\"requestCode\" : \"11\", \"message\": \"GetGroupMembers\", \"roomId\" : \"" + roomId + "\"}";
     //console.log(cmd);
     socketJs.sendTextMessage(cmd);
 }
