@@ -1,5 +1,6 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QStandardPaths>
 #include <QtCore/QString>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkConfigurationManager>
@@ -57,15 +58,26 @@ HttpFileTransfer::~HttpFileTransfer() = default;
 void HttpFileTransfer::download(const QString &url, const QString &localPath, const QString &localFileName)
 {
     if (!m_pimpl->IsConnected()) {
-        emit signal_Failed();
+        emit signal_Failed(m_pimpl->LocalFile->fileName());
         return;
     }
 
     m_pimpl->LocalFile.reset(new QFile(QDir(localPath).filePath(localFileName)));
+    m_pimpl->LocalFile->open(QIODevice::WriteOnly);
     m_pimpl->NetworkAccessManager.reset(new QNetworkAccessManager());
     QNetworkRequest request { QUrl(url) };
     m_pimpl->NetworkReply = m_pimpl->NetworkAccessManager->get(request);
     m_pimpl->SetupEvents(m_pimpl->NetworkReply);
+}
+
+const QString HttpFileTransfer::getDownloadServerUrl()
+{
+    return REST_BASE_URL;
+}
+
+const QString HttpFileTransfer::getLocalDownloadFolderPath()
+{
+    return QStandardPaths::locate(QStandardPaths::DownloadLocation, QString(), QStandardPaths::LocateDirectory);
 }
 
 HttpFileTransfer::Impl::Impl(HttpFileTransfer *parent) :
@@ -76,35 +88,42 @@ HttpFileTransfer::Impl::Impl(HttpFileTransfer *parent) :
 
 void HttpFileTransfer::Impl::DownloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
-    emit m_parent->signal_DownloadProgress(bytesReceived, bytesTotal);
+    emit m_parent->signal_DownloadProgress(LocalFile->fileName(), bytesReceived, bytesTotal);
 }
 
 void HttpFileTransfer::Impl::Error(QNetworkReply::NetworkError code)
 {
     (void)code;
-    emit m_parent->signal_Failed();
+    if (LocalFile->isOpen()) {
+        LocalFile->close();
+    }
+    emit m_parent->signal_Failed(LocalFile->fileName());
     NetworkReply->deleteLater();
 }
 
 void HttpFileTransfer::Impl::Finished()
 {
-    emit m_parent->signal_Finished();
-    LocalFile->flush();
-    LocalFile->close();
+    if (LocalFile->isOpen()) {
+        LocalFile->flush();
+        LocalFile->close();
+    }
+    emit m_parent->signal_Finished(LocalFile->fileName());
     NetworkReply->deleteLater();
 }
 
 void HttpFileTransfer::Impl::ReadyRead()
 {
-    emit m_parent->signal_ReadyRead();
-    LocalFile->open(QIODevice::WriteOnly);
+    emit m_parent->signal_ReadyRead(LocalFile->fileName());
     LocalFile->write(NetworkReply->readAll());
 }
 
 void HttpFileTransfer::Impl::SslErrors(const QList<QSslError> &errors)
 {
+    if (LocalFile->isOpen()) {
+        LocalFile->close();
+    }
     (void)errors;
-    emit m_parent->signal_Failed();
+    emit m_parent->signal_Failed(LocalFile->fileName());
     NetworkReply->deleteLater();
 }
 

@@ -93,9 +93,12 @@ Rectangle {
         RestApi.onSignal_FS_Upload.connect(
                     onSignalFS_UploadCallback
                     );
-        RestApi.onSignal_FS_DownloadUrl.connect(
-                    onSignalFS_DownloadUrlCallback
-                    );
+
+        HttpFileTransfer.onSignal_Failed.connect(onDownloadUrl_Failed);
+        HttpFileTransfer.onSignal_ReadyRead.connect(onDownloadUrl_ReadyRead);
+        HttpFileTransfer.onSignal_DownloadProgress.connect(onDownloadUrl_DownloadProgress);
+        HttpFileTransfer.onSignal_Finished.connect(onDownloadUrl_Finished);
+        RestApi.onSignal_FS_DownloadUrl.connect(onSignalFS_DownloadUrlCallback);
 
         privates.filesJson = "[]";
         listCurrentDirectory();
@@ -123,11 +126,7 @@ Rectangle {
         RestApi.onSignal_FS_Upload.disconnect(
                     onSignalFS_UploadCallback
                     );
-        RestApi.onSignal_FS_DownloadUrl.disconnect(
-                    onSignalFS_DownloadUrlCallback
-                    );
-
-
+        RestApi.onSignal_FS_DownloadUrl.disconnect(onSignalFS_DownloadUrlCallback);
     }
 
     Bar {
@@ -431,9 +430,30 @@ Rectangle {
         }
     }
 
+    function onDownloadUrl_Failed(localFile)
+    {
+        UiEngine.showToast(qsTr("Failed to download %1").arg(localFile));
+    }
+
+    function onDownloadUrl_ReadyRead(localFile)
+    {
+
+    }
+
+    function onDownloadUrl_DownloadProgress(localFile, bytesReceived, bytesTotal)
+    {
+        UiEngine.showToast(qsTr("Downloading %1: %2\%").arg(localFile).arg(
+                    Math.round(bytesReceived / bytesTotal * 100)));
+    }
+
+    function onDownloadUrl_Finished(localFile)
+    {
+        UiEngine.showToast(qsTr("Your file has been saved to %1.").arg(localFile));
+    }
+
     function onSignalFS_DownloadUrlCallback(connectionStatus, downloadUrlStatus, response)
     {
-        console.log("11connection: " + connectionStatus +  ", status: " + downloadUrlStatus,
+        console.log("connection: " + connectionStatus +  ", status: " + downloadUrlStatus,
                     ", response: " + response);
 
         switch(downloadUrlStatus) {
@@ -450,8 +470,24 @@ Rectangle {
             UiEngine.showToast(qsTr("ERROR_FS_DOWNLOADURL_403") + UiEngine.EmptyLangString);
             break;
         case 200:
-            console.log("HEYYYYYYYYYYYY!");
-            console.log(response);
+            var parsedJson = JSON.parse(response);
+            var relativeFileUrl = String(parsedJson.fileUrl);
+
+            var url = HttpFileTransfer.getDownloadServerUrl();
+            if (url.indexOf("/", url.length - 1) === -1) {
+                url += "/";
+            }
+            url += relativeFileUrl;
+
+            var lastPathSeparatorPosition = relativeFileUrl.lastIndexOf("/");
+            var fileName = "";
+            if (lastPathSeparatorPosition !== -1 && lastPathSeparatorPosition !== relativeFileUrl.length - 1) {
+                fileName = relativeFileUrl.substring(lastPathSeparatorPosition + 1);
+            }
+
+            if (fileName !== "") {
+                HttpFileTransfer.download(url, HttpFileTransfer.getLocalDownloadFolderPath(), fileName);
+            }
             break;
         default:
             break;

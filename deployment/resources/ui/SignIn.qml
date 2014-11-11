@@ -110,8 +110,6 @@ Rectangle {
                 }
 
                 RestApi.signIn(usernameTextInput.text, passwordTextInput.text);
-
-//                pageLoader.setSource("qrc:///ui/Home.qml");
             }
         }
 
