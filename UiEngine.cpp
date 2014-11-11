@@ -212,9 +212,7 @@ void UiEngine::Impl::Initialize()
     qRegisterMetaType<Ertebat::RestStatusCodes::FS_GetParentIdStatus>("Ertebat::RestStatusCodes::FS_GetParentIdStatus");
     qRegisterMetaType<Ertebat::RestStatusCodes::FS_MoveEntityStatus>("Ertebat::RestStatusCodes::FS_MoveEntityStatus");
     qRegisterMetaType<Ertebat::RestStatusCodes::FS_DeleteEntityStatus>("Ertebat::RestStatusCodes::FS_DeleteEntityStatus");
-    qRegisterMetaType<Ertebat::RestStatusCodes::FS_DownloadStatus>("Ertebat::RestStatusCodes::FS_DownloadStatus");
     qRegisterMetaType<Ertebat::RestStatusCodes::FS_DownloadUrlStatus>("Ertebat::RestStatusCodes::FS_DownloadUrlStatus");
-    qRegisterMetaType<Ertebat::RestStatusCodes::FS_UploadStatus>("Ertebat::RestStatusCodes::FS_UploadStatus");
     qRegisterMetaType<Ertebat::RestStatusCodes::FS_AddAccessRoleStatus>("Ertebat::RestStatusCodes::FS_AddAccessRoleStatus");
     qRegisterMetaType<Ertebat::RestStatusCodes::FS_RemoveAccessRoleStatus>("Ertebat::RestStatusCodes::FS_RemoveAccessRoleStatus");
     qRegisterMetaType<Ertebat::RestStatusCodes::FS_ChangeAccessTypeStatus>("Ertebat::RestStatusCodes::FS_ChangeAccessTypeStatus");

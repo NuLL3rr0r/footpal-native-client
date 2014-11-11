@@ -34,9 +34,7 @@ class Ertebat::RestStatusCodes : public QObject {
     Q_ENUMS ( FS_GetParentIdStatus )
     Q_ENUMS ( FS_MoveEntityStatus )
     Q_ENUMS ( FS_DeleteEntityStatus )
-    Q_ENUMS ( FS_DownloadStatus )
     Q_ENUMS ( FS_DownloadUrlStatus )
-    Q_ENUMS ( FS_UploadStatus )
     Q_ENUMS ( FS_AddAccessRoleStatus )
     Q_ENUMS ( FS_RemoveAccessRoleStatus )
     Q_ENUMS ( FS_ChangeAccessTypeStatus )
@@ -159,15 +157,6 @@ public:
         FS_DeleteEntity_InternalServerError = 500
     };
 
-    enum FS_DownloadStatus {
-        FS_Download_None = 0,
-        FS_Download_OK = 200,
-        FS_Download_BadRequest = 400,
-        FS_Download_Forbidden = 403,
-        FS_Download_NotFound = 404,
-        FS_Download_InternalServerError = 500
-    };
-
     enum FS_DownloadUrlStatus {
         FS_DownloadUrl_None = 0,
         FS_DownloadUrl_OK = 200,
@@ -175,15 +164,6 @@ public:
         FS_DownloadUrl_Forbidden = 403,
         FS_DownloadUrl_NotFound = 404,
         FS_DownloadUrl_InternalServerError = 500
-    };
-
-    enum FS_UploadStatus {
-        FS_Upload_None = 0,
-        FS_Upload_Created = 201,
-        FS_Upload_BadRequest = 400,
-        FS_Upload_Forbidden = 403,
-        FS_Upload_NotFound = 404,
-        FS_Upload_InternalServerError = 500
     };
 
     enum FS_AddAccessRoleStatus {
@@ -292,15 +272,9 @@ signals:
     void signal_FS_DeleteEntity(Ertebat::RestStatusCodes::ConnectionStatus,
                                 Ertebat::RestStatusCodes::FS_DeleteEntityStatus,
                                 const QString &);
-    void signal_FS_Download(Ertebat::RestStatusCodes::ConnectionStatus,
-                            Ertebat::RestStatusCodes::FS_DownloadStatus,
-                            const QString &);
     void signal_FS_DownloadUrl(Ertebat::RestStatusCodes::ConnectionStatus,
                             Ertebat::RestStatusCodes::FS_DownloadUrlStatus,
                             const QString &);
-    void signal_FS_Upload(Ertebat::RestStatusCodes::ConnectionStatus,
-                          Ertebat::RestStatusCodes::FS_UploadStatus,
-                          const QString &);
     void signal_FS_AddAccessRole(Ertebat::RestStatusCodes::ConnectionStatus,
                           Ertebat::RestStatusCodes::FS_AddAccessRoleStatus,
                           const QString &);
@@ -347,9 +321,7 @@ public:
     Q_INVOKABLE void fs_GetParentId(const QString &token, const QString &entityId);
     Q_INVOKABLE void fs_MoveEntity(const QString &token, const QString &entityId, const QString &newParentId);
     Q_INVOKABLE void fs_DeleteEntity(const QString &token, const QString &entityId);
-    Q_INVOKABLE void fs_Download(const QString &token, const QString &entityId);
     Q_INVOKABLE void fs_DownloadUrl(const QString &token, const QString &entityId);
-    Q_INVOKABLE void fs_Upload(const QString &token, const QString &parentId, const QString &access, const QString &localFilePath);
     Q_INVOKABLE void fs_AddAccessRole(const QString &token, const QString &entityId, const QString &access);
     Q_INVOKABLE void fs_RemoveAccessRole(const QString &token, const QString &entityId, const QString &access);
     Q_INVOKABLE void fs_ChangeAccessType(const QString &token, const QString &entityId, const QString &access);
