@@ -274,7 +274,6 @@ signals:
                                       Ertebat::RestStatusCodes::GetIndividualContactsStatus,
                                       const QString &);
 
-
     void signal_FS_CreateDirectory(Ertebat::RestStatusCodes::ConnectionStatus,
                                    Ertebat::RestStatusCodes::FS_CreateDirectoryStatus,
                                    const QString &);

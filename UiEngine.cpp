@@ -3,6 +3,7 @@
  * @author  Mohamad mehdi Kharatizadeh <m_kharatizadeh@yahoo.com>
  */
 
+
 #include <QtCore/QDebug>
 #include <QtCore/QVariant>
 #include <QtQml/QQmlContext>
@@ -22,6 +23,7 @@
 #if defined ( Q_OS_ANDROID )
 #include "Android.hpp"
 #endif // defined ( Q_OS_ANDROID )
+#include "HttpFileTransfer.hpp"
 #include "Pool.hpp"
 #include "RestApi.hpp"
 #include "Mail/Mail.hpp"
@@ -30,8 +32,6 @@
 #include "Mail/Pop3Client.hpp"
 #include "Mail/ImapClient.hpp"
 #include "Mail/Message.hpp"
-
-
 
 using namespace Ertebat;
 
@@ -224,8 +224,11 @@ void UiEngine::Impl::Initialize()
     qRegisterMetaType<Ertebat::RestStatusCodes::Profile_GetUserProfileStatus>("Ertebat::RestStatusCodes::Profile_GetUserProfileStatus");
     qRegisterMetaType<Ertebat::RestStatusCodes::Profile_SaveProfileStatus>("Ertebat::RestStatusCodes::Profile_SaveProfileStatus");
 
+    qRegisterMetaType<Ertebat::HttpFileTransferOperations::Operation>("Ertebat::HttpFileTransferOperations::Operation");
+
     qmlRegisterType<Ertebat::RestStatusCodes>("RestStatusCodes", 1, 0, "RestStatusCode");
     qmlRegisterType<Ertebat::Screen>("ScreenTypes", 1, 0, "ScreenType");
+    qmlRegisterType<Ertebat::HttpFileTransferOperations>("HttpFileTransferOperations", 1, 0, "HttpFileTransferOperation");
 
     qmlRegisterType<Ertebat::Mail::ImapClient>("ImapClient", 1, 0, "ImapClient");
     qmlRegisterType<Ertebat::Mail::Pop3Client>("Pop3Client", 1, 0, "Pop3Client");
@@ -234,7 +237,7 @@ void UiEngine::Impl::Initialize()
     QQmlContext *context = m_parent->rootContext();
     context->setContextProperty("UiEngine", m_parent);
     context->setContextProperty("RestApi", Pool::RestApi());
-    context->setContextProperty("HttpFileTransfer", reinterpret_cast<QObject *>(Pool::HttpFileTransfer()));
+    context->setContextProperty("HttpFileTransfer", Pool::HttpFileTransfer());
     context->setContextProperty("FontPath", "qrc:///fnt/main.ttf");
 
     context->setContextProperty("ImapClient", Pool::ImapClient());

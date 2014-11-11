@@ -10,6 +10,7 @@ import QtQuick.Controls 1.2;
 import QtQuick.Controls.Styles 1.2;
 import QtQuick.Layouts 1.1;
 import ScreenTypes 1.0;
+import HttpFileTransferOperations 1.0;
 import "custom"
 import "utils"
 import "scripts/ws.js" as WS
@@ -94,10 +95,10 @@ Rectangle {
                     onSignalFS_UploadCallback
                     );
 
-        HttpFileTransfer.onSignal_Failed.connect(onDownloadUrl_Failed);
-        HttpFileTransfer.onSignal_ReadyRead.connect(onDownloadUrl_ReadyRead);
-        HttpFileTransfer.onSignal_DownloadProgress.connect(onDownloadUrl_DownloadProgress);
-        HttpFileTransfer.onSignal_Finished.connect(onDownloadUrl_Finished);
+        HttpFileTransfer.onSignal_Failed.connect(onHttpFileTransfer_Failed);
+        HttpFileTransfer.onSignal_ReadyRead.connect(onHttpFileTransfer_ReadyRead);
+        HttpFileTransfer.onSignal_Progress.connect(onHttpFileTransfer_Progress);
+        HttpFileTransfer.onSignal_Finished.connect(onHttpFileTransfer_Finished);
         RestApi.onSignal_FS_DownloadUrl.connect(onSignalFS_DownloadUrlCallback);
 
         privates.filesJson = "[]";
@@ -185,7 +186,6 @@ Rectangle {
                             listCurrentDirectory();
                         }
                         else {
-                            console.log("Calling DownloadUrl");
                             RestApi.fs_DownloadUrl(
                                         WS.Context.token,
                                         model._id
@@ -407,15 +407,9 @@ Rectangle {
         }
     }
 
-    function onOpenFileDialogAccepted(path) {
-        path = path.replace("file:///", "");
-        console.log("OPEN FILE " + path);
-        RestApi.fs_Upload(
-                    WS.Context.token,
-                    privates.currentId,
-                    "Public",
-                    path
-                    );
+    function onOpenFileDialogAccepted(filePath) {
+        filePath = filePath.replace("file:///", "");
+        HttpFileTransfer.upload(WS.Context.token, privates.currentId, "Public", filePath)
     }
 
     function onOpenFileDialogRejected() {
@@ -430,32 +424,47 @@ Rectangle {
         }
     }
 
-    function onDownloadUrl_Failed(localFile)
+    function onHttpFileTransfer_Failed(operation, localFile)
     {
-        UiEngine.showToast(qsTr("Failed to download %1").arg(localFile));
+        if (operation === HttpFileTransferOperation.Upload) {
+            UiEngine.showToast(qsTr("Failed to upload %1").arg(localFile));
+        } else if (operation === HttpFileTransferOperation.Download) {
+            UiEngine.showToast(qsTr("Failed to download %1").arg(localFile));
+        }        
     }
 
-    function onDownloadUrl_ReadyRead(localFile)
+    function onHttpFileTransfer_ReadyRead(operation, localFile)
     {
+        if (operation === HttpFileTransferOperation.Upload) {
 
+        } else if (operation === HttpFileTransferOperation.Download) {
+
+        }
     }
 
-    function onDownloadUrl_DownloadProgress(localFile, bytesReceived, bytesTotal)
+    function onHttpFileTransfer_Progress(operation, localFile, bytesReceived, bytesTotal)
     {
-        UiEngine.showToast(qsTr("Downloading %1: %2\%").arg(localFile).arg(
-                    Math.round(bytesReceived / bytesTotal * 100)));
+        console.log("Operation " + operation)
+        if (operation === HttpFileTransferOperation.Upload) {
+            UiEngine.showToast(qsTr("Uploading %1: %2\%").arg(localFile).arg(
+                        Math.round(bytesReceived / bytesTotal * 100)));
+        } else if (operation === HttpFileTransferOperation.Download) {
+            UiEngine.showToast(qsTr("Downloading %1: %2\%").arg(localFile).arg(
+                        Math.round(bytesReceived / bytesTotal * 100)));
+        }
     }
 
-    function onDownloadUrl_Finished(localFile)
+    function onHttpFileTransfer_Finished(operation, localFile)
     {
-        UiEngine.showToast(qsTr("Your file has been saved to %1.").arg(localFile));
+        if (operation === HttpFileTransferOperation.Upload) {
+            UiEngine.showToast(qsTr("%1 has been uploaded.").arg(localFile));
+        } else if (operation === HttpFileTransferOperation.Download) {
+            UiEngine.showToast(qsTr("Your file has been saved to %1.").arg(localFile));
+        }
     }
 
     function onSignalFS_DownloadUrlCallback(connectionStatus, downloadUrlStatus, response)
     {
-        console.log("connection: " + connectionStatus +  ", status: " + downloadUrlStatus,
-                    ", response: " + response);
-
         switch(downloadUrlStatus) {
         case 404:
             UiEngine.showToast(qsTr("ERROR_FS_DOWNLOADURL_404") + UiEngine.EmptyLangString);
@@ -498,8 +507,6 @@ Rectangle {
         connectionStatus, uploadStatus, response
         )
     {
-        console.log("connection: " + connectionStatus +  ", status: " + uploadStatus,
-                    ", response: " + response);
         switch(uploadStatus) {
         case 404:
             UiEngine.showToast(qsTr("ERROR_FS_UPLOAD_404") + UiEngine.EmptyLangString);
@@ -525,9 +532,6 @@ Rectangle {
         connectionStatus, getParentIdStatus, response
         )
     {
-        console.log("connection: " + connectionStatus +  ", status: " + getParentIdStatus,
-                    ", response: " + response);
-
         switch(getParentIdStatus) {
         case 404:
             UiEngine.showToast(qsTr("ERROR_FS_PARENTID_404") + UiEngine.EmptyLangString);
@@ -551,9 +555,6 @@ Rectangle {
         connectionStatus, moveEntityStatus, response
         )
     {
-        console.log("connection: " + connectionStatus +  ", status: " + moveEntityStatus,
-                    ", response: " + response);
-
         switch(moveEntityStatus) {
         case 404:
             UiEngine.showToast(qsTr("ERROR_FS_MOVEENTITY_404") + UiEngine.EmptyLangString);
@@ -579,8 +580,6 @@ Rectangle {
         connectionStatus, deleteEntityStatus, response
         )
     {
-        console.log("connection: " + connectionStatus +  ", status: " + deleteEntityStatus,
-                    ", response: " + response);
         switch(deleteEntityStatus) {
         case 404:
             UiEngine.showToast(qsTr("ERROR_FS_DELETEENTITY_404") + UiEngine.EmptyLangString);
@@ -606,8 +605,6 @@ Rectangle {
         connectionStatus, getListOfEntityStatus, response
         )
     {
-        console.log("connection: " + connectionStatus +  ", status: " + getListOfEntityStatus,
-                    ", response: " + response);
         switch(getListOfEntityStatus) {
         case 404:
             UiEngine.showToast(qsTr("ERROR_FS_GETLISTOFENTITY_404") + UiEngine.EmptyLangString);
@@ -630,8 +627,6 @@ Rectangle {
         connectionStatus, createDirectoryStatus, response
         )
     {
-        console.log("connection: " + connectionStatus +  ", status: " + createDirectoryStatus,
-                    ", response: " + response);
         switch(createDirectoryStatus) {
         case 400:
             UiEngine.showToast(qsTr("ERROR_FS_CREATEDIRECTORY_400") + UiEngine.EmptyLangString);
