@@ -53,6 +53,10 @@ public:
     Http_t Http_FS_ChangeAccessType;
     Http_t Http_FS_GetSharedEntities;
 
+    Http_t Http_Profile_UploadProfilePic;
+    Http_t Http_Profile_GetUserProfile;
+    Http_t Http_Profile_SaveProfile;
+
 public:
     Impl(RestApi *parent);
 
@@ -124,6 +128,16 @@ public slots:
     void On_FS_GetSharedEntitiesRequestFailed(const Http::Error &error);
     void On_FS_GetSharedEntitiesRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
                                                 const QString &data);
+
+    void On_Profile_UploadProfilePicRequestFailed(const Http::Error &error);
+    void On_Profile_UploadProfilePicRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                    const QString &data);
+    void On_Profile_GetUserProfileRequestFailed(const Http::Error &error);
+    void On_Profile_GetUserProfileRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                  const QString &data);
+    void On_Profile_SaveProfileRequestFailed(const Http::Error &error);
+    void On_Profile_SaveProfileRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                               const QString &data);
 
 public:
     void SetupEvents();
@@ -447,6 +461,64 @@ void RestApi::fs_GetSharedEntities(const QString &token, const QString &user)
     m_pimpl->Http_FS_GetSharedEntities->Get(QString("%1/document/getSharedEntities/%2").arg(REST_BASE_URL).arg(user), headers);
 }
 
+void RestApi::profile_UploadProfilePic(const QString &token, const QString &localFilePath)
+{
+    QFile file(localFilePath);
+    if (file.exists() && file.open(QIODevice::ReadOnly)) {
+        QString boundary="----ERTEBAT";
+
+        Http::Headers_t headers;
+        headers["token"] = token;
+        headers["Content-Type"] = QString("multipart/form-data; boundary=%1").arg(boundary);
+
+        QByteArray data;
+        QByteArray fileData;
+        fileData.append(file.readAll());
+
+        data.append(QString("\r\n--%1\r\n").arg(boundary).toLatin1());
+        data.append(QString("Content-Disposition: form-data; name=\"file\"; filename=\"%1\"\r\n").arg(file.fileName()));
+        data.append("Content-Type: application/octet-stream\r\n\r\n");
+        data.append(fileData);
+        data.append("\r\n--" + boundary + "--\r\n");
+
+        m_pimpl->Http_Profile_UploadProfilePic->Post(QString("%1/api/uploadProfilePic").arg(REST_BASE_URL),
+                                                     data, headers);
+    }
+}
+
+void RestApi::profile_GetUserProfile(const QString &token)
+{
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    m_pimpl->Http_Profile_GetUserProfile->Get(QString("%1/api/getUserProfile").arg(REST_BASE_URL), headers);
+}
+
+void RestApi::profile_GetUserProfile(const QString &token, const QString &userId)
+{
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    m_pimpl->Http_Profile_GetUserProfile->Get(QString("%1/api/getUserProfile/%2").arg(REST_BASE_URL).arg(userId), headers);
+}
+
+void RestApi::profile_SaveProfile(const QString &token, const QString &firstName, const QString &lastName)
+{
+    std::wstringstream stream;
+    boost::property_tree::wptree tree;
+
+    boost::property_tree::write_json(stream, tree);
+
+    Http::Headers_t headers;
+    headers["token"] = token;
+
+    QByteArray data;
+    data.append(QString::fromStdWString(stream.str()));
+
+    m_pimpl->Http_Profile_SaveProfile->Post(QString("%1/api/saveProfile/%2/%3").arg(REST_BASE_URL).arg(firstName).arg(lastName),
+                                            data, headers);
+}
+
 RestApi::Impl::Impl(RestApi *parent) :
     m_parent(parent),
     HttpSignUp(std::make_unique<Http>()),
@@ -468,7 +540,10 @@ RestApi::Impl::Impl(RestApi *parent) :
     Http_FS_AddAccessRole(std::make_unique<Http>()),
     Http_FS_RemoveAccessRole(std::make_unique<Http>()),
     Http_FS_ChangeAccessType(std::make_unique<Http>()),
-    Http_FS_GetSharedEntities(std::make_unique<Http>())
+    Http_FS_GetSharedEntities(std::make_unique<Http>()),
+    Http_Profile_UploadProfilePic(std::make_unique<Http>()),
+    Http_Profile_GetUserProfile(std::make_unique<Http>()),
+    Http_Profile_SaveProfile(std::make_unique<Http>())
 {
     SetupEvents();
 }
@@ -793,6 +868,55 @@ void RestApi::Impl::On_FS_GetSharedEntitiesRequestCallback(const Ertebat::HttpSt
                                                data);
 }
 
+void RestApi::Impl::On_Profile_UploadProfilePicRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_Profile_UploadProfilePic(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::Profile_UploadProfilePicStatus::Profile_UploadProfilePic_None,
+                QString());
+}
+
+void RestApi::Impl::On_Profile_UploadProfilePicRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                               const QString &data)
+{
+    emit m_parent->signal_Profile_UploadProfilePic(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                                   static_cast<Ertebat::RestStatusCodes::Profile_UploadProfilePicStatus>(statusCode),
+                                                   data);
+}
+
+void RestApi::Impl::On_Profile_GetUserProfileRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_Profile_GetUserProfile(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::Profile_GetUserProfileStatus::Profile_GetUserProfile_None,
+                QString());
+}
+
+void RestApi::Impl::On_Profile_GetUserProfileRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                             const QString &data)
+{
+    emit m_parent->signal_Profile_GetUserProfile(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                                 static_cast<Ertebat::RestStatusCodes::Profile_GetUserProfileStatus>(statusCode),
+                                                 data);
+}
+
+void RestApi::Impl::On_Profile_SaveProfileRequestFailed(const Http::Error &error)
+{
+    emit m_parent->signal_Profile_SaveProfile(
+                static_cast<Ertebat::RestStatusCodes::ConnectionStatus>(error),
+                Ertebat::RestStatusCodes::Profile_SaveProfileStatus::Profile_SaveProfile_None,
+                QString());
+}
+
+void RestApi::Impl::On_Profile_SaveProfileRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &statusCode,
+                                                          const QString &data)
+{
+    emit m_parent->signal_Profile_SaveProfile(Ertebat::RestStatusCodes::ConnectionStatus::Connection_OK,
+                                              static_cast<Ertebat::RestStatusCodes::Profile_SaveProfileStatus>(statusCode),
+                                              data);
+}
+
+
 void RestApi::Impl::SetupEvents()
 {
     connect(HttpSignUp.get(), SIGNAL(Signal_Failed(const Http::Error &)),
@@ -894,5 +1018,20 @@ void RestApi::Impl::SetupEvents()
             this, SLOT(On_FS_GetSharedEntitiesRequestFailed(const Http::Error &)));
     connect(Http_FS_GetSharedEntities.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
             this, SLOT(On_FS_GetSharedEntitiesRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_Profile_UploadProfilePic.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_Profile_UploadProfilePicRequestFailed(const Http::Error &)));
+    connect(Http_Profile_UploadProfilePic.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_Profile_UploadProfilePicRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_Profile_GetUserProfile.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_Profile_GetUserProfileRequestFailed(const Http::Error &)));
+    connect(Http_Profile_GetUserProfile.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_Profile_GetUserProfileRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
+
+    connect(Http_Profile_SaveProfile.get(), SIGNAL(Signal_Failed(const Http::Error &)),
+            this, SLOT(On_Profile_SaveProfileRequestFailed(const Http::Error &)));
+    connect(Http_Profile_SaveProfile.get(), SIGNAL(Signal_Finished(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)),
+            this, SLOT(On_Profile_SaveProfileRequestCallback(const Ertebat::HttpStatus::HttpStatusCode &, const QString &)));
 }
 

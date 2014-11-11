@@ -42,6 +42,10 @@ class Ertebat::RestStatusCodes : public QObject {
     Q_ENUMS( FS_ChangeAccessTypeStatus )
     Q_ENUMS( FS_GetSharedEntitiesStatus )
 
+    Q_ENUMS( Profile_UploadProfilePicStatus )
+    Q_ENUMS( Profile_GetUserProfileStatus )
+    Q_ENUMS( Profile_SaveProfileStatus )
+
 public:
     enum ConnectionStatus {
         Connection_OK = 0,
@@ -210,6 +214,26 @@ public:
         FS_GetSharedEntities_OK = 200,
         FS_GetSharedEntities_InternalServerError = 500
     };
+
+    enum Profile_UploadProfilePicStatus {
+        Profile_UploadProfilePic_None = 0,
+        Profile_UploadProfilePic_OK = 200,
+        Profile_UploadProfilePic_InternalServerError = 500
+    };
+
+    enum Profile_GetUserProfileStatus {
+        Profile_GetUserProfile_None = 0,
+        Profile_GetUserProfile_OK = 200,
+        Profile_GetUserProfile_BadRequest = 400,
+        Profile_GetUserProfile_Forbidden = 403,
+        Profile_GetUserProfile_InternalServerError = 500
+    };
+
+    enum Profile_SaveProfileStatus {
+        Profile_SaveProfile_None = 0,
+        Profile_SaveProfile_OK = 200,
+        Profile_SaveProfile_BadRequest = 400
+    };
 };
 
 class Ertebat::RestApi : public QObject
@@ -291,6 +315,18 @@ signals:
                           Ertebat::RestStatusCodes::FS_GetSharedEntitiesStatus,
                           const QString &);
 
+    void signal_Profile_UploadProfilePic(Ertebat::RestStatusCodes::ConnectionStatus,
+                          Ertebat::RestStatusCodes::Profile_UploadProfilePicStatus,
+                          const QString &);
+
+    void signal_Profile_GetUserProfile(Ertebat::RestStatusCodes::ConnectionStatus,
+                          Ertebat::RestStatusCodes::Profile_GetUserProfileStatus,
+                          const QString &);
+
+    void signal_Profile_SaveProfile(Ertebat::RestStatusCodes::ConnectionStatus,
+                          Ertebat::RestStatusCodes::Profile_SaveProfileStatus,
+                          const QString &);
+
 public:
     Q_INVOKABLE bool isOnline();
 
@@ -304,7 +340,6 @@ public:
     Q_INVOKABLE void createIndividualRoom(const QString &token, const QString &otherParty);
 
     Q_INVOKABLE void getIndividualContacts(const QString &token);
-
 
     Q_INVOKABLE void fs_CreateDirectory(const QString &token, const QString &dirName, const QString &access, const QString &parentId);
     Q_INVOKABLE void fs_GetListOfEntity(const QString &token);
@@ -320,6 +355,11 @@ public:
     Q_INVOKABLE void fs_RemoveAccessRole(const QString &token, const QString &entityId, const QString &access);
     Q_INVOKABLE void fs_ChangeAccessType(const QString &token, const QString &entityId, const QString &access);
     Q_INVOKABLE void fs_GetSharedEntities(const QString &token, const QString &user);
+
+    Q_INVOKABLE void profile_UploadProfilePic(const QString &token, const QString &localFilePath);
+    Q_INVOKABLE void profile_GetUserProfile(const QString &token);
+    Q_INVOKABLE void profile_GetUserProfile(const QString &token, const QString &userId);
+    Q_INVOKABLE void profile_SaveProfile(const QString &token, const QString &firstName, const QString &lastName);
 };
 
 
