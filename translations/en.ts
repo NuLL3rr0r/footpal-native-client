@@ -130,17 +130,17 @@
 <context>
     <name>Chat</name>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="92"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="95"/>
         <source>CHAT</source>
         <translation>Chat with</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="249"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="252"/>
         <source>TYPE_HERE</source>
         <translation>Type Here</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Chat.qml" line="263"/>
+        <location filename="../deployment/resources/ui/Chat.qml" line="266"/>
         <source>SUBMIT</source>
         <translation>Submit</translation>
     </message>
@@ -229,56 +229,61 @@
         <source>CONTINUE</source>
         <translation>Continue</translation>
     </message>
+    <message>
+        <location filename="../deployment/resources/ui/ContactSelection.qml" line="191"/>
+        <source>INVALID_CONTACT_SELECTED</source>
+        <translation>Please select a contact</translation>
+    </message>
 </context>
 <context>
     <name>CreateRoom</name>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="58"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="59"/>
         <source>CREATE_A_ROOM</source>
         <translation>Create a Room</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="83"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="84"/>
         <source>ROOM_NAME</source>
         <translation>Room Name</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="91"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="93"/>
         <source>PUBLIC</source>
         <translation>Public</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="105"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="108"/>
         <source>PRIVATE</source>
         <translation>Private</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="119"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="122"/>
         <source>PASSWORD</source>
         <translation>Password</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="129"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="132"/>
         <source>CONFIRM_PASSWORD</source>
         <translation>Confirm Password</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="140"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="143"/>
         <source>CONFIRM</source>
         <translation>Confirm</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="143"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="146"/>
         <source>INVALID_FIELD_LENGTH</source>
         <translation>Please fill all fields</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="149"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="152"/>
         <source>INVALID_PASSWORD_LENGTH</source>
         <translation>Please enter a password</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/CreateRoom.qml" line="155"/>
+        <location filename="../deployment/resources/ui/CreateRoom.qml" line="158"/>
         <source>PASSWORDS_WONT_MATCH</source>
         <translation>Passwords do not match</translation>
     </message>
@@ -390,161 +395,172 @@
         <translation>My Files</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="261"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="260"/>
         <source>FILESHARING_MOVE</source>
-        <translation type="unfinished"></translation>
+        <translation>The file has been selected for move</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="376"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="375"/>
         <source>FOLDER_NAME</source>
         <translation>Folder Name</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="391"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="390"/>
         <source>INVALID_FOLDER_NAME</source>
         <translation>Invalid Folder Name</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="435"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="429"/>
+        <source>Failed to upload %1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="431"/>
         <source>Failed to download %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="445"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="447"/>
+        <source>Uploading %1: %2%</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="450"/>
         <source>Downloading %1: %2%</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="451"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="458"/>
+        <source>%1 has been uploaded.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="460"/>
         <source>Your file has been saved to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="461"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="468"/>
         <source>ERROR_FS_DOWNLOADURL_404</source>
-        <translation type="unfinished"></translation>
+        <translation>Requested file was not found</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="464"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="471"/>
         <source>ERROR_FS_DOWNLOADURL_400</source>
-        <translation type="unfinished"></translation>
+        <translation> </translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="467"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="474"/>
         <source>ERROR_FS_DOWNLOADURL_500</source>
-        <translation type="unfinished"></translation>
+        <translation> </translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="470"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="477"/>
         <source>ERROR_FS_DOWNLOADURL_403</source>
-        <translation type="unfinished"></translation>
+        <translation>You are not allowed to download</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="505"/>
         <source>ERROR_FS_UPLOAD_404</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Requested file was not found</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="508"/>
         <source>ERROR_FS_UPLAOD_400</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished"> </translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="511"/>
         <source>ERROR_FS_UPLAOD_500</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished"> </translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="514"/>
         <source>ERROR_FS_UPLOAD_403</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">You are not allowed to upload</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="510"/>
+        <source>ERROR_FS_PARENTID_404</source>
+        <translation>Entity not found</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="513"/>
+        <source>ERROR_FS_PARENTID_400</source>
+        <translation> </translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="516"/>
+        <source>ERROR_FS_PARENTID_500</source>
+        <translation> </translation>
     </message>
     <message>
         <location filename="../deployment/resources/ui/Files.qml" line="533"/>
-        <source>ERROR_FS_PARENTID_404</source>
-        <translation type="unfinished"></translation>
+        <source>ERROR_FS_MOVEENTITY_404</source>
+        <translation>Source or destination not found</translation>
     </message>
     <message>
         <location filename="../deployment/resources/ui/Files.qml" line="536"/>
-        <source>ERROR_FS_PARENTID_400</source>
-        <translation type="unfinished"></translation>
+        <source>ERROR_FS_MOVEENTITY_400</source>
+        <translation> </translation>
     </message>
     <message>
         <location filename="../deployment/resources/ui/Files.qml" line="539"/>
-        <source>ERROR_FS_PARENTID_500</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="559"/>
-        <source>ERROR_FS_MOVEENTITY_404</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="562"/>
-        <source>ERROR_FS_MOVEENTITY_400</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="565"/>
         <source>ERROR_FS_MOVEENTITY_500</source>
-        <translation type="unfinished"></translation>
+        <translation> </translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="568"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="542"/>
         <source>ERROR_FS_MOVEENTITY_403</source>
-        <translation type="unfinished"></translation>
+        <translation>You are not allowed to move this item</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="558"/>
+        <source>ERROR_FS_DELETEENTITY_404</source>
+        <translation>Entity not found</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="561"/>
+        <source>ERROR_FS_DELETEENTITY_400</source>
+        <translation> </translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="564"/>
+        <source>ERROR_FS_DELETEENTITY_500</source>
+        <translation> </translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="567"/>
+        <source>ERROR_FS_DELETEENTITY_403</source>
+        <translation>you are not allowed to delete</translation>
+    </message>
+    <message>
+        <location filename="../deployment/resources/ui/Files.qml" line="583"/>
+        <source>ERROR_FS_GETLISTOFENTITY_404</source>
+        <translation>Entity not found</translation>
     </message>
     <message>
         <location filename="../deployment/resources/ui/Files.qml" line="586"/>
-        <source>ERROR_FS_DELETEENTITY_404</source>
-        <translation type="unfinished"></translation>
+        <source>ERROR_FS_GETLISTOFENTITY_500</source>
+        <translation> </translation>
     </message>
     <message>
         <location filename="../deployment/resources/ui/Files.qml" line="589"/>
-        <source>ERROR_FS_DELETEENTITY_400</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="592"/>
-        <source>ERROR_FS_DELETEENTITY_500</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="595"/>
-        <source>ERROR_FS_DELETEENTITY_403</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="613"/>
-        <source>ERROR_FS_GETLISTOFENTITY_404</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="616"/>
-        <source>ERROR_FS_GETLISTOFENTITY_500</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="619"/>
         <source>ERROR_FS_GETLISTOFENTITY_403</source>
-        <translation type="unfinished"></translation>
+        <translation> </translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="637"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="605"/>
         <source>ERROR_FS_CREATEDIRECTORY_400</source>
-        <translation type="unfinished"></translation>
+        <translation> </translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="640"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="608"/>
         <source>ERROR_FS_CREATEDIRECTORY_404</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot create directory</translation>
     </message>
     <message>
         <source>PHONE_NUMBER</source>
         <translation type="obsolete">Phone Number</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/Files.qml" line="388"/>
+        <location filename="../deployment/resources/ui/Files.qml" line="387"/>
         <source>ADD</source>
         <translation>Add</translation>
     </message>
@@ -667,32 +683,32 @@
         <translation>Username</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="89"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="88"/>
         <source>PASSWORD</source>
         <translation>Password</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="99"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="97"/>
         <source>SIGN_IN</source>
         <translation>Sign In</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="102"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="100"/>
         <source>INVALID_PHONE_NUMBER</source>
         <translation>Invalid phone number</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="108"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="106"/>
         <source>INVALID_PASSWORD_LENGTH</source>
         <translation>Please enter a password</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="122"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="120"/>
         <source>FORGOT_PASSWORD</source>
         <translation>Forgot Password</translation>
     </message>
     <message>
-        <location filename="../deployment/resources/ui/SignIn.qml" line="143"/>
+        <location filename="../deployment/resources/ui/SignIn.qml" line="141"/>
         <source>SIGN_UP</source>
         <translation>Sign Up</translation>
     </message>
