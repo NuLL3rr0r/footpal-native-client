@@ -444,7 +444,6 @@ Rectangle {
 
     function onHttpFileTransfer_Progress(operation, localFile, bytesReceived, bytesTotal)
     {
-        console.log("Operation " + operation)
         if (operation === HttpFileTransferOperation.Upload) {
             UiEngine.showToast(qsTr("Uploading %1: %2\%").arg(localFile).arg(
                         Math.round(bytesReceived / bytesTotal * 100)));
