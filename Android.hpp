@@ -17,7 +17,6 @@ namespace Ertebat {
 class Android;
 }
 
-
 class Ertebat::Android : public QAndroidJniObject
 {
 public:

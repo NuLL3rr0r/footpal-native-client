@@ -12,39 +12,39 @@
 class QString;
 
 namespace Ertebat {
-class RestApi;
 class RestStatusCodes;
+class RestApi;
 }
 
 class Ertebat::RestStatusCodes : public QObject {
     Q_OBJECT
 
-    Q_ENUMS( ConnectionStatus )
-    Q_ENUMS( SignUpStatus )
-    Q_ENUMS( SignInStatus )
-    Q_ENUMS( SignOutStatus )
-    Q_ENUMS( GetCurrentProfileStatus )
-    Q_ENUMS( UsersListStatus )
-    Q_ENUMS( CreateIndividualRoomStatus )
+    Q_ENUMS ( ConnectionStatus )
+    Q_ENUMS ( SignUpStatus )
+    Q_ENUMS ( SignInStatus )
+    Q_ENUMS ( SignOutStatus )
+    Q_ENUMS ( GetCurrentProfileStatus )
+    Q_ENUMS ( UsersListStatus )
+    Q_ENUMS ( CreateIndividualRoomStatus )
 
-    Q_ENUMS( FS_CreateDirectoryStatus )
-    Q_ENUMS( FS_GetListOfEntityStatus )
-    Q_ENUMS( FS_GetListOfEntityStatus )
-    Q_ENUMS( FS_GetAccessTypeStatus )
-    Q_ENUMS( FS_GetParentIdStatus )
-    Q_ENUMS( FS_MoveEntityStatus )
-    Q_ENUMS( FS_DeleteEntityStatus )
-    Q_ENUMS( FS_DownloadStatus )
-    Q_ENUMS( FS_DownloadUrlStatus )
-    Q_ENUMS( FS_UploadStatus )
-    Q_ENUMS( FS_AddAccessRoleStatus )
-    Q_ENUMS( FS_RemoveAccessRoleStatus )
-    Q_ENUMS( FS_ChangeAccessTypeStatus )
-    Q_ENUMS( FS_GetSharedEntitiesStatus )
+    Q_ENUMS ( FS_CreateDirectoryStatus )
+    Q_ENUMS ( FS_GetListOfEntityStatus )
+    Q_ENUMS ( FS_GetListOfEntityStatus )
+    Q_ENUMS ( FS_GetAccessTypeStatus )
+    Q_ENUMS ( FS_GetParentIdStatus )
+    Q_ENUMS ( FS_MoveEntityStatus )
+    Q_ENUMS ( FS_DeleteEntityStatus )
+    Q_ENUMS ( FS_DownloadStatus )
+    Q_ENUMS ( FS_DownloadUrlStatus )
+    Q_ENUMS ( FS_UploadStatus )
+    Q_ENUMS ( FS_AddAccessRoleStatus )
+    Q_ENUMS ( FS_RemoveAccessRoleStatus )
+    Q_ENUMS ( FS_ChangeAccessTypeStatus )
+    Q_ENUMS ( FS_GetSharedEntitiesStatus )
 
-    Q_ENUMS( Profile_UploadProfilePicStatus )
-    Q_ENUMS( Profile_GetUserProfileStatus )
-    Q_ENUMS( Profile_SaveProfileStatus )
+    Q_ENUMS ( Profile_UploadProfilePicStatus )
+    Q_ENUMS ( Profile_GetUserProfileStatus )
+    Q_ENUMS ( Profile_SaveProfileStatus )
 
 public:
     enum ConnectionStatus {

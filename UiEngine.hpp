@@ -18,7 +18,7 @@ class UiEngine;
 class Ertebat::Screen : public QObject {
     Q_OBJECT
 
-    Q_ENUMS( Type )
+    Q_ENUMS ( Type )
 
 public:
     enum Type {
