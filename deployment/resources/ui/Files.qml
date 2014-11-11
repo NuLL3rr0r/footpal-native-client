@@ -91,15 +91,12 @@ Rectangle {
         RestApi.onSignal_FS_MoveEntity.connect(
                     onSignalFS_MoveEntityCallback
                     );
-        RestApi.onSignal_FS_Upload.connect(
-                    onSignalFS_UploadCallback
-                    );
 
+        RestApi.onSignal_FS_DownloadUrl.connect(onSignalFS_DownloadUrlCallback);
         HttpFileTransfer.onSignal_Failed.connect(onHttpFileTransfer_Failed);
         HttpFileTransfer.onSignal_ReadyRead.connect(onHttpFileTransfer_ReadyRead);
         HttpFileTransfer.onSignal_Progress.connect(onHttpFileTransfer_Progress);
         HttpFileTransfer.onSignal_Finished.connect(onHttpFileTransfer_Finished);
-        RestApi.onSignal_FS_DownloadUrl.connect(onSignalFS_DownloadUrlCallback);
 
         privates.filesJson = "[]";
         listCurrentDirectory();
@@ -124,10 +121,12 @@ Rectangle {
         RestApi.onSignal_FS_MoveEntity.disconnect(
                     onSignalFS_MoveEntityCallback
                     );
-        RestApi.onSignal_FS_Upload.disconnect(
-                    onSignalFS_UploadCallback
-                    );
         RestApi.onSignal_FS_DownloadUrl.disconnect(onSignalFS_DownloadUrlCallback);
+        HttpFileTransfer.onSignal_Failed.disconnect(onHttpFileTransfer_Failed);
+        HttpFileTransfer.onSignal_ReadyRead.disconnect(onHttpFileTransfer_ReadyRead);
+        HttpFileTransfer.onSignal_Progress.disconnect(onHttpFileTransfer_Progress);
+        HttpFileTransfer.onSignal_Finished.disconnect(onHttpFileTransfer_Finished);
+
     }
 
     Bar {
@@ -496,31 +495,6 @@ Rectangle {
             if (fileName !== "") {
                 HttpFileTransfer.download(url, HttpFileTransfer.getLocalDownloadFolderPath(), fileName);
             }
-            break;
-        default:
-            break;
-        }
-    }
-
-    function onSignalFS_UploadCallback(
-        connectionStatus, uploadStatus, response
-        )
-    {
-        switch(uploadStatus) {
-        case 404:
-            UiEngine.showToast(qsTr("ERROR_FS_UPLOAD_404") + UiEngine.EmptyLangString);
-            break;
-        case 400:
-            UiEngine.showToast(qsTr("ERROR_FS_UPLAOD_400") + UiEngine.EmptyLangString);
-            break;
-        case 500:
-            UiEngine.showToast(qsTr("ERROR_FS_UPLAOD_500") + UiEngine.EmptyLangString);
-            break;
-        case 403:
-            UiEngine.showToast(qsTr("ERROR_FS_UPLOAD_403") + UiEngine.EmptyLangString);
-            break;
-        case 201:
-            listCurrentDirectory();
             break;
         default:
             break;
