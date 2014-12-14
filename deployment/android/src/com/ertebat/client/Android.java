@@ -10,6 +10,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -101,8 +102,9 @@ public class Android extends org.qtproject.qt5.android.bindings.QtActivity
 
         try {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("file/*");
-            s_instance.startActivityForResult(intent, PICKFILE_RESULT_CODE);
+            intent.setType("*/*");
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            s_instance.startActivityForResult(intent.createChooser(intent, "Complete action using"), PICKFILE_RESULT_CODE);
         }
 
         catch (Exception e) {
@@ -193,14 +195,17 @@ public class Android extends org.qtproject.qt5.android.bindings.QtActivity
         super.onCreate(savedInstanceState);
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         switch (requestCode) {
         case PICKFILE_RESULT_CODE:
             if (resultCode == Activity.RESULT_OK) {
                 Log.v(TAG, "OpenFileDialogAccepted!");
-                Log.v(TAG, data.getDataString());
-                OpenFileDialogAccepted(data.getDataString());
+                Uri uri = data.getData();
+                showToast(uri.getPath(), Toast.LENGTH_LONG);
+                OpenFileDialogAccepted(uri.getPath());
+
             } else {
                 Log.v(TAG, "OpenFileDialogRejected!");
                 OpenFileDialogRejected();
